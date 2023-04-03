@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Maxicycles.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Maxicycles.Data;
@@ -9,4 +10,6 @@ public class MaxicyclesDbContext : IdentityDbContext
         : base(options)
     {
     }
+
+    public DbSet<MaxicyclesUser> MaxicyclesUsers => Set<MaxicyclesUser>();
 }

@@ -1,6 +1,7 @@
-using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Maxicycles.Data;
+using Maxicycles.Models;
+using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +12,7 @@ builder.Services.AddDbContext<MaxicyclesDbContext>(options =>
     options.UseNpgsql(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<MaxicyclesUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<MaxicyclesDbContext>();
 builder.Services.AddRazorPages();
 
