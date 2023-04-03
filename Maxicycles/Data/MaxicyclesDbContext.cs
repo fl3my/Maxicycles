@@ -12,4 +12,10 @@ public class MaxicyclesDbContext : IdentityDbContext
     }
 
     public DbSet<MaxicyclesUser> MaxicyclesUsers => Set<MaxicyclesUser>();
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        builder.Seed();
+        base.OnModelCreating(builder);
+    }
 }

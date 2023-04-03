@@ -9,10 +9,12 @@
 <partial name="_StatusMessage" for="StatusMessage" />
 <div class="row">
     <div class="col-md-6">
-        <form id="profile-form" method="post">
+        @if (User.IsInRole("Manager") || User.IsInRole("Customer"))
+        {
+            <form id="profile-form" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
             <div class="form-floating mb-3">
-                <input asp-for="Username" class="form-control" placeholder="Please choose your username." disabled />
+                <input asp-for="Username" class="form-control" placeholder="Please choose your username." disabled/>
                 <label asp-for="Username" class="form-label"></label>
             </div>
             <div class="form-floating mb-3">
@@ -52,7 +54,48 @@
                 <span asp-validation-for="Input.Postcode" class="text-danger"></span>
             </div>
             <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
-        </form>
+            </form>
+        }
+        else
+        {
+            <div id="profile-form">
+                <p>Sorry, you cannot edit your details, please contact the Accounts if you require an update.</p>
+                <div class="form-floating mb-3">
+                    <input asp-for="Username" class="form-control" placeholder="Please choose your username." disabled/>
+                    <label asp-for="Username" class="form-label"></label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number." disabled/>
+                    <label asp-for="Input.PhoneNumber" class="form-label"></label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.FirstName" class="form-control" placeholder="Please enter your first name." disabled/>
+                    <label asp-for="Input.FirstName" class="form-label"></label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.LastName" class="form-control" placeholder="Please enter your lastname." disabled/>
+                    <label asp-for="Input.LastName" class="form-label"></label>
+                </div>
+                <h4>Your delivery Information</h4>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.AddressLine1" class="form-control" placeholder="Please enter your Address Line 1." disabled/>
+                    <label asp-for="Input.AddressLine1" class="form-label"></label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.AddressLine2" class="form-control" placeholder="Please enter your Address Line 2." disabled/>
+                    <label asp-for="Input.AddressLine2" class="form-label"></label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.City" class="form-control" placeholder="Please enter your City." disabled/>
+                    <label asp-for="Input.City" class="form-label"></label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input asp-for="Input.Postcode" class="form-control" placeholder="Please enter your Postcode." disabled/>
+                    <label asp-for="Input.Postcode" class="form-label"></label>
+                </div>
+            </div>
+        }
+        
     </div>
 </div>
 

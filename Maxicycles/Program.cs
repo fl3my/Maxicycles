@@ -13,7 +13,9 @@ builder.Services.AddDbContext<MaxicyclesDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<MaxicyclesUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<MaxicyclesDbContext>();
+
 builder.Services.AddRazorPages();
 
 var app = builder.Build();
