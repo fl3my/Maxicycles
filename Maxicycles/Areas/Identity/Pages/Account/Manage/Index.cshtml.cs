@@ -61,6 +61,17 @@ namespace Maxicycles.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Last Name")]
             public string LastName { get; set; }
             
+            // Custom Address properties.
+            [Display(Name = "Address Line 1")]
+            public string AddressLine1 { get; set; }
+            
+            [Display(Name = "Address Line 2")]
+            public string AddressLine2 { get; set; }
+            
+            public string City { get; set; }
+            
+            public string Postcode { get; set; }
+            
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -82,6 +93,10 @@ namespace Maxicycles.Areas.Identity.Pages.Account.Manage
                 // Custom user properties.
                 FirstName = user.FirstName,
                 LastName = user.LastName,
+                AddressLine1 = user.AddressLine1,
+                AddressLine2 = user.AddressLine2,
+                City = user.City,
+                Postcode = user.Postcode,
                 PhoneNumber = phoneNumber
             };
         }
@@ -123,7 +138,7 @@ namespace Maxicycles.Areas.Identity.Pages.Account.Manage
                 }
             }
             
-            // Custom user properties.
+            // Check if user property has been updated.
             if (Input.FirstName != user.FirstName)
             {
                 user.FirstName = Input.FirstName;
@@ -132,6 +147,26 @@ namespace Maxicycles.Areas.Identity.Pages.Account.Manage
             if (Input.LastName != user.LastName)
             {
                 user.LastName = Input.LastName;
+            }
+            
+            if (Input.AddressLine1 != user.AddressLine1)
+            {
+                user.AddressLine1 = Input.AddressLine1;
+            }
+            
+            if (Input.AddressLine2 != user.AddressLine2)
+            {
+                user.AddressLine2 = Input.AddressLine2;
+            }
+            
+            if (Input.City != user.City)
+            {
+                user.City = Input.City;
+            }
+            
+            if (Input.Postcode != user.Postcode)
+            {
+                user.Postcode = Input.Postcode;
             }
             
             await _signInManager.RefreshSignInAsync(user);
