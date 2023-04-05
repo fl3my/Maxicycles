@@ -16,7 +16,19 @@ builder.Services.AddDefaultIdentity<MaxicyclesUser>(options => options.SignIn.Re
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<MaxicyclesDbContext>();
 
-builder.Services.AddRazorPages();
+builder.Services.AddAuthorization(options =>
+{
+    // Create policies
+    options.AddPolicy("RequireAccountsClerk", policy => policy.RequireRole("AccountsClerk"));
+    options.AddPolicy("RequireManager", policy => policy.RequireRole("Manager"));
+});
+    
+builder.Services.AddRazorPages(options =>
+{
+    // Require role on pages.
+    options.Conventions.AuthorizeFolder("/Admin/Users/Customers", "RequireAccountsClerk");
+    options.Conventions.AuthorizeFolder("/Admin/Users/Staff", "RequireManager");
+});
 
 var app = builder.Build();
 

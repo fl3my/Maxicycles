@@ -1,0 +1,46 @@
+﻿@page
+@model DeleteModel
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Student</h4>
+    <hr/>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.UserModel.FirstName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserModel.FirstName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserModel.LastName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserModel.LastName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserModel.Username)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserModel.Username)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserModel.Role)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserModel.Role)
+        </dd>
+    </dl>
+
+    <form method="post">
+        <input type="hidden" asp-for="UserModel.Id"/>
+        <input type="submit" value="Delete" class="btn btn-default"/> |
+        <a asp-page="./Index">Back to List</a>
+    </form>
+</div>

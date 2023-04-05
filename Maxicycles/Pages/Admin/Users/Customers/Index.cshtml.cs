@@ -14,15 +14,15 @@ public class IndexModel : PageModel
 
     public List<UserModel> Users = new();
 
-    public IndexModel(UserManager<MaxicyclesUser> userManager)
+    public IndexModel(UserManager<MaxicyclesUser> userManager, RoleManager<IdentityRole> roleManager)
     {
         _userManager = userManager;
     }
 
     public async Task<IActionResult> OnGetAsync()
     {
-        var users = await _userManager.Users.ToListAsync();
-
+        var users = await _userManager.GetUsersInRoleAsync("Customer");
+ 
         // Populate list view model with all users.
         foreach (var userModel in users.Select(user => new UserModel
                  {
