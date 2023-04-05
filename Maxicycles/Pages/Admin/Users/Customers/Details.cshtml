@@ -1,0 +1,68 @@
+﻿@page
+@model DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Student</h4>
+    <hr/>
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.UserModel.FirstName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserModel.FirstName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserModel.LastName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserModel.LastName)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserModel.Username)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserModel.Username)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserModel.AddressLine1)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserModel.AddressLine1)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserModel.AddressLine2)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserModel.AddressLine2)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserModel.City)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserModel.City)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserModel.Postcode)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserModel.Postcode)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.UserModel.PhoneNumber)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserModel.PhoneNumber)
+        </dd>
+
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.UserModel.Id">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>
