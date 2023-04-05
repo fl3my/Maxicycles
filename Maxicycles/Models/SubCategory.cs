@@ -9,4 +9,7 @@ public class SubCategory
     // Many subcategory have one Category.
     public int CategoryId { get; set; }
     public Category? Category { get; set; }
+    
+    // One subcategory to many products.
+    public ICollection<Product> Products { get; } = new List<Product>();
 }

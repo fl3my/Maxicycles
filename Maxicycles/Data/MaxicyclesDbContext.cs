@@ -10,8 +10,6 @@ public class MaxicyclesDbContext : IdentityDbContext
         : base(options)
     {
     }
-
-    public DbSet<MaxicyclesUser> MaxicyclesUsers => Set<MaxicyclesUser>();
     
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -19,7 +17,11 @@ public class MaxicyclesDbContext : IdentityDbContext
         base.OnModelCreating(builder);
     }
     
+    public DbSet<MaxicyclesUser> MaxicyclesUsers => Set<MaxicyclesUser>();
+
     public DbSet<Maxicycles.Models.Category> Category { get; set; } = default!;
     
     public DbSet<Maxicycles.Models.SubCategory> SubCategory { get; set; } = default!;
+    
+    public DbSet<Maxicycles.Models.Product> Product { get; set; } = default!;
 }
