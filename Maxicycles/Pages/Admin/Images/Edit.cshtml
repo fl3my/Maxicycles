@@ -1,0 +1,43 @@
+@page
+@model Maxicycles.Pages.Admin.Images.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Image</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Image.Id"/>
+            <input type="hidden" asp-for="Image.ImageName"/>
+            <div class="form-group">
+                <label asp-for="Image.Title" class="control-label"></label>
+                <input asp-for="Image.Title" class="form-control"/>
+                <span asp-validation-for="Image.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Image.AltText" class="control-label"></label>
+                <input asp-for="Image.AltText" class="form-control"/>
+                <span asp-validation-for="Image.AltText" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ImageFile" class="control-label"></label>
+                <input asp-for="ImageFile" class="form-control"/>
+                <span asp-validation-for="ImageFile" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary"/>
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+

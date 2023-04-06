@@ -8,14 +8,13 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Maxicycles.Data;
 using Maxicycles.Models;
 using Microsoft.Build.Framework;
-using IHostingEnvironment = Microsoft.AspNetCore.Hosting.IHostingEnvironment;
 
-namespace Maxicycles.Pages.Admin.Store.Products
+namespace Maxicycles.Pages.Admin.Images
 {
     public class CreateModel : PageModel
     {
         private readonly Maxicycles.Data.MaxicyclesDbContext _context;
-        private IWebHostEnvironment _environment;
+        private readonly IWebHostEnvironment _environment;
         
         public CreateModel(Maxicycles.Data.MaxicyclesDbContext context, IWebHostEnvironment environment)
         {
@@ -25,13 +24,14 @@ namespace Maxicycles.Pages.Admin.Store.Products
 
         public IActionResult OnGet()
         {
-            ViewData["SubcategoryId"] = new SelectList(_context.SubCategory, "Id", "Id");
-            ViewData["ImageId"] = new SelectList(_context.Image, "Id", "Id");
             return Page();
         }
 
         [BindProperty]
-        public Product Product { get; set; } = default!;
+        public Image Image { get; set; } = default!;
+
+        [BindProperty]
+        public IFormFile? ImageFile { get; set; }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
@@ -41,7 +41,25 @@ namespace Maxicycles.Pages.Admin.Store.Products
               return Page();
           }
 
-          _context.Product.Add(Product);
+          if (ImageFile != null)
+          {
+              // Get the filename and extension.
+              var fileName = Path.GetFileNameWithoutExtension(ImageFile.FileName);
+              var extension = Path.GetExtension(ImageFile.FileName);
+
+              // Create unique name for the image.
+              Image.ImageName = fileName + "_" + Guid.NewGuid() + extension;
+
+              var path = Path.Combine(_environment.WebRootPath + "/images/" + Image.ImageName);
+            
+              // Write the file to the image directory.
+              await using var fileStream = new FileStream(path, FileMode.Create);
+              await ImageFile.CopyToAsync(fileStream);
+          }
+          
+          Image.UploadedAt = DateTime.Now.ToUniversalTime();
+          
+          _context.Image.Add(Image);
           await _context.SaveChangesAsync();
 
           return RedirectToPage("./Index");

@@ -36,8 +36,10 @@ namespace Maxicycles.Pages.Admin.Store.Products
                 return NotFound();
             }
             Product = product;
-           ViewData["SubcategoryId"] = new SelectList(_context.SubCategory, "Id", "Id");
-            return Page();
+            ViewData["SubcategoryId"] = new SelectList(_context.SubCategory, "Id", "Id");
+           ViewData["ImageId"] = new SelectList(_context.Image, "Id", "Id");
+           
+           return Page();
         }
 
         // To protect from overposting attacks, enable the specific properties you want to bind to.
