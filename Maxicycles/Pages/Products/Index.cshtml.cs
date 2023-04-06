@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Maxicycles.Data;
 using Maxicycles.Models;
 
-namespace Maxicycles.Pages.Admin.Images
+namespace Maxicycles.Pages.Products
 {
     public class IndexModel : PageModel
     {
@@ -19,14 +19,13 @@ namespace Maxicycles.Pages.Admin.Images
             _context = context;
         }
 
-        public IList<Image> Image { get;set; } = default!;
+        public IList<Product> Product { get;set; } = default!;
 
         public async Task OnGetAsync()
         {
-            if (_context.Image != null)
-            {
-                Image = await _context.Image.ToListAsync();
-            }
+            Product = await _context.Product
+                .Include(p => p.Image)
+                .Include(p => p.SubCategory).ToListAsync();
         }
     }
 }

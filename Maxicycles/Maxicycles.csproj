@@ -33,10 +33,18 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Pages\Admin\Images" />
       <Folder Include="Pages\Admin\Store\Products" />
       <Folder Include="Pages\Admin\Store\SubCategories" />
+      <Folder Include="Pages\Products" />
       <Folder Include="wwwroot\images" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Pages\Admin\Store\Images\Create.cshtml" />
+      <AdditionalFiles Include="Pages\Admin\Store\Images\Delete.cshtml" />
+      <AdditionalFiles Include="Pages\Admin\Store\Images\Details.cshtml" />
+      <AdditionalFiles Include="Pages\Admin\Store\Images\Edit.cshtml" />
+      <AdditionalFiles Include="Pages\Admin\Store\Images\Index.cshtml" />
     </ItemGroup>
 
 </Project>

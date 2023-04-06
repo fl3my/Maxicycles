@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Maxicycles.Data;
 using Maxicycles.Models;
 
-namespace Maxicycles.Pages.Admin.Images
+namespace Maxicycles.Pages.Products
 {
     public class DetailsModel : PageModel
     {
@@ -19,23 +19,28 @@ namespace Maxicycles.Pages.Admin.Images
             _context = context;
         }
 
-      public Image Image { get; set; } = default!; 
+      public Product Product { get; set; } = default!; 
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Image == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var image = await _context.Image.FirstOrDefaultAsync(m => m.Id == id);
-            if (image == null)
+            var product = await _context
+                .Product
+                .Include(m => m.Image)
+                .Include(c => c.SubCategory)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            
+            if (product == null)
             {
                 return NotFound();
             }
             else 
             {
-                Image = image;
+                Product = product;
             }
             return Page();
         }

@@ -1,15 +1,8 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Maxicycles.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Maxicycles.Data;
-using Maxicycles.Models;
-using Microsoft.Build.Framework;
 
-namespace Maxicycles.Pages.Admin.Images
+namespace Maxicycles.Pages.Admin.Store.Images
 {
     public class CreateModel : PageModel
     {
