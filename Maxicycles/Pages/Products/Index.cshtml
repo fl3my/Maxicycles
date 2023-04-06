@@ -5,54 +5,19 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div class="row">
+    @foreach (var item in Model.Product) {
+        <div class="col-sm-4">
+            <div class="card">
+                <img decoding="async" alt="@item.Image!.AltText" src="@("/images/"+ item.Image.ImageName)" class="card-img-top"/>
+                <div class="card-body">
+                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
+                    <h6 class="card-subtitle mb-2 text-muted">@Html.DisplayFor(modelItem => item.Price)</h6>
+                    <a asp-page="./Details" asp-route-id="@item.Id" class="card-link">View</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Product[0].Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Product[0].Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Product[0].Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Product[0].SubCategory)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Product[0].Image)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Product) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.SubCategory.Title)
-            </td>
-            <td>
-               <img decoding="async" alt="@item.Image.AltText" src="@("/images/"+ item.Image.ImageName)" />
-            </td>
-            <td>
-                <a asp-page="./Details" asp-route-id="@item.Id">Details</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
