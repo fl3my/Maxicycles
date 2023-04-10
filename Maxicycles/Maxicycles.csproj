@@ -36,7 +36,7 @@
       <Folder Include="Pages\Admin\Store\Products" />
       <Folder Include="Pages\Admin\Store\SubCategories" />
       <Folder Include="Pages\Products" />
-      <Folder Include="wwwroot\images" />
+      <Folder Include="wwwroot\uploads" />
     </ItemGroup>
 
     <ItemGroup>

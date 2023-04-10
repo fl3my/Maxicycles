@@ -43,7 +43,7 @@ namespace Maxicycles.Pages.Admin.Store.Images
               // Create unique name for the image.
               Image.ImageName = fileName + "_" + Guid.NewGuid() + extension;
 
-              var path = Path.Combine(_environment.WebRootPath + "/images/" + Image.ImageName);
+              var path = Path.Combine(_environment.WebRootPath + "/uploads/" + Image.ImageName);
             
               // Write the file to the image directory.
               await using var fileStream = new FileStream(path, FileMode.Create);

@@ -29,7 +29,7 @@
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
-                <img decoding="async" alt="@item.AltText" src="@("/images/"+ item.ImageName)" />
+                <img decoding="async" alt="@item.AltText" src="@("/uploads/"+ item.ImageName)" />
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |

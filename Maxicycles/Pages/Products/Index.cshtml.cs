@@ -19,11 +19,26 @@ namespace Maxicycles.Pages.Products
             _context = context;
         }
 
-        public IList<Product> Product { get;set; } = default!;
+        public IList<Product> Product { get; set; } = default!;
+
+        [BindProperty(SupportsGet = true)]
+        public string? SearchString { get; set; }
 
         public async Task OnGetAsync()
         {
-            Product = await _context.Product
+            // Get all sub categories.
+            var subCategories = from c in _context.SubCategory select c;
+            
+            // Select all products.
+            var products = from p in _context.Product select p;
+            
+            // If there is a valid search string, search.
+            if (!string.IsNullOrEmpty(SearchString))
+            {
+                products = products.Where(s => s.Title!.Contains(SearchString));
+            }
+
+            Product = await products
                 .Include(p => p.Image)
                 .Include(p => p.SubCategory).ToListAsync();
         }

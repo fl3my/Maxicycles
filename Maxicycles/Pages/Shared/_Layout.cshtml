@@ -5,20 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>@ViewData["Title"] - Maxicycles</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
     <link rel="stylesheet" href="~/Maxicycles.styles.css" asp-append-version="true"/>
 </head>
 <body>
 
 <header>
-    <nav class="navbar navbar-expand-lg navbar-light border-bottom">
+    <nav class="navbar navbar-expand-lg navbar-light bg-primary border-bottom">
         <div class="container">
             <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
-            <a class="navbar-brand" asp-area="" asp-page="/Products/Index">Maxicycles</a>
+            <a class="navbar-brand" asp-page="/Products/Index">
+                <img alt="maxicycles logo" src="images/logo_small.png"/>
+            </a>
             
             <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                 <div class="offcanvas-header">
@@ -26,17 +29,14 @@
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body">
-                    <ul class="navbar-nav">
+                    <ul class="navbar-nav ">
                         @await Component.InvokeAsync("Category")
                         <partial name="_LoginPartial"/>
                     </ul>
                 </div>
             </div>
             
-            <form class="d-flex">
-                            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                            <button class="btn btn-outline-success" type="submit">Search</button>
-                        </form>
+            <button class="btn btn-primary"><i class="fa-solid fa-basket-shopping"></i></button>
         </div>
     </nav>
 </header>

@@ -1,4 +1,4 @@
-@page
+@page "{subCategory?}"
 @model Maxicycles.Pages.Products.IndexModel
 
 @{
@@ -9,7 +9,7 @@
     @foreach (var item in Model.Product) {
         <div class="col-sm-4">
             <div class="card">
-                <img decoding="async" alt="@item.Image!.AltText" src="@("/images/"+ item.Image.ImageName)" class="card-img-top"/>
+                <img decoding="async" alt="@item.Image!.AltText" src="@("/uploads/"+ item.Image.ImageName)" class="card-img-top"/>
                 <div class="card-body">
                     <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
                     <h6 class="card-subtitle mb-2 text-muted">@Html.DisplayFor(modelItem => item.Price)</h6>
