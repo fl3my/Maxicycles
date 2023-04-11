@@ -1,3 +1,9 @@
-﻿@import "../lib/bootstrap/scss/functions";
-@import "../lib/bootstrap/scss/variables";
-@import "../lib/bootstrap/scss/mixins";
+﻿// Custom.scss
+// Option A: Include all of Bootstrap
+
+// Include any default variable overrides here (though functions won't be available)
+$primary: #f77e07;
+$body-bg: #edf2f7;
+$dark: #3c3c3b;
+
+@import "../lib/bootstrap/scss/bootstrap";
