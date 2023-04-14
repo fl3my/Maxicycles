@@ -29,8 +29,12 @@ namespace Maxicycles.Pages.Admin.Store.Products
                 return NotFound();
             }
 
-            var product = await _context.Product.FirstOrDefaultAsync(m => m.Id == id);
-
+            var product = await _context
+                .Product
+                .Include(p => p.SubCategory)
+                .Include(p => p.Image)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            
             if (product == null)
             {
                 return NotFound();

@@ -25,8 +25,8 @@ namespace Maxicycles.Pages.Admin.Store.Products
 
         public IActionResult OnGet()
         {
-            ViewData["SubcategoryId"] = new SelectList(_context.SubCategory, "Id", "Id");
-            ViewData["ImageId"] = new SelectList(_context.Image, "Id", "Id");
+            ViewData["SubcategoryId"] = new SelectList(_context.SubCategory, "Id", "Title");
+            ViewData["ImageId"] = new SelectList(_context.Image, "Id", "Title");
             return Page();
         }
 

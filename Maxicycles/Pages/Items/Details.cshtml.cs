@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Maxicycles.Data;
 using Maxicycles.Models;
 
-namespace Maxicycles.Pages.Products
+namespace Maxicycles.Pages.Items
 {
     public class DetailsModel : PageModel
     {

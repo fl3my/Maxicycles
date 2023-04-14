@@ -50,10 +50,10 @@
                 @Html.DisplayFor(modelItem => item.Quantity)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.SubCategory.Id)
+                @Html.DisplayFor(modelItem => item.SubCategory.Title)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Image.Id)
+                @Html.DisplayFor(modelItem => item.Image.Title)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
