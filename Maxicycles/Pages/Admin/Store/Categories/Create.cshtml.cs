@@ -35,7 +35,9 @@ namespace Maxicycles.Pages.Admin.Store.Categories
           {
               return Page();
           }
-
+          
+          
+          
           _context.Category.Add(Category);
           await _context.SaveChangesAsync();
 

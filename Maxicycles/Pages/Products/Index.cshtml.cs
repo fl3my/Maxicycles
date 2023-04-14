@@ -24,11 +24,14 @@ namespace Maxicycles.Pages.Products
         [BindProperty(SupportsGet = true)]
         public string? SearchString { get; set; }
 
+        [BindProperty(SupportsGet = true)]
+        public string? Category { get; set; }
+        
+        [BindProperty(SupportsGet = true)]
+        public string? SubCategory { get; set; }
+        
         public async Task OnGetAsync()
         {
-            // Get all sub categories.
-            var subCategories = from c in _context.SubCategory select c;
-            
             // Select all products.
             var products = from p in _context.Product select p;
             
@@ -37,7 +40,20 @@ namespace Maxicycles.Pages.Products
             {
                 products = products.Where(s => s.Title!.Contains(SearchString));
             }
-
+            
+            // If there is a category
+            if (!string.IsNullOrEmpty(Category))
+            {   
+                // Get all items in that category
+                products = products.Where(s => s.SubCategory!.Category!.Slug == Category);
+                
+                // If there is 
+                if (!string.IsNullOrEmpty(SubCategory))
+                {
+                    products = products.Where(s => s.SubCategory!.Slug == SubCategory);
+                }
+            }
+            
             Product = await products
                 .Include(p => p.Image)
                 .Include(p => p.SubCategory).ToListAsync();

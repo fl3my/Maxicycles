@@ -9,10 +9,10 @@
                 @category.Title
             </a>
             <ul class="dropdown-menu dropdown-menu-dark">
-                <li><a class="dropdown-item" href="#">View all</a></li>
+                <li><a class="dropdown-item" asp-page="/Products/Index" asp-route-category="@category.Slug" asp-route-subCategory=@null>View all</a></li>
                 @foreach (var subCategory in category.SubCategories)
                 {
-                    <li><a class="dropdown-item" href="#">@subCategory.Title</a></li>
+                    <li><a class="dropdown-item" asp-page="/Products/Index" asp-route-category="@category.Slug" asp-route-subCategory="@subCategory.Slug">@subCategory.Title</a></li>
                 }
             </ul>
         </li>

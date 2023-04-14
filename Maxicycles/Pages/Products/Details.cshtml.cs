@@ -18,12 +18,12 @@ namespace Maxicycles.Pages.Products
         {
             _context = context;
         }
+        
+        public Product Product { get; set; } = default!; 
 
-      public Product Product { get; set; } = default!; 
-
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(string slug)
         {
-            if (id == null)
+            if (string.IsNullOrEmpty(slug))
             {
                 return NotFound();
             }
@@ -32,7 +32,7 @@ namespace Maxicycles.Pages.Products
                 .Product
                 .Include(m => m.Image)
                 .Include(c => c.SubCategory)
-                .FirstOrDefaultAsync(m => m.Id == id);
+                .FirstOrDefaultAsync(m => m.Slug == slug);
             
             if (product == null)
             {

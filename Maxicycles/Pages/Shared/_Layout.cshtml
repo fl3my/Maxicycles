@@ -32,8 +32,8 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body">
-                    <form class="d-flex" role="search">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                    <form class="d-flex" role="search" method="get" asp-route-Category="@null" asp-route-SubCategory="@null" asp-page="/Products/Index">
+                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="SearchString">
                         <button class="btn btn-outline-primary" type="submit">Search</button>
                     </form>
                     @await Component.InvokeAsync("Category")
@@ -59,7 +59,7 @@
 </footer>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
 
 @await RenderSectionAsync("Scripts", required: false)

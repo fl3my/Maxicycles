@@ -1,23 +1,31 @@
-@page "{subCategory?}"
+@page "{category?}/{subCategory?}"
+
 @model Maxicycles.Pages.Products.IndexModel
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<div class="row">
-    @foreach (var item in Model.Product) {
-        <div class="col-sm-4">
-            <div class="card">
-                <img decoding="async" alt="@item.Image!.AltText" src="@("/uploads/"+ item.Image.ImageName)" class="card-img-top"/>
-                <div class="card-body">
-                    <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
-                    <h6 class="card-subtitle mb-2 text-muted">@Html.DisplayFor(modelItem => item.Price)</h6>
-                    <a asp-page="./Details" asp-route-id="@item.Id" class="card-link">View</a>
+@if (Model.Product.Count > 0)
+{
+    <div class="row">
+        @foreach (var item in Model.Product) {
+            <div class="col-sm-4">
+                <div class="card">
+                    <img decoding="async" alt="@item.Image!.AltText" src="@("/uploads/"+ item.Image.ImageName)" class="card-img-top"/>
+                    <div class="card-body">
+                        <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">@Html.DisplayFor(modelItem => item.Price)</h6>
+                        <a asp-page="./Details" asp-route-slug="@item.Slug" class="card-link">View</a>
+                    </div>
                 </div>
             </div>
-        </div>
-    }
-</div>
+        }
+    </div>
+}
+else
+{
+    <p>Sorry, nothing was found!</p>
+}
 
 
