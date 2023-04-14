@@ -21,6 +21,7 @@ builder.Services.AddAuthorization(options =>
     // Create policies
     options.AddPolicy("RequireAccountsClerk", policy => policy.RequireRole("AccountsClerk"));
     options.AddPolicy("RequireManager", policy => policy.RequireRole("Manager"));
+    options.AddPolicy("RequireStockControl", policy => policy.RequireRole("StockControl"));
 });
     
 builder.Services.AddRazorPages(options =>
@@ -28,6 +29,7 @@ builder.Services.AddRazorPages(options =>
     // Require role on pages.
     options.Conventions.AuthorizeFolder("/Admin/Users/Customers", "RequireAccountsClerk");
     options.Conventions.AuthorizeFolder("/Admin/Users/Staff", "RequireManager");
+    options.Conventions.AuthorizeFolder("/Admin/Store", "RequireStockControl");
 });
 
 var app = builder.Build();

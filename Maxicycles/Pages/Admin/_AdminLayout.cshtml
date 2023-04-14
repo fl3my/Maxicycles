@@ -20,6 +20,7 @@
             </button>
             <a class="navbar-brand p-2" asp-page="/Products/Index">
                 <img alt="maxicycles logo" src="~/images/logo.svg" height="60px"/>
+                Admin
             </a>
             <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
                 <div class="offcanvas-header">
@@ -27,6 +28,28 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body">
+                    <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Store
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark">
+                            <li><a class="dropdown-item" asp-page="/Admin/Store/Products/Index">Products</a></li>
+                            <li><a class="dropdown-item" asp-page="/Admin/Store/Categories/Index">Categories</a></li>
+                            <li><a class="dropdown-item" asp-page="/Admin/Store/Subcategories/Index">SubCategories</a></li>
+                            <li><a class="dropdown-item" asp-page="/Admin/Store/Images/Index">Images</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Users
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-dark">
+                            <li><a class="dropdown-item" asp-page="/Admin/Users/Customers/Index">Customers</a></li>
+                            <li><a class="dropdown-item" asp-page="/Admin/Users/Staff/Index">Staff</a></li>
+                        </ul>
+                    </li>
+                    </ul>
                     <partial name="_LoginPartial"/>
                 </div>
             </div>
@@ -47,7 +70,7 @@
 </footer>
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
 <script src="~/js/site.js" asp-append-version="true"></script>
 
 @await RenderSectionAsync("Scripts", required: false)

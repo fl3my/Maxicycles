@@ -17,6 +17,6 @@ public class Image
     public DateTime UploadedAt { get; set; }
     
     // One image can have many products.
-    public ICollection<Product> Products { get; } = new List<Product>();
+    public ICollection<Item> Item { get; } = new List<Item>();
 
 }

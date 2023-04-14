@@ -23,7 +23,10 @@ public class MaxicyclesDbContext : IdentityDbContext
     
     public DbSet<Maxicycles.Models.SubCategory> SubCategory { get; set; } = default!;
     
+    public DbSet<Maxicycles.Models.Item> Item { get; set; } = default!;
+
+    public DbSet<Maxicycles.Models.Repair> Repair { get; set; } = default!;
+
     public DbSet<Maxicycles.Models.Product> Product { get; set; } = default!;
-    
     public DbSet<Maxicycles.Models.Image> Image { get; set; } = default!;
 }

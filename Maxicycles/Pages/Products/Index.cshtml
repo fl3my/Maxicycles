@@ -6,10 +6,10 @@
     ViewData["Title"] = "Index";
 }
 
-@if (Model.Product.Count > 0)
+@if (Model.Items.Count > 0)
 {
     <div class="row">
-        @foreach (var item in Model.Product) {
+        @foreach (var item in Model.Items) {
             <div class="col-sm-4">
                 <div class="card">
                     <img decoding="async" alt="@item.Image!.AltText" src="@("/uploads/"+ item.Image.ImageName)" class="card-img-top"/>

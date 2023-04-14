@@ -15,5 +15,5 @@ public class SubCategory
     public Category? Category { get; set; }
     
     // One subcategory to many products.
-    public ICollection<Product> Products { get; } = new List<Product>();
+    public ICollection<Item> Items { get; } = new List<Item>();
 }

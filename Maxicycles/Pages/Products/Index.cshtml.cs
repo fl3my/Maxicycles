@@ -19,7 +19,7 @@ namespace Maxicycles.Pages.Products
             _context = context;
         }
 
-        public IList<Product> Product { get; set; } = default!;
+        public IList<Item> Items { get; set; } = default!;
 
         [BindProperty(SupportsGet = true)]
         public string? SearchString { get; set; }
@@ -33,7 +33,7 @@ namespace Maxicycles.Pages.Products
         public async Task OnGetAsync()
         {
             // Select all products.
-            var products = from p in _context.Product select p;
+            var products = from p in _context.Item select p;
             
             // If there is a valid search string, search.
             if (!string.IsNullOrEmpty(SearchString))
@@ -54,7 +54,7 @@ namespace Maxicycles.Pages.Products
                 }
             }
             
-            Product = await products
+            Items = await products
                 .Include(p => p.Image)
                 .Include(p => p.SubCategory).ToListAsync();
         }
