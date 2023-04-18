@@ -2,6 +2,7 @@
 @model System.Collections.Generic.List<Maxicycles.Models.Category>
 
 <ul class="navbar-nav">
+    <li><a class="nav-item nav-link" asp-page="/Items/Index" asp-route-category="@null" asp-route-subCategory="@null">View all</a></li>
     @foreach (var category in Model)
     {
         <li class="nav-item dropdown">
@@ -9,11 +10,11 @@
                 @category.Title
             </a>
             <ul class="dropdown-menu dropdown-menu-dark">
-                <li><a class="dropdown-item" asp-page="/Products/Index" asp-route-category="@category.Slug" asp-route-subCategory=@null>View all</a></li>
                 @foreach (var subCategory in category.SubCategories)
                 {
-                    <li><a class="dropdown-item" asp-page="/Products/Index" asp-route-category="@category.Slug" asp-route-subCategory="@subCategory.Slug">@subCategory.Title</a></li>
+                    <li><a class="dropdown-item" asp-page="/Items/Index" asp-route-category="@category.Slug" asp-route-subCategory="@subCategory.Slug">@subCategory.Title</a></li>
                 }
+                <li><a class="dropdown-item" asp-page="/Items/Index" asp-route-category="@category.Slug" asp-route-subCategory=@null>View all</a></li>
             </ul>
         </li>
     }

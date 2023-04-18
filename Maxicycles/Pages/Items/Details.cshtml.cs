@@ -19,7 +19,7 @@ namespace Maxicycles.Pages.Items
             _context = context;
         }
         
-        public Product Product { get; set; } = default!; 
+        public Item Item { get; set; } = default!; 
 
         public async Task<IActionResult> OnGetAsync(string slug)
         {
@@ -28,19 +28,19 @@ namespace Maxicycles.Pages.Items
                 return NotFound();
             }
 
-            var product = await _context
-                .Product
+            var item = await _context
+                .Item
                 .Include(m => m.Image)
                 .Include(c => c.SubCategory)
                 .FirstOrDefaultAsync(m => m.Slug == slug);
             
-            if (product == null)
+            if (item == null)
             {
                 return NotFound();
             }
             else 
             {
-                Product = product;
+                Item = item;
             }
             return Page();
         }
