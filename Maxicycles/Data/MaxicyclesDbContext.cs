@@ -18,15 +18,11 @@ public class MaxicyclesDbContext : IdentityDbContext
     }
     
     public DbSet<MaxicyclesUser> MaxicyclesUsers => Set<MaxicyclesUser>();
-
     public DbSet<Maxicycles.Models.Category> Category { get; set; } = default!;
-    
     public DbSet<Maxicycles.Models.SubCategory> SubCategory { get; set; } = default!;
-    
     public DbSet<Maxicycles.Models.Item> Item { get; set; } = default!;
-
     public DbSet<Maxicycles.Models.Service> Service { get; set; } = default!;
-
     public DbSet<Maxicycles.Models.Product> Product { get; set; } = default!;
     public DbSet<Maxicycles.Models.Image> Image { get; set; } = default!;
+    public DbSet<Maxicycles.Models.BasketItem> BasketItem { get; set; } = default!;
 }

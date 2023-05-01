@@ -19,7 +19,10 @@ namespace Maxicycles.Pages.Items
             _context = context;
         }
         
-        public Item Item { get; set; } = default!; 
+        public Item Item { get; set; } = default!;
+
+        public int Quantity { get; set; } = default!;
+        
 
         public async Task<IActionResult> OnGetAsync(string slug)
         {

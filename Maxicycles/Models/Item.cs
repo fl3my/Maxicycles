@@ -17,12 +17,15 @@ public class Item
     [Required]
     public decimal Price { get; set; }
 
-    // Many product to one subcategory.
+    // Many item to one subcategory.
     [Required]
     public int SubCategoryId { get; set; }
     public SubCategory? SubCategory { get; set; }
     
-    // Many products to one image.
+    // Many item to one image.
     public int ImageId { get; set; }
     public Image? Image { get; set; }
+    
+    // Many Items to one basketItem.
+    public ICollection<BasketItem> BasketItems = new List<BasketItem>();
 }
