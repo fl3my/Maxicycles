@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Maxicycles.Data;
 using Maxicycles.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Maxicycles.Pages.Basket
 {
@@ -46,8 +47,9 @@ namespace Maxicycles.Pages.Basket
         public async Task<IActionResult> OnPostAsync(int id)
         {
             // Get the product from the id.
-            var product = _context.Product.FirstOrDefault(i => i.Id == id);
-          
+            var product = _context.Product
+                .FirstOrDefault(i => i.Id == id);
+   
             if (product == null)
             {
                 return NotFound();
@@ -59,6 +61,16 @@ namespace Maxicycles.Pages.Basket
             if (userId == null)
             {
                 return Unauthorized();
+            }
+            
+            // Check if the user already has the current product in their basket.
+            var alreadyInBasket = _context.BasketItem
+                .Where(b => b.MaxicyclesUserId == userId)
+                .Any(b => b.ItemId == product.Id);
+            
+            if (alreadyInBasket)
+            {
+                ModelState.AddModelError("", "Already in basket");
             }
             
             // Add the product and the userId to the model.

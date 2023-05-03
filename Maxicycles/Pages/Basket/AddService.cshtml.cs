@@ -65,7 +65,7 @@ namespace Maxicycles.Pages.Basket
           
           // Add a quantity of 1 as a service can only have a single quantity.
           BasketService.Quantity = 1;
-          
+
           BasketService.Item = service;
           BasketService.MaxicyclesUserId = userId;
 

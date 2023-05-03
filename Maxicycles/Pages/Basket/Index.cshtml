@@ -1,4 +1,5 @@
 @page
+@using Maxicycles.Models
 @model Maxicycles.Pages.Basket.IndexModel
 
 @{
@@ -14,22 +15,40 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.BasketItem[0].Quantity)
+                @Html.DisplayNameFor(model => model.BasketItemModels[0].Quantity)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.BasketItem[0].Item)
+                @Html.DisplayNameFor(model => model.BasketItemModels[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BasketItemModels[0].ServiceDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BasketItemModels[0].ItemPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BasketItemModels[0].TotalPrice)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.BasketItem) {
+@foreach (var item in Model.BasketItemModels) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Quantity)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Item.Description)
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ServiceDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalPrice)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |
