@@ -46,5 +46,13 @@
 </div>
 <div>
     <a asp-page="./Index">Back to List</a>
-    <a asp-page="/Basket/Create" asp-route-id="@Model.Item.Id">Add to Basket</a>
+    
+    @if (Model.Item is Service)
+    {
+        <a asp-page="/Basket/AddService" asp-route-id="@Model.Item.Id">Book Now</a>
+    }
+    else
+    {
+        <a asp-page="/Basket/AddProduct" asp-route-id="@Model.Item.Id">Add to Basket</a>
+    }
 </div>
