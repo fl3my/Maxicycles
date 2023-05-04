@@ -1,0 +1,41 @@
+@page
+@model CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Delivery</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="DeliveryMethod.Title" class="control-label"></label>
+                <input asp-for="DeliveryMethod.Title" class="form-control" />
+                <span asp-validation-for="DeliveryMethod.Title" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DeliveryMethod.Price" class="control-label"></label>
+                <input asp-for="DeliveryMethod.Price" class="form-control" />
+                <span asp-validation-for="DeliveryMethod.Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DeliveryMethod.MinDaysToDeliver" class="control-label"></label>
+                <input asp-for="DeliveryMethod.MinDaysToDeliver" class="form-control" />
+                <span asp-validation-for="DeliveryMethod.MinDaysToDeliver" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
