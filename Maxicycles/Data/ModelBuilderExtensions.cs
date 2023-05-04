@@ -133,5 +133,6 @@ public static class ModelBuilderExtensions
         };
 
         modelBuilder.Entity<IdentityUserRole<string>>().HasData(userRoles);
+        
     }
 }

@@ -25,19 +25,22 @@ namespace Maxicycles.Pages.Basket
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.BasketItem == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var basketitem =  await _context.BasketItem.FirstOrDefaultAsync(m => m.Id == id);
+            
             if (basketitem == null)
             {
                 return NotFound();
             }
+            
             BasketItem = basketitem;
            ViewData["ItemId"] = new SelectList(_context.Item, "Id", "Description");
            ViewData["MaxicyclesUserId"] = new SelectList(_context.MaxicyclesUsers, "Id", "Id");
+           
             return Page();
         }
 

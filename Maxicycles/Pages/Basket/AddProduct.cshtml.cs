@@ -74,9 +74,9 @@ namespace Maxicycles.Pages.Basket
             }
             
             // Add the product and the userId to the model.
-            BasketProduct.Item =  product;
+            BasketProduct.Item = product;
             BasketProduct.MaxicyclesUserId = userId;
-
+            
             // Add a model error is the quantity in basket is more than is available in stock.
             if (BasketProduct.Quantity > product.Quantity)
             {

@@ -2,4 +2,5 @@
 
 public class Service : Item
 {
+    public int DailyMaxServices { get; set; }
 }

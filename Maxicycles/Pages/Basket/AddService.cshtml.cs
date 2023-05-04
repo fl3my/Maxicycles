@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Maxicycles.Data;
 using Maxicycles.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 namespace Maxicycles.Pages.Basket
 {
@@ -33,7 +34,6 @@ namespace Maxicycles.Pages.Basket
 
             BasketService = new BasketService()
             {
-                ItemId = service.Id,
                 Item = service
             };
             
@@ -62,7 +62,7 @@ namespace Maxicycles.Pages.Basket
           {
               return Unauthorized();
           }
-          
+
           // Add a quantity of 1 as a service can only have a single quantity.
           BasketService.Quantity = 1;
 
