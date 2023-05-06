@@ -28,5 +28,9 @@ public class MaxicyclesDbContext : IdentityDbContext
     public DbSet<Maxicycles.Models.BasketProduct> BasketProduct { get; set; } = default!;
     public DbSet<Maxicycles.Models.BasketService> BasketService { get; set; } = default!;
     public DbSet<Maxicycles.Models.DeliveryMethod> DeliveryMethods { get; set; } = default!;
-
+    public DbSet<Maxicycles.Models.Order> Orders { get; set; } = default!;
+    public DbSet<Maxicycles.Models.OrderItem> OrderItems { get; set; } = default!;
+    public DbSet<Maxicycles.Models.OrderProduct> OrderProducts { get; set; } = default!;
+    public DbSet<Maxicycles.Models.OrderService> OrderServices { get; set; } = default!;
+    public DbSet<Maxicycles.Models.Card> Cards { get; set; } = default!;
 }
