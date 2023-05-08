@@ -9,5 +9,5 @@ public class OrderItem
 
     // Many OrderItem to one Order.
     public int OrderId { get; set; }
-    public Order Order { get; set; } = null!;
+    public Order? Order { get; set; }
 }

@@ -33,4 +33,5 @@ public class MaxicyclesDbContext : IdentityDbContext
     public DbSet<Maxicycles.Models.OrderProduct> OrderProducts { get; set; } = default!;
     public DbSet<Maxicycles.Models.OrderService> OrderServices { get; set; } = default!;
     public DbSet<Maxicycles.Models.Card> Cards { get; set; } = default!;
+    public DbSet<Maxicycles.Models.Payment> Payment { get; set; } = default!;
 }

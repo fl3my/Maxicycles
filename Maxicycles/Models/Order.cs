@@ -11,7 +11,7 @@ public class Order
     public OrderStatus OrderStatus { get; set; } = OrderStatus.AwaitingPayment;
     
     // Many Order to one Maxicycles User.
-    public ICollection<OrderItem> OrderItems = new List<OrderItem>();
+    public ICollection<OrderItem> OrderItems { get; set; }= new List<OrderItem>();
     
     // One Order to one payment.
     public Payment? Payment { get; set; }

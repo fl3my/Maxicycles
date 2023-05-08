@@ -1,0 +1,80 @@
+@page
+@model Maxicycles.Pages.Checkout.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<h4>Order</h4>
+<hr />
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.BasketModel.BasketItemModels[0].Quantity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BasketModel.BasketItemModels[0].Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BasketModel.BasketItemModels[0].ServiceDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BasketModel.BasketItemModels[0].ItemPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.BasketModel.BasketItemModels[0].TotalPrice)
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.BasketModel.BasketItemModels) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ServiceDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalPrice)
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+<p>@Model.BasketModel.TotalPrice</p>
+
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="OrderInput.RequiredDate" class="control-label"></label>
+                <input asp-for="OrderInput.RequiredDate" class="form-control" />
+                <span asp-validation-for="OrderInput.RequiredDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrderInput.DeliveryMethodId" class="control-label"></label>
+                <select asp-for="OrderInput.DeliveryMethodId" class ="form-control" asp-items="ViewBag.DeliveryMethodId"></select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+

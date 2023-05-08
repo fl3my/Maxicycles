@@ -77,7 +77,7 @@ namespace Maxicycles.Pages.Basket
           }
 
           // Convert the local datetime to UTC for postgres database.
-          BasketService.ServiceDate = BasketService.ServiceDate?.ToUniversalTime();
+          BasketService.ServiceDate = BasketService.ServiceDate.ToUniversalTime();
 
           // Add the basketService to the basketItem table.
           _context.BasketService.Add(BasketService);
