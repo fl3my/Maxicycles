@@ -182,6 +182,16 @@ namespace Maxicycles.Pages.Checkout
                 }
             }
             
+            // Prevent orders being made when the store is closed.
+            foreach (var holiday in _context.Holiday)
+            {
+                // Check if date is in the holiday window.
+                if (DateTime.Now >= holiday.Start && DateTime.Now <= holiday.End)
+                {
+                    ModelState.AddModelError("", "Sorry, We are currently closed for " + holiday.Title + ". We reopen for online orders on " + holiday.End.ToShortDateString());
+                }
+            }
+            
             if (!ModelState.IsValid)
             {
                 // Combine Price and Title to select list.
