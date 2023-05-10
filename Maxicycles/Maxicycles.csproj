@@ -35,6 +35,7 @@
     <ItemGroup>
       <Folder Include="Pages\Admin\Holidays\" />
       <Folder Include="Pages\Admin\Store\DeliveryMethods" />
+      <Folder Include="Pages\Admin\Store\Orders\" />
       <Folder Include="Pages\Admin\Store\Products" />
       <Folder Include="Pages\Admin\Store\SubCategories" />
       <Folder Include="Pages\Basket" />

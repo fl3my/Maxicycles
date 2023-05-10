@@ -1,4 +1,5 @@
-﻿using Maxicycles.Enums;
+﻿using System.ComponentModel.DataAnnotations;
+using Maxicycles.Enums;
 
 namespace Maxicycles.Models;
 
@@ -6,6 +7,7 @@ public class Order
 {
     public int Id { get; set; }
     public DateTime OrderDate { get; set; }
+    [DataType(DataType.Date)]
     public DateTime RequiredDate { get; set; }
     public DateTime? ShippedDate { get; set; }
     public OrderStatus OrderStatus { get; set; } = OrderStatus.AwaitingPayment;
