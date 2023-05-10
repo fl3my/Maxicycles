@@ -25,7 +25,9 @@ namespace Maxicycles.Pages.Admin.Store.Orders
         {
             Order = await _context.Orders
                 .Include(o => o.DeliveryMethod)
-                .Include(o => o.MaxicyclesUser).ToListAsync();
+                .Include(o => o.MaxicyclesUser)
+                .OrderBy(o => o.OrderDate)
+                .ToListAsync();
         }
     }
 }

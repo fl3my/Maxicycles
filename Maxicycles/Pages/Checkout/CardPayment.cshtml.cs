@@ -49,7 +49,7 @@ namespace Maxicycles.Pages.Checkout
 
         [BindProperty]
         public decimal TotalPrice { get; set; }
-
+        
         [BindProperty]
         public CardInputModel CardInput { get; set; } = default!;
 

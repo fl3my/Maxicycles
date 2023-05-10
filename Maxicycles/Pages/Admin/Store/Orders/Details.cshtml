@@ -5,88 +5,159 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>Order</h1>
+<hr />
 
-<div>
-    <h4>Order</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Order.OrderDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Order.OrderDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Order.RequiredDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Order.RequiredDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Order.ShippedDate)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Order.ShippedDate)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Order.OrderStatus)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Order.OrderStatus)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Order.TotalPrice)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Order.TotalPrice)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Order.DeliveryMethod)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Order.DeliveryMethod.Id)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Order.MaxicyclesUser)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Order.MaxicyclesUser.Id)
-        </dd>
-        <dt class="col-sm-2">
-                    @Html.DisplayNameFor(model => model.Order.MaxicyclesUser)
-                </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Order.MaxicyclesUser.Id)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Order.AddressLine1)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Order.AddressLine1)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Order.AddressLine2)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Order.AddressLine2)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Order.City)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Order.City)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Order.Postcode)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Order.Postcode)
-        </dd>
-    </dl>
-</div>
+<dl class="row">
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Order.Id)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Order.Id)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Order.OrderDate)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Order.OrderDate)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Order.RequiredDate)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Order.RequiredDate)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Order.ShippedDate)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Order.ShippedDate)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Order.OrderStatus)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Order.OrderStatus)
+    </dd>
+</dl>
+
+<h4>Buyer Details</h4>
+<hr />
+<dl class="row">
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.MaxicyclesUser.Email)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.MaxicyclesUser.Email)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.MaxicyclesUser.FirstName)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.MaxicyclesUser.FirstName)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.MaxicyclesUser.LastName)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.MaxicyclesUser.LastName)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.MaxicyclesUser.PhoneNumber)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.MaxicyclesUser.PhoneNumber)
+    </dd>
+</dl>
+
+<h4>Shipping Address</h4>
+<hr />
+<dl class="row">
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Order.AddressLine1)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Order.AddressLine1)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Order.AddressLine2)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Order.AddressLine2)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Order.City)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Order.City)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Order.Postcode)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Order.Postcode)
+    </dd>
+</dl>
+
+<h4>Payment Details</h4>
+<hr />
+<dl class="row">
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Card.IsPaid)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Card.IsPaid)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Card.LongNumber)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Card.LongNumber)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Card.ExpiryDate)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Card.ExpiryDate)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Card.Name)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Card.Name)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Card.AddressLine1)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Card.AddressLine1)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Card.AddressLine2)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Card.AddressLine2)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Card.City)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Card.City)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Card.Postcode)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Card.Postcode)
+    </dd>
+</dl>
+
+
+<h4>Order Items</h4>
+<hr/>
 
 <table class="table">
+    <caption>List of items in the order</caption>
     <thead>
     <tr>
         <th>
@@ -98,21 +169,40 @@
         <th>
             @Html.DisplayNameFor(model => model.OrderItem[0].ItemPrice)
         </th>
+        <th>Line Price</th>
     </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.OrderItem) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Quantity)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ItemPrice)
-        </td>
-    </tr>
-}
+    @foreach (var item in Model.OrderItem)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LinePrice)
+            </td>
+        </tr>
+    }
     </tbody>
+    <tfoot>
+    <tr>
+        <td>@Html.DisplayFor(model => model.Order.DeliveryMethod.Title)</td>
+        <td></td>
+        <td></td>
+        <td>@Html.DisplayFor(model => model.Order.DeliveryMethod.Price)</td>
+    </tr>
+    <tr>
+        <td></td>
+        <td></td>
+        <td>Overall total</td>
+        <td>@Html.DisplayFor(model => model.Order.TotalPrice)</td>
+    </tr>
+    </tfoot>
 </table>

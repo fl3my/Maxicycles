@@ -156,7 +156,7 @@ namespace Maxicycles.Pages.Checkout
                         if (basketProduct.Item is Product product)
                         {
                             // Check if there is enough quantity in stock
-                            if (product.Quantity > basketProduct.Quantity)
+                            if (product.Quantity >= basketProduct.Quantity)
                             {
                                 product.Quantity -= basketProduct.Quantity;
                             }
