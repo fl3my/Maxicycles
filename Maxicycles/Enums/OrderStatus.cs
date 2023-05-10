@@ -6,5 +6,6 @@ public enum OrderStatus
     AwaitingShipment,
     Completed,
     Shipped,
+    CancellationRequested,
     Cancelled,
 }
