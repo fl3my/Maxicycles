@@ -52,8 +52,16 @@ namespace Maxicycles.Pages.Checkout
             // Populate The Model.
             BasketModel = await PopulateBasketModel(userId);
             
+            // Combine Price and Title to select list.
+            var deliveryMethods = _context.DeliveryMethods.Select(x => new
+            {
+                id = x.Id,
+                name = x.Title + " - " + x.Price.ToString("£0.00")
+            });
+            
             // Add delivery methods to the form.
-            ViewData["DeliveryMethodId"] = new SelectList(_context.DeliveryMethods, "Id", "Id");
+            ViewData["DeliveryMethodId"] = new SelectList(deliveryMethods, "id", "name");
+            
             return Page();
         }
 
@@ -63,11 +71,14 @@ namespace Maxicycles.Pages.Checkout
         public class OrderInputModel
         {
             [Required]
+            [Display(Name="Required Date")]
             [DataType(DataType.Date)]
             public DateTime RequiredDate { get; set; }
             [Required]
+            [Display(Name="Delivery Method")]
             public int DeliveryMethodId { get; set; }
             [Required]
+            [Display(Name="Payment Method")]
             public PaymentMethod PaymentMethod { get; set; }
         }
 
@@ -82,13 +93,33 @@ namespace Maxicycles.Pages.Checkout
                 return Unauthorized();
             }
             
-            // Add delivery methods to the form.
-            ViewData["DeliveryMethodId"] = new SelectList(_context.DeliveryMethods, "Id", "Title");
+            // Check if date is a valid time in the future.
+            var minDaysToDeliver = ((await _context.DeliveryMethods.FindAsync(OrderInput.DeliveryMethodId))!).MinDaysToDeliver;
+
+            // Validate date is in the future and no further away that 30 days.
+            if (DateTime.Today > OrderInput.RequiredDate && DateTime.Today.AddDays(30) < OrderInput.RequiredDate)
+            {
+                ModelState.AddModelError("OrderInput.RequiredDate", "Delivery ate must be in the next 30 days");
+            }
             
-            // TODO - Add Validation
+            // Validate minimum days after delivery.
+            if (DateTime.Today.AddDays(minDaysToDeliver) > OrderInput.RequiredDate)
+            {
+                ModelState.AddModelError("OrderInput.RequiredDate", "The selected delivery method requires minimum " + minDaysToDeliver + " days to deliver");
+            }
             
             if (!ModelState.IsValid)
             {
+                // Combine Price and Title to select list.
+                var deliveryMethods = _context.DeliveryMethods.Select(x => new
+                {
+                    id = x.Id,
+                    name = x.Title + " - " + x.Price.ToString("£0.00")
+                });
+            
+                // Add delivery methods to the form.
+                ViewData["DeliveryMethodId"] = new SelectList(deliveryMethods, "id", "name");
+                
                 // Populate the basketModel.
                 BasketModel = await PopulateBasketModel(userId);
                 
@@ -102,8 +133,11 @@ namespace Maxicycles.Pages.Checkout
                 .Include(b => b.MaxicyclesUser)
                 .ToListAsync();
 
-            var totalPrice = basketItems.Sum(b => b.Quantity * b.Item.Price);
-            
+            // Calculate the total value of the order including deliveryCost.
+            var basketPrice = basketItems.Sum(b => b.Quantity * b.Item.Price);
+            var deliveryCost = (await _context.DeliveryMethods.FindAsync(OrderInput.DeliveryMethodId))!.Price;
+            var totalPrice = basketPrice + deliveryCost;
+
             OrderInput.RequiredDate = OrderInput.RequiredDate.ToUniversalTime();
             
             // Create a new order object.
