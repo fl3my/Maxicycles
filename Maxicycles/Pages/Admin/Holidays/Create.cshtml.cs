@@ -31,18 +31,24 @@ namespace Maxicycles.Pages.Admin.Holidays
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-          if (!ModelState.IsValid)
-          {
-              return Page();
-          }
+            // Check if the holiday start date is before the holiday end date.
+            if (Holiday.Start > Holiday.End)
+            {
+                ModelState.AddModelError("Holiday.Start", "Start cannot be greater than end date");
+            }
 
-          Holiday.Start = Holiday.Start.ToUniversalTime();
-          Holiday.End = Holiday.End.ToUniversalTime();
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
           
-          _context.Holiday.Add(Holiday);
-          await _context.SaveChangesAsync();
+            Holiday.Start = Holiday.Start.ToUniversalTime();
+            Holiday.End = Holiday.End.ToUniversalTime();
+          
+            _context.Holiday.Add(Holiday);
+            await _context.SaveChangesAsync();
 
-          return RedirectToPage("./Index");
+            return RedirectToPage("./Index");
         }
     }
 }

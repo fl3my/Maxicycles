@@ -35,7 +35,8 @@ namespace Maxicycles.Pages.Basket
 
             BasketProduct = new BasketProduct()
             {
-                Item = product
+                Item = product,
+                Quantity = 1
             };
 
             return Page();
