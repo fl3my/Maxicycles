@@ -89,9 +89,9 @@ namespace Maxicycles.Pages.Checkout
         public async Task<IActionResult> OnPostAsync()
         {
             // Get the current userId.
-            var userId = _userManager.GetUserId(User);
+            var user = await _userManager.GetUserAsync(User);
 
-            if (userId == null)
+            if (user == null)
             {
                 return Unauthorized();
             }
@@ -107,7 +107,7 @@ namespace Maxicycles.Pages.Checkout
 
             // Get the basket items for the current user.
             var basketItems = await _context.BasketItem
-                .Where(b => b.MaxicyclesUserId == userId)
+                .Where(b => b.MaxicyclesUserId == user.Id)
                 .Include(b => b.Item)
                 .Include(b => b.MaxicyclesUser)
                 .ToListAsync();
@@ -118,16 +118,20 @@ namespace Maxicycles.Pages.Checkout
             var totalPrice = basketPrice + deliveryCost;
 
             OrderInput.RequiredDate = OrderInput.RequiredDate.ToUniversalTime();
-            
+
             // Create a new order object.
             var order = new Order
             {
                 DeliveryMethodId = OrderInput.DeliveryMethodId,
                 RequiredDate = OrderInput.RequiredDate,
                 OrderDate = DateTime.Now.ToUniversalTime(),
-                MaxicyclesUserId = userId,
+                MaxicyclesUserId = user.Id,
                 OrderStatus = OrderStatus.AwaitingPayment,
-                TotalPrice = totalPrice
+                TotalPrice = totalPrice,
+                AddressLine1 = user.AddressLine1,
+                AddressLine2 = user.AddressLine2,
+                City = user.City,
+                Postcode = user.Postcode
             };
             
             var orderItems = new List<OrderItem>();
@@ -191,7 +195,7 @@ namespace Maxicycles.Pages.Checkout
                 ViewData["DeliveryMethodId"] = new SelectList(deliveryMethods, "id", "name");
                 
                 // Populate the basketModel.
-                BasketModel = await PopulateBasketModel(userId);
+                BasketModel = await PopulateBasketModel(user.Id);
                 
                 return Page();
             } 

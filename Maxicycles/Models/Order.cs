@@ -13,6 +13,11 @@ public class Order
     public OrderStatus OrderStatus { get; set; } = OrderStatus.AwaitingPayment;
     public decimal TotalPrice { get; set; }
     
+    public string? AddressLine1 { get; set; }
+    public string? AddressLine2 { get; set; } 
+    public string? City { get; set; }
+    public string? Postcode { get; set; }
+    
     // Many Order to one Maxicycles User.
     public ICollection<OrderItem> OrderItems { get; set; }= new List<OrderItem>();
     

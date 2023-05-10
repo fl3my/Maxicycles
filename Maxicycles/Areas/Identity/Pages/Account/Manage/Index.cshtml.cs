@@ -142,31 +142,37 @@ namespace Maxicycles.Areas.Identity.Pages.Account.Manage
             if (Input.FirstName != user.FirstName)
             {
                 user.FirstName = Input.FirstName;
+                await _userManager.UpdateAsync(user);
             }
             
             if (Input.LastName != user.LastName)
             {
                 user.LastName = Input.LastName;
+                await _userManager.UpdateAsync(user);
             }
             
             if (Input.AddressLine1 != user.AddressLine1)
             {
                 user.AddressLine1 = Input.AddressLine1;
+                await _userManager.UpdateAsync(user);
             }
             
             if (Input.AddressLine2 != user.AddressLine2)
             {
                 user.AddressLine2 = Input.AddressLine2;
+                await _userManager.UpdateAsync(user);
             }
             
             if (Input.City != user.City)
             {
                 user.City = Input.City;
+                await _userManager.UpdateAsync(user);
             }
             
             if (Input.Postcode != user.Postcode)
             {
                 user.Postcode = Input.Postcode;
+                await _userManager.UpdateAsync(user);
             }
             
             await _signInManager.RefreshSignInAsync(user);

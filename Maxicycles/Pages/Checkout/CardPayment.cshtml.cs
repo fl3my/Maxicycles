@@ -60,7 +60,6 @@ namespace Maxicycles.Pages.Checkout
             public DateTime ExpiryDate { get; set; }
             public string? AddressLine1 { get; set; }
             public string? AddressLine2 { get; set; }
-            public string? AddressLine3 { get; set; }
             public string? City { get; set; }
             public string? Postcode { get; set; }
         }
@@ -97,7 +96,6 @@ namespace Maxicycles.Pages.Checkout
                 ExpiryDate = CardInput.ExpiryDate,
                 AddressLine1 = CardInput.AddressLine1,
                 AddressLine2 = CardInput.AddressLine2,
-                AddressLine3 = CardInput.AddressLine3,
                 City = CardInput.City,
                 Postcode = CardInput.Postcode,
                 Order = order,
