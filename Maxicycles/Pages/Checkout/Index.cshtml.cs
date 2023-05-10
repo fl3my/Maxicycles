@@ -54,7 +54,6 @@ namespace Maxicycles.Pages.Checkout
             
             // Add delivery methods to the form.
             ViewData["DeliveryMethodId"] = new SelectList(_context.DeliveryMethods, "Id", "Id");
-            
             return Page();
         }
 
@@ -64,9 +63,12 @@ namespace Maxicycles.Pages.Checkout
         public class OrderInputModel
         {
             [Required]
+            [DataType(DataType.Date)]
             public DateTime RequiredDate { get; set; }
             [Required]
             public int DeliveryMethodId { get; set; }
+            [Required]
+            public PaymentMethod PaymentMethod { get; set; }
         }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
@@ -75,8 +77,13 @@ namespace Maxicycles.Pages.Checkout
             // Get the current userId.
             var userId = _userManager.GetUserId(User);
 
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+            
             // Add delivery methods to the form.
-            ViewData["DeliveryMethodId"] = new SelectList(_context.DeliveryMethods, "Id", "Id");
+            ViewData["DeliveryMethodId"] = new SelectList(_context.DeliveryMethods, "Id", "Title");
             
             // TODO - Add Validation
             
@@ -94,6 +101,8 @@ namespace Maxicycles.Pages.Checkout
                 .Include(b => b.Item)
                 .Include(b => b.MaxicyclesUser)
                 .ToListAsync();
+
+            var totalPrice = basketItems.Sum(b => b.Quantity * b.Item.Price);
             
             OrderInput.RequiredDate = OrderInput.RequiredDate.ToUniversalTime();
             
@@ -105,6 +114,7 @@ namespace Maxicycles.Pages.Checkout
                 OrderDate = DateTime.Now.ToUniversalTime(),
                 MaxicyclesUserId = userId,
                 OrderStatus = OrderStatus.AwaitingPayment,
+                TotalPrice = totalPrice
             };
             
             var orderItems = new List<OrderItem>();
@@ -152,7 +162,13 @@ namespace Maxicycles.Pages.Checkout
             
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Index");
+            // Redirect the user to the required payment page.
+            return OrderInput.PaymentMethod switch
+            {
+                PaymentMethod.Card => RedirectToPage("./CardPayment", new {orderId = order.Id}),
+                PaymentMethod.External => RedirectToPage("./External", new {orderId = order.Id}),
+                _ => NotFound()
+            };
         }
 
         public async Task<BasketIndexModel> PopulateBasketModel(string? userId)

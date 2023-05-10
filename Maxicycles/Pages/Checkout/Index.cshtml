@@ -1,4 +1,5 @@
 @page
+@using Maxicycles.Enums
 @model Maxicycles.Pages.Checkout.IndexModel
 
 @{
@@ -66,6 +67,10 @@
             <div class="form-group">
                 <label asp-for="OrderInput.DeliveryMethodId" class="control-label"></label>
                 <select asp-for="OrderInput.DeliveryMethodId" class ="form-control" asp-items="ViewBag.DeliveryMethodId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="OrderInput.PaymentMethod" class="control-label"></label>
+                <select asp-for="OrderInput.PaymentMethod" class ="form-control" asp-items="Html.GetEnumSelectList<PaymentMethod>()"></select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

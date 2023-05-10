@@ -9,6 +9,7 @@ public class Order
     public DateTime RequiredDate { get; set; }
     public DateTime? ShippedDate { get; set; }
     public OrderStatus OrderStatus { get; set; } = OrderStatus.AwaitingPayment;
+    public decimal TotalPrice { get; set; }
     
     // Many Order to one Maxicycles User.
     public ICollection<OrderItem> OrderItems { get; set; }= new List<OrderItem>();
