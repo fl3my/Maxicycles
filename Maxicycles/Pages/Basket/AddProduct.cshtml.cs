@@ -86,6 +86,7 @@ namespace Maxicycles.Pages.Basket
             // If validation is not successful.
             if (!ModelState.IsValid)
             {
+                BasketProduct.MaxicyclesUserId = userId;
                 BasketProduct.Item = product;
                 return Page();
             }

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Maxicycles.Data;
 using Maxicycles.Enums;
 using Maxicycles.Models;
+using Maxicycles.Validators;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -56,7 +57,7 @@ namespace Maxicycles.Pages.Checkout
             var deliveryMethods = _context.DeliveryMethods.Select(x => new
             {
                 id = x.Id,
-                name = x.Title + " - " + x.Price.ToString("£0.00")
+                name = x.Title + " " + x.Price.ToString("(+£0.00)")
             });
             
             // Add delivery methods to the form.
@@ -71,6 +72,8 @@ namespace Maxicycles.Pages.Checkout
         public class OrderInputModel
         {
             [Required]
+            [NotOnHoliday]
+            [WithinFourteenDays]
             [Display(Name="Required Date")]
             [DataType(DataType.Date)]
             public DateTime RequiredDate { get; set; }
@@ -96,34 +99,10 @@ namespace Maxicycles.Pages.Checkout
             // Check if date is a valid time in the future.
             var minDaysToDeliver = ((await _context.DeliveryMethods.FindAsync(OrderInput.DeliveryMethodId))!).MinDaysToDeliver;
 
-            // Validate date is in the future and no further away that 30 days.
-            if (DateTime.Today > OrderInput.RequiredDate && DateTime.Today.AddDays(30) < OrderInput.RequiredDate)
-            {
-                ModelState.AddModelError("OrderInput.RequiredDate", "Delivery ate must be in the next 30 days");
-            }
-            
             // Validate minimum days after delivery.
             if (DateTime.Today.AddDays(minDaysToDeliver) > OrderInput.RequiredDate)
             {
                 ModelState.AddModelError("OrderInput.RequiredDate", "The selected delivery method requires minimum " + minDaysToDeliver + " days to deliver");
-            }
-            
-            if (!ModelState.IsValid)
-            {
-                // Combine Price and Title to select list.
-                var deliveryMethods = _context.DeliveryMethods.Select(x => new
-                {
-                    id = x.Id,
-                    name = x.Title + " - " + x.Price.ToString("£0.00")
-                });
-            
-                // Add delivery methods to the form.
-                ViewData["DeliveryMethodId"] = new SelectList(deliveryMethods, "id", "name");
-                
-                // Populate the basketModel.
-                BasketModel = await PopulateBasketModel(userId);
-                
-                return Page();
             }
 
             // Get the basket items for the current user.
@@ -160,31 +139,63 @@ namespace Maxicycles.Pages.Checkout
                 if (item is BasketProduct basketProduct)
                 {
                     // Copy the contents of the  basket iten into a new order item.
-                    orderItems.Add(new OrderProduct
+                    if (basketProduct.Item != null)
                     {
-                        Quantity = basketProduct.Quantity,
-                        ItemPrice = basketProduct.Item.Price,
-                        Title = basketProduct.Item.Title,
-                    });
+                        orderItems.Add(new OrderProduct
+                        {
+                            Quantity = basketProduct.Quantity,
+                            ItemPrice = basketProduct.Item.Price,
+                            Title = basketProduct.Item.Title,
+                        });
 
-                    // Remove the basket quantity from the overall stock quantity.
-                    if (basketProduct.Item is Product product)
-                    {
-                        product.Quantity -= basketProduct.Quantity;
+                        // Remove the basket quantity from the overall stock quantity.
+                        if (basketProduct.Item is Product product)
+                        {
+                            // Check if there is enough quantity in stock
+                            if (product.Quantity > basketProduct.Quantity)
+                            {
+                                product.Quantity -= basketProduct.Quantity;
+                            }
+                            else
+                            {
+                                ModelState.AddModelError("",
+                                    "Sorry, only " + product.Quantity + " " + product.Title + " in stock");
+                            }
+                        }
                     }
-                    
                 } else if (item is BasketService basketService)
                 {
-                    orderItems.Add(new OrderService
+                    if (basketService.Item != null)
                     {
-                        Quantity = basketService.Quantity,
-                        ItemPrice = basketService.Item.Price,
-                        Title = basketService.Item.Title,
-                        ServiceDate = basketService.ServiceDate,
-                    });
+                        orderItems.Add(new OrderService
+                        {
+                            Quantity = basketService.Quantity,
+                            ItemPrice = basketService.Item.Price,
+                            Title = basketService.Item.Title,
+                            ServiceDate = basketService.ServiceDate,
+                        });
+                    }
                 }
             }
-
+            
+            if (!ModelState.IsValid)
+            {
+                // Combine Price and Title to select list.
+                var deliveryMethods = _context.DeliveryMethods.Select(x => new
+                {
+                    id = x.Id,
+                    name = x.Title + " " + x.Price.ToString("(+£0.00)")
+                });
+            
+                // Add delivery methods to the form.
+                ViewData["DeliveryMethodId"] = new SelectList(deliveryMethods, "id", "name");
+                
+                // Populate the basketModel.
+                BasketModel = await PopulateBasketModel(userId);
+                
+                return Page();
+            } 
+            
             // Add the orderItems to the order object.
             order.OrderItems = orderItems;
             
@@ -235,7 +246,7 @@ namespace Maxicycles.Pages.Checkout
                 // If the model is a service add the serviceDate.
                 if (item is BasketService service)
                 {
-                    basketItemModel.ServiceDate = service.ServiceDate;
+                    basketItemModel.ServiceDate = service.ServiceDate.ToLocalTime();
                 }
                 
                 // Add the BasketItem Total to the overall total price.

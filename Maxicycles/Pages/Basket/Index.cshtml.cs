@@ -34,6 +34,7 @@ namespace Maxicycles.Pages.Basket
             public DateTime? ServiceDate { get; set; }
             public decimal ItemPrice { get; set; }
             public decimal TotalPrice { get; set; }
+            public BasketItem Item { get; set; }
         }
         
         public async Task OnGetAsync()
@@ -60,13 +61,14 @@ namespace Maxicycles.Pages.Basket
                     Title = item.Item?.Title,
                     Quantity = item.Quantity,
                     ItemPrice = item.Item.Price,
+                    Item = item,
                     TotalPrice = item.Quantity * item.Item.Price,
                 };
                 
                 // If the model is a service add the serviceDate.
                 if (item is BasketService service)
                 {
-                    basketItemModel.ServiceDate = service.ServiceDate;
+                    basketItemModel.ServiceDate = service.ServiceDate.ToLocalTime();
                 }
                 
                 BasketItemModels.Add(basketItemModel);

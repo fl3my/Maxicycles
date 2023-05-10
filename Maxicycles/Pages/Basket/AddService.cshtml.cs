@@ -34,7 +34,8 @@ namespace Maxicycles.Pages.Basket
 
             BasketService = new BasketService()
             {
-                Item = service
+                Item = service,
+                ServiceDate = DateTime.Today
             };
             
             return Page();
@@ -62,17 +63,39 @@ namespace Maxicycles.Pages.Basket
           {
               return Unauthorized();
           }
-
+          
+          // Check if the user already has the current product in their basket.
+          var alreadyInBasket = _context.BasketItem
+              .Where(b => b.MaxicyclesUserId == userId)
+              .Any(b => b.ItemId == service.Id);
+            
+          if (alreadyInBasket)
+          {
+              ModelState.AddModelError("", "Already in basket");
+          }
+          
           // Add a quantity of 1 as a service can only have a single quantity.
           BasketService.Quantity = 1;
 
           BasketService.Item = service;
           BasketService.MaxicyclesUserId = userId;
-
+          
+          // Count the amount of services booked on the selected day.
+          var totalBooked = _context.OrderServices.Count(o => o.ServiceDate.Date == BasketService.ServiceDate.ToUniversalTime().Date);
+          
+          // Check if total booked is over the daily limit.
+          if (totalBooked >= service.DailyMaxServices)
+          {
+              ModelState.AddModelError("BasketService.ServiceDate", "Sorry, We are fully booked on this date");
+          }
+          
           // If validation fails.
           if (!ModelState.IsValid)
           {
               BasketService.Item = service;
+              BasketService.MaxicyclesUserId = userId;
+              BasketService.Item = service;
+              
               return Page();
           }
 

@@ -13,6 +13,7 @@
     <div class="col-md-4">
         <form method="post">
             <input type="hidden" asp-for="BasketService.Quantity" value="1" />
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="BasketService.ServiceDate" class="control-label"></label>
                 <input asp-for="BasketService.ServiceDate" class="form-control"/>

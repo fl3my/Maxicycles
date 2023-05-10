@@ -7,9 +7,10 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Maxicycles.Data;
+using Maxicycles.Data.Migrations;
 using Maxicycles.Models;
 
-namespace Maxicycles.Pages.Basket
+namespace Maxicycles.Pages.Admin.Holidays
 {
     public class EditModel : PageModel
     {
@@ -21,7 +22,7 @@ namespace Maxicycles.Pages.Basket
         }
 
         [BindProperty]
-        public BasketItem BasketItem { get; set; } = default!;
+        public Holiday Holiday { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,17 +31,17 @@ namespace Maxicycles.Pages.Basket
                 return NotFound();
             }
 
-            var basketitem =  await _context.BasketItem.FirstOrDefaultAsync(m => m.Id == id);
+            var holiday =  await _context.Holiday.FirstOrDefaultAsync(m => m.Id == id);
             
-            if (basketitem == null)
+            if (holiday == null)
             {
                 return NotFound();
             }
+            Holiday = holiday;
             
-            BasketItem = basketitem;
-           ViewData["ItemId"] = new SelectList(_context.Item, "Id", "Description");
-           ViewData["MaxicyclesUserId"] = new SelectList(_context.MaxicyclesUsers, "Id", "Id");
-           
+            Holiday.Start = Holiday.Start.ToLocalTime();
+            Holiday.End = Holiday.End.ToLocalTime();
+            
             return Page();
         }
 
@@ -52,8 +53,11 @@ namespace Maxicycles.Pages.Basket
             {
                 return Page();
             }
-
-            _context.Attach(BasketItem).State = EntityState.Modified;
+            
+            Holiday.Start = Holiday.Start.ToUniversalTime();
+            Holiday.End = Holiday.End.ToUniversalTime();
+            
+            _context.Attach(Holiday).State = EntityState.Modified;
 
             try
             {
@@ -61,7 +65,7 @@ namespace Maxicycles.Pages.Basket
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!BasketItemExists(BasketItem.Id))
+                if (!HolidayExists(Holiday.Id))
                 {
                     return NotFound();
                 }
@@ -74,9 +78,9 @@ namespace Maxicycles.Pages.Basket
             return RedirectToPage("./Index");
         }
 
-        private bool BasketItemExists(int id)
+        private bool HolidayExists(int id)
         {
-          return (_context.BasketItem?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Holiday?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

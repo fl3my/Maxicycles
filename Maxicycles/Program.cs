@@ -29,6 +29,7 @@ builder.Services.AddRazorPages(options =>
     // Require role on pages.
     options.Conventions.AuthorizeFolder("/Admin/Users/Customers", "RequireAccountsClerk");
     options.Conventions.AuthorizeFolder("/Admin/Users/Staff", "RequireManager");
+    options.Conventions.AuthorizeFolder("/Admin/Holidays", "RequireManager");
     options.Conventions.AuthorizeFolder("/Admin/Store", "RequireStockControl");
 });
 

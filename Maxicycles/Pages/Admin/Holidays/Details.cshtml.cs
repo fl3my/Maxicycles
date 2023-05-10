@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Maxicycles.Data;
 using Maxicycles.Models;
 
-namespace Maxicycles.Pages.Basket
+namespace Maxicycles.Pages.Admin.Holidays
 {
     public class DetailsModel : PageModel
     {
@@ -19,23 +19,27 @@ namespace Maxicycles.Pages.Basket
             _context = context;
         }
 
-      public BasketItem BasketItem { get; set; } = default!; 
+      public Holiday Holiday { get; set; } = default!; 
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.BasketItem == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var basketitem = await _context.BasketItem.FirstOrDefaultAsync(m => m.Id == id);
-            if (basketitem == null)
+            var holiday = await _context.Holiday.FirstOrDefaultAsync(m => m.Id == id);
+            
+            if (holiday == null)
             {
                 return NotFound();
             }
             else 
             {
-                BasketItem = basketitem;
+                Holiday = holiday;
+                
+                Holiday.Start = Holiday.Start.ToLocalTime();
+                Holiday.End = Holiday.Start.ToLocalTime();
             }
             return Page();
         }
