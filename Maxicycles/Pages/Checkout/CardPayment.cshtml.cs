@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -55,12 +56,19 @@ namespace Maxicycles.Pages.Checkout
 
         public class CardInputModel
         {
+            [Required]
             public string? Name { get; set; }
+            [DataType(DataType.CreditCard)]
             public string? LongNumber { get; set; }
+            [Required]
+            [DataType(DataType.Date)]
             public DateTime ExpiryDate { get; set; }
+            [Required]
             public string? AddressLine1 { get; set; }
             public string? AddressLine2 { get; set; }
+            [Required]
             public string? City { get; set; }
+            [Required]
             public string? Postcode { get; set; }
         }
 

@@ -28,6 +28,14 @@ namespace Maxicycles.Pages.Admin.Store.Orders
                 .Include(o => o.MaxicyclesUser)
                 .OrderBy(o => o.OrderDate)
                 .ToListAsync();
+            
+            // Convert all UTC time zone to system local time zone.
+            foreach (var order in Order)
+            {
+                order.OrderDate = order.OrderDate.ToLocalTime();
+                order.ShippedDate = order.ShippedDate?.ToLocalTime();
+                order.RequiredDate = order.RequiredDate.ToLocalTime();
+            }
         }
     }
 }

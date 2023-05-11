@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
@@ -7,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Maxicycles.Data;
+using Maxicycles.Enums;
 using Maxicycles.Models;
 
 namespace Maxicycles.Pages.Admin.Store.Orders
@@ -21,23 +23,41 @@ namespace Maxicycles.Pages.Admin.Store.Orders
         }
 
         [BindProperty]
-        public Order Order { get; set; } = default!;
+        public OrderEditModel OrderEdit { get; set; } = default!;
 
+        public class OrderEditModel
+        {
+            [Required]
+            public int Id { get; set; }
+            [Required]
+            [DataType(DataType.Date)]
+            public DateTime RequiredDate { get; set; }
+            public DateTime? ShippedDate { get; set; }
+            [Required]
+            public OrderStatus OrderStatus { get; set; }
+        }
+        
         public async Task<IActionResult> OnGetAsync(int? id)
         {
-            if (id == null || _context.Orders == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var order =  await _context.Orders.FirstOrDefaultAsync(m => m.Id == id);
+            
             if (order == null)
             {
                 return NotFound();
             }
-            Order = order;
-           ViewData["DeliveryMethodId"] = new SelectList(_context.DeliveryMethods, "Id", "Id");
-           ViewData["MaxicyclesUserId"] = new SelectList(_context.MaxicyclesUsers, "Id", "Id");
+            OrderEdit = new OrderEditModel()
+            {
+                Id = order.Id,
+                RequiredDate = order.RequiredDate.ToLocalTime(),
+                ShippedDate = order.ShippedDate?.ToLocalTime(),
+                OrderStatus = order.OrderStatus,
+            };
+       
             return Page();
         }
 
@@ -45,12 +65,23 @@ namespace Maxicycles.Pages.Admin.Store.Orders
         // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
+            var order = await _context.Orders.FindAsync(OrderEdit.Id);
+
+            if (order == null)
+            {
+                return NotFound();
+            }
+            
             if (!ModelState.IsValid)
             {
                 return Page();
             }
 
-            _context.Attach(Order).State = EntityState.Modified;
+            order.OrderStatus = OrderEdit.OrderStatus;
+            order.RequiredDate = OrderEdit.RequiredDate.ToUniversalTime();
+            order.ShippedDate = OrderEdit.ShippedDate?.ToUniversalTime();
+            
+            _context.Attach(order).State = EntityState.Modified;
 
             try
             {
@@ -58,7 +89,7 @@ namespace Maxicycles.Pages.Admin.Store.Orders
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!OrderExists(Order.Id))
+                if (!OrderExists(order.Id))
                 {
                     return NotFound();
                 }

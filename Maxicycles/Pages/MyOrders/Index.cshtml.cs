@@ -32,6 +32,14 @@ namespace Maxicycles.Pages.MyOrders
                 .Where(b => b.MaxicyclesUserId == userId)
                 .Include(o => o.DeliveryMethod)
                 .Include(o => o.MaxicyclesUser).ToListAsync();
+            
+            // Convert UTC to local time.
+            foreach (var order in Order)
+            {
+                order.OrderDate = order.OrderDate.ToLocalTime();
+                order.RequiredDate = order.RequiredDate.ToLocalTime();
+                order.ShippedDate = order.ShippedDate?.ToLocalTime();
+            }
         }
     }
 }

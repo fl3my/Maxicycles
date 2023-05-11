@@ -53,12 +53,17 @@ namespace Maxicycles.Pages.Admin.Store.Orders
             else 
             {
                 Order = order;
+
+                Order.OrderDate = Order.OrderDate.ToLocalTime();
+                Order.RequiredDate = Order.RequiredDate.ToLocalTime();
+                Order.ShippedDate = Order.ShippedDate?.ToLocalTime();
                 
                 MaxicyclesUser = order.MaxicyclesUser;
                 
                 if (Order.Payment is Card card)
                 {
                     Card = card;
+                    Card.ExpiryDate = Card.ExpiryDate.ToLocalTime();
                 }
 
                 OrderItem = new List<OrderItemModel>();

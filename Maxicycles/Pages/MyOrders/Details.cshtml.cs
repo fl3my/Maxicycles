@@ -36,6 +36,10 @@ namespace Maxicycles.Pages.MyOrders
             else 
             {
                 Order = order;
+
+                Order.OrderDate = Order.OrderDate.ToLocalTime();
+                Order.ShippedDate = Order.ShippedDate?.ToLocalTime();
+                Order.RequiredDate = Order.RequiredDate.ToLocalTime();
             }
             return Page();
         }
