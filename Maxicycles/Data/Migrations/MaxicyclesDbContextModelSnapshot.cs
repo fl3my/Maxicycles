@@ -77,6 +77,35 @@ namespace Maxicycles.Data.Migrations
                     b.ToTable("Category");
                 });
 
+            modelBuilder.Entity("Maxicycles.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MaxicyclesUserId")
+                        .HasColumnType("text");
+
+                    b.Property<int>("PostId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime>("UploadedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MaxicyclesUserId");
+
+                    b.HasIndex("PostId");
+
+                    b.ToTable("Comment");
+                });
+
             modelBuilder.Entity("Maxicycles.Models.DeliveryMethod", b =>
                 {
                     b.Property<int>("Id")
@@ -310,6 +339,33 @@ namespace Maxicycles.Data.Migrations
                     b.UseTphMappingStrategy();
                 });
 
+            modelBuilder.Entity("Maxicycles.Models.Post", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Content")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MaxicyclesUserId")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UploadedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MaxicyclesUserId");
+
+                    b.ToTable("Post");
+                });
+
             modelBuilder.Entity("Maxicycles.Models.SubCategory", b =>
                 {
                     b.Property<int>("Id")
@@ -364,37 +420,37 @@ namespace Maxicycles.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "5d1a5745-16dd-4798-97eb-b24e12fdad36",
+                            Id = "a44e2a5f-f9d7-4b15-ab38-393e72caee07",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "3fb2498b-2198-4599-91fd-29dd692a7ae0",
+                            Id = "73c2f531-429c-4d96-864a-67ff69a0ab4a",
                             Name = "StockControl",
                             NormalizedName = "STOCKCONTROL"
                         },
                         new
                         {
-                            Id = "62a0f28d-db6c-477d-a6bf-32898c7edbae",
+                            Id = "3dcd1f5c-74da-4f8f-9018-92d877be9528",
                             Name = "Technician",
                             NormalizedName = "TECHNICIAN"
                         },
                         new
                         {
-                            Id = "21120157-e8ad-459e-a6da-b68e863203b4",
+                            Id = "caff0464-729c-4e66-b15b-c6a26d1805f5",
                             Name = "AccountsClerk",
                             NormalizedName = "ACCOUNTSCLERK"
                         },
                         new
                         {
-                            Id = "9db9addd-ed45-4da2-8e57-dcd250d9fcec",
+                            Id = "9c509c8f-a5c2-4c95-aa1e-dfe978934eca",
                             Name = "MediaManager",
                             NormalizedName = "MEDIAMANAGER"
                         },
                         new
                         {
-                            Id = "f2e4825e-e4c9-4c15-9bbd-495f90d2b233",
+                            Id = "aeda6fc2-f31a-479a-bd5b-535c3d2d5a45",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         });
@@ -563,33 +619,33 @@ namespace Maxicycles.Data.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "87661ef8-56ff-4369-88f8-3e6e312351b0",
-                            RoleId = "5d1a5745-16dd-4798-97eb-b24e12fdad36"
+                            UserId = "cb784eae-c626-496d-869f-8686e6355a27",
+                            RoleId = "a44e2a5f-f9d7-4b15-ab38-393e72caee07"
                         },
                         new
                         {
-                            UserId = "7cfd2e33-59cb-449b-83a3-094ad2aa0ecb",
-                            RoleId = "3fb2498b-2198-4599-91fd-29dd692a7ae0"
+                            UserId = "b77a9450-4916-465b-afbe-25276ca354d2",
+                            RoleId = "73c2f531-429c-4d96-864a-67ff69a0ab4a"
                         },
                         new
                         {
-                            UserId = "63882faa-7b7c-4480-8d4d-06c5fc879c26",
-                            RoleId = "62a0f28d-db6c-477d-a6bf-32898c7edbae"
+                            UserId = "99d3842d-990c-4a7f-917f-a2f35ae96a55",
+                            RoleId = "3dcd1f5c-74da-4f8f-9018-92d877be9528"
                         },
                         new
                         {
-                            UserId = "919f99f6-9e7b-48bf-b64f-d0c9e5567d80",
-                            RoleId = "21120157-e8ad-459e-a6da-b68e863203b4"
+                            UserId = "f18365a7-a77f-45f4-88df-1304e29187a7",
+                            RoleId = "caff0464-729c-4e66-b15b-c6a26d1805f5"
                         },
                         new
                         {
-                            UserId = "da5b2c22-1f97-42dd-9db9-7e825185010f",
-                            RoleId = "9db9addd-ed45-4da2-8e57-dcd250d9fcec"
+                            UserId = "f11f8a14-c0b9-4a3a-98e5-252968a63b21",
+                            RoleId = "9c509c8f-a5c2-4c95-aa1e-dfe978934eca"
                         },
                         new
                         {
-                            UserId = "b06641f7-3ffb-49e2-b08d-c36976f44cd3",
-                            RoleId = "f2e4825e-e4c9-4c15-9bbd-495f90d2b233"
+                            UserId = "0edda849-c8df-4147-bcd3-9009032b8109",
+                            RoleId = "aeda6fc2-f31a-479a-bd5b-535c3d2d5a45"
                         });
                 });
 
@@ -723,97 +779,97 @@ namespace Maxicycles.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "87661ef8-56ff-4369-88f8-3e6e312351b0",
+                            Id = "cb784eae-c626-496d-869f-8686e6355a27",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b894705b-8721-44ad-a6f5-8795b3eafe2a",
+                            ConcurrencyStamp = "e41a5be6-5b62-4bec-908c-74f2067fb6cb",
                             Email = "customer@example.co.uk",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "CUSTOMER@EXAMPLE.CO.UK",
                             NormalizedUserName = "CUSTOMER@EXAMPLE.CO.UK",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPhdfVr06PBF9KKQS4tGFiQtnQ7tZgPO4dzLc9ajr3P9okyFbV6klEMSXnbZbRl3Ww==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEG2CwxRDN98spmUtA1DzoKqEfawdeNc2fTdThSDe/9ppxj5CLaC5Fbg1I7ZFSs7fbw==",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "a2bb588c-89c6-4a1d-81aa-53acc17c93ca",
+                            SecurityStamp = "dac5299f-f164-421f-976d-e9379b13979b",
                             TwoFactorEnabled = false,
                             UserName = "customer@example.co.uk"
                         },
                         new
                         {
-                            Id = "7cfd2e33-59cb-449b-83a3-094ad2aa0ecb",
+                            Id = "b77a9450-4916-465b-afbe-25276ca354d2",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "eaefa2d7-f542-4f9c-9dd7-12469da7423a",
+                            ConcurrencyStamp = "efcc73d7-b342-4326-9f26-be26743f6fbe",
                             Email = "stockControl@maxicycles.co.uk",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "STOCKCONTROL@MAXICYCLES.CO.UK",
                             NormalizedUserName = "STOCKCONTROL@MAXICYCLES.CO.UK",
-                            PasswordHash = "AQAAAAIAAYagAAAAEEGC5w4ncj+dD95LNuqwmjdzLscZpbEVboEULNi2oeN3VLarTd0Y8Ls2E/iEd325lA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEOLaxU0LJ5z+MJXNyZp4ibJvkkI3CMwE3/U64RKitFTI4drMAoovxdpduTYT5GjMvg==",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "631cd55d-bdf8-4f56-ad19-9d46efa66d9b",
+                            SecurityStamp = "36b43541-3778-4029-9bb0-5686110494d5",
                             TwoFactorEnabled = false,
                             UserName = "stockControl@maxicycles.co.uk"
                         },
                         new
                         {
-                            Id = "63882faa-7b7c-4480-8d4d-06c5fc879c26",
+                            Id = "99d3842d-990c-4a7f-917f-a2f35ae96a55",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "b4ca66f7-ed5c-42df-baa8-c3a8bb439267",
+                            ConcurrencyStamp = "ef528604-9496-4fea-84ff-be1b3dd12bcd",
                             Email = "technician@maxicycles.co.uk",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "TECHNICIAN@MAXICYCLES.CO.UK",
                             NormalizedUserName = "TECHNICIAN@MAXICYCLES.CO.UK",
-                            PasswordHash = "AQAAAAIAAYagAAAAEJF8ArdEmZyslP8KKzBouL2AQ2N1RZM3nK/JJbjeQDUa0+zua+4xDnH/XL48jU78QA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJ9u6INyk7SkE3Hv+ObQH8LKCkw00yAW/RaF/JWjcU3y2pEylPstTY5BsiPCOBL/xw==",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "934725ab-89d6-432f-b725-61eb59feb19f",
+                            SecurityStamp = "bd5c2d9e-53c2-4174-bd92-78dbb1828604",
                             TwoFactorEnabled = false,
                             UserName = "technician@maxicycles.co.uk"
                         },
                         new
                         {
-                            Id = "919f99f6-9e7b-48bf-b64f-d0c9e5567d80",
+                            Id = "f18365a7-a77f-45f4-88df-1304e29187a7",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "eabda38b-96c2-49fb-a1ff-60fbbe2cdad6",
+                            ConcurrencyStamp = "9dec7516-7f5c-4e7d-ae94-dd66d88a4c52",
                             Email = "accountsClerk@maxicycles.co.uk",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "ACCOUNTSCLERK@MAXICYCLES.CO.UK",
                             NormalizedUserName = "ACCOUNTSCLERK@MAXICYCLES.CO.UK",
-                            PasswordHash = "AQAAAAIAAYagAAAAEIek94gTseBJqdJNg63WnDCL/4aUpr4WLf1Rz3qNhSnZJ28xdkV3qc457+bWbsrWjA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFw1yCDDvq1m+V3V0N87ou6RJFdXrb+NKP5UnCYQsxsjMXKZJrbJczcBn0dhUz2/jw==",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "647e967f-f92c-43ff-8129-92977b351e8c",
+                            SecurityStamp = "6bd42356-260c-4005-952c-e5ce668eaf16",
                             TwoFactorEnabled = false,
                             UserName = "accountsClerk@maxicycles.co.uk"
                         },
                         new
                         {
-                            Id = "da5b2c22-1f97-42dd-9db9-7e825185010f",
+                            Id = "f11f8a14-c0b9-4a3a-98e5-252968a63b21",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "76b33143-b45d-4ad3-b7e8-7a6b446708a8",
+                            ConcurrencyStamp = "057a16bb-6441-4c5f-bb3a-d4956c20d4eb",
                             Email = "mediaManager@maxicycles.co.uk",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "MEDIAMANAGER@MAXICYCLES.CO.UK",
                             NormalizedUserName = "MEDIAMANAGER@MAXICYCLES.CO.UK",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHQRvOgHlHfFi0iYh/JR1ZO9KGOkMFAO3BX5IapzoV8N2l2LPTT+5on2Fzly7x7bHA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGzOrbbsbHPfdcsq5KsfOPJxeIvJpQ0VUuXOVSeEBP/DFQ8qvh75J/F6ap6e7I8WuQ==",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "29fe63e7-6603-4fd3-9eda-95cc3d63971f",
+                            SecurityStamp = "b9e47a6a-fbf2-42b6-8dc0-80969dc0a6c5",
                             TwoFactorEnabled = false,
                             UserName = "mediaManager@maxicycles.co.uk"
                         },
                         new
                         {
-                            Id = "b06641f7-3ffb-49e2-b08d-c36976f44cd3",
+                            Id = "0edda849-c8df-4147-bcd3-9009032b8109",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3a0a2e06-dcf2-44d6-ad7f-6607b4a69af2",
+                            ConcurrencyStamp = "74ac1c36-f8fc-46e0-865d-96edfe751e27",
                             Email = "manager@maxicycles.co.uk",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "MANAGER@MAXICYCLES.CO.UK",
                             NormalizedUserName = "MANAGER@MAXICYCLES.CO.UK",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPtVy0GrDGOJAnyZNuBq4aUCY9NOb2DSY4NoAm8evWQPTSMygaKJCvA3B+MLMliEpg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECfFp3LlTaUkzN7dZ8QpUW3gCCp7YoCPjnBSXOMSZcqPl85eceNf0D2b0wGEV70KMg==",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "bebeaebb-eee3-403e-8e3d-708014876cfb",
+                            SecurityStamp = "a95e7913-54eb-4f3d-8f41-a5425895da0d",
                             TwoFactorEnabled = false,
                             UserName = "manager@maxicycles.co.uk"
                         });
@@ -834,6 +890,23 @@ namespace Maxicycles.Data.Migrations
                     b.Navigation("Item");
 
                     b.Navigation("MaxicyclesUser");
+                });
+
+            modelBuilder.Entity("Maxicycles.Models.Comment", b =>
+                {
+                    b.HasOne("Maxicycles.Models.MaxicyclesUser", "MaxicyclesUser")
+                        .WithMany("Comments")
+                        .HasForeignKey("MaxicyclesUserId");
+
+                    b.HasOne("Maxicycles.Models.Post", "Post")
+                        .WithMany("Comments")
+                        .HasForeignKey("PostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("MaxicyclesUser");
+
+                    b.Navigation("Post");
                 });
 
             modelBuilder.Entity("Maxicycles.Models.Item", b =>
@@ -894,6 +967,15 @@ namespace Maxicycles.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("Maxicycles.Models.Post", b =>
+                {
+                    b.HasOne("Maxicycles.Models.MaxicyclesUser", "MaxicyclesUser")
+                        .WithMany("Posts")
+                        .HasForeignKey("MaxicyclesUserId");
+
+                    b.Navigation("MaxicyclesUser");
                 });
 
             modelBuilder.Entity("Maxicycles.Models.SubCategory", b =>
@@ -980,6 +1062,11 @@ namespace Maxicycles.Data.Migrations
                     b.Navigation("Payment");
                 });
 
+            modelBuilder.Entity("Maxicycles.Models.Post", b =>
+                {
+                    b.Navigation("Comments");
+                });
+
             modelBuilder.Entity("Maxicycles.Models.SubCategory", b =>
                 {
                     b.Navigation("Items");
@@ -988,6 +1075,10 @@ namespace Maxicycles.Data.Migrations
             modelBuilder.Entity("Maxicycles.Models.MaxicyclesUser", b =>
                 {
                     b.Navigation("BasketItem");
+
+                    b.Navigation("Comments");
+
+                    b.Navigation("Posts");
                 });
 #pragma warning restore 612, 618
         }

@@ -35,4 +35,6 @@ public class MaxicyclesDbContext : IdentityDbContext
     public DbSet<Maxicycles.Models.Card> Cards { get; set; } = default!;
     public DbSet<Maxicycles.Models.Payment> Payment { get; set; } = default!;
     public DbSet<Maxicycles.Models.Holiday> Holiday { get; set; } = default!;
+    public DbSet<Maxicycles.Models.Post> Post { get; set; } = default!;
+    public DbSet<Maxicycles.Models.Comment> Comment { get; set; } = default!;
 }

@@ -51,8 +51,15 @@
     {
         <a asp-page="/Basket/AddService" asp-route-id="@Model.Item.Id">Book Now</a>
     }
-    else
+    else if (Model.Item is Product product)
     {
-        <a asp-page="/Basket/AddProduct" asp-route-id="@Model.Item.Id">Add to Basket</a>
+        @if (product.Quantity <= 0)
+        {
+            <p>OUT OF STOCK</p>
+        }
+        else
+        {
+            <a asp-page="/Basket/AddProduct" asp-route-id="@Model.Item.Id">Add to Basket</a>
+        }
     }
 </div>

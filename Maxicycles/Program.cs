@@ -18,7 +18,9 @@ builder.Services.AddDefaultIdentity<MaxicyclesUser>(options => options.SignIn.Re
 
 builder.Services.AddAuthorization(options =>
 {
-    // Create policies
+    // Create policies.
+    options.AddPolicy("RequireAdmin", policy => policy.RequireRole("AccountsClerk", "Manager", "StockControl", "Technician", "MediaManager"));
+    
     options.AddPolicy("RequireAccountsClerk", policy => policy.RequireRole("AccountsClerk"));
     options.AddPolicy("RequireManager", policy => policy.RequireRole("Manager"));
     options.AddPolicy("RequireStockControl", policy => policy.RequireRole("StockControl"));
@@ -26,7 +28,10 @@ builder.Services.AddAuthorization(options =>
     
 builder.Services.AddRazorPages(options =>
 {
-    // Require role on pages.
+    // Require staff member policy to access admin folder.
+    options.Conventions.AuthorizeFolder("/Admin", "RequireAdmin");
+    
+    // Require role on specific folder/pages.
     options.Conventions.AuthorizeFolder("/Admin/Users/Customers", "RequireAccountsClerk");
     options.Conventions.AuthorizeFolder("/Admin/Users/Staff", "RequireManager");
     options.Conventions.AuthorizeFolder("/Admin/Holidays", "RequireManager");

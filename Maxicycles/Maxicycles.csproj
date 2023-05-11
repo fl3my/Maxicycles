@@ -33,6 +33,8 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Pages\Admin\Blog\Comments\" />
+      <Folder Include="Pages\Admin\Blog\Posts\" />
       <Folder Include="Pages\Admin\Holidays\" />
       <Folder Include="Pages\Admin\Services\" />
       <Folder Include="Pages\Admin\Store\DeliveryMethods" />

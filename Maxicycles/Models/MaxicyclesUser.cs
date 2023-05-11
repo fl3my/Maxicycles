@@ -13,4 +13,10 @@ public class MaxicyclesUser : IdentityUser
     
     // One MaxicyclesUser to many BasketItems.
     public ICollection<BasketItem> BasketItem { get; } = new List<BasketItem>();
+    
+    // One Maxicycles User to many Comments.
+    public ICollection<Comment> Comments { get; } = new List<Comment>();
+    
+    // One Maxicycles User to many Posts.
+    public ICollection<Post> Posts { get; } = new List<Post>();
 }
