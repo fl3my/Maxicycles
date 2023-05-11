@@ -8,6 +8,12 @@
     ViewData["Title"] = "Index";
 }
 
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active" aria-current="page">Items</li>
+    </ol>
+</nav>
+
 @if (Model.Items.Count > 0)
 {
     <div class="row">

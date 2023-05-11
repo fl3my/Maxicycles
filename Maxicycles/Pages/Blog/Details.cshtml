@@ -1,0 +1,59 @@
+@page
+@using Microsoft.EntityFrameworkCore
+@model Maxicycles.Pages.Blog.DetailsModel
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-page="./Index">Blogs</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Post</li>
+    </ol>
+</nav>
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>@Html.DisplayFor(model => model.Post.Title)</h1>
+<h3><b>By @Html.DisplayFor(model => model.Post.AuthorFullName)</b> @Html.DisplayFor(model => model.Post.UploadedAt)</h3>
+<hr />
+
+<p>@Html.DisplayFor(model => model.Post.Content)</p>
+
+<h3>Comments</h3>
+
+@if (Model.Post.Comments is {Count: > 0 })
+{
+    foreach (var comment in Model.Post.Comments)
+    {
+        <p>@comment.Content</p>
+        <p>@comment.AuthorFullName</p>
+        <p>@comment.UploadedAt</p>
+    }
+}
+else
+{
+    <p>No comments.</p>
+}
+
+@if (User.Identity!.IsAuthenticated)
+{
+    <form method="post">
+        <div class="form-group">
+            <label asp-for="CommentCreate.Content" class="control-label"></label>
+            <input asp-for="CommentCreate.Content" class="form-control" />
+            <span asp-validation-for="CommentCreate.Content" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Create" class="btn btn-primary" />
+        </div>
+    </form>
+}
+else
+{
+    <p>Please sign in to comment.</p>
+}
+
+
+<div>
+    <a asp-page="./Index">Back</a>
+</div>

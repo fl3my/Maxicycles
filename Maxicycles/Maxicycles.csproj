@@ -42,6 +42,7 @@
       <Folder Include="Pages\Admin\Store\Products" />
       <Folder Include="Pages\Admin\Store\SubCategories" />
       <Folder Include="Pages\Basket" />
+      <Folder Include="Pages\Blog\" />
       <Folder Include="Pages\Checkout" />
       <Folder Include="wwwroot\uploads" />
     </ItemGroup>
