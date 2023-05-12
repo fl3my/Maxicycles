@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace Maxicycles.Pages
 {
-    public class PrivacyModel : PageModel
+    public class TermsAndConditionsModel : PageModel
     {
         public void OnGet()
         {
