@@ -1,7 +1,9 @@
 using Microsoft.EntityFrameworkCore;
 using Maxicycles.Data;
 using Maxicycles.Models;
+using Maxicycles.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +39,9 @@ builder.Services.AddRazorPages(options =>
     options.Conventions.AuthorizeFolder("/Admin/Holidays", "RequireManager");
     options.Conventions.AuthorizeFolder("/Admin/Store", "RequireStockControl");
 });
+
+builder.Services.AddTransient<IEmailSender, EmailSender>();
+builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
 
 var app = builder.Build();
 

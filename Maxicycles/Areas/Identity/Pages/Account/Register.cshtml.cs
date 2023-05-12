@@ -79,10 +79,20 @@ namespace Maxicycles.Areas.Identity.Pages.Account
             [Required]
             [Display(Name = "Last Name")]
             public string LastName { get; set; }
-
-            [Required] 
-            [Range(typeof(bool), "true", "true", ErrorMessage = "You must accept the terms and conditions.")]
+            
+            [Required]
             public bool AcceptTerms { get; set; }
+
+            [Required]
+            public string AddressLine1 { get; set; }
+            
+            public string AddressLine2 { get; set; }
+
+            [Required]
+            public string City { get; set; }
+            
+            [Required]
+            public string Postcode { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -124,6 +134,7 @@ namespace Maxicycles.Areas.Identity.Pages.Account
         {
             returnUrl ??= Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            
             if (ModelState.IsValid)
             {
                 var user = CreateUser();
@@ -131,9 +142,14 @@ namespace Maxicycles.Areas.Identity.Pages.Account
                 // Custom user properties.
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
+                user.AddressLine1 = Input.AddressLine1;
+                user.AddressLine2 = Input.AddressLine2;
+                user.City = Input.City;
+                user.Postcode = Input.Postcode;
                 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)

@@ -23,6 +23,27 @@
                 <span asp-validation-for="Input.LastName" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
+                <input asp-for="Input.AddressLine1" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <label asp-for="Input.AddressLine1">Address Line 1</label>
+                <span asp-validation-for="Input.AddressLine1" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.AddressLine2" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <label asp-for="Input.AddressLine2">Address Line 2</label>
+                <span asp-validation-for="Input.AddressLine2" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.City" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <label asp-for="Input.City">City</label>
+                <span asp-validation-for="Input.City" class="text-danger"></span>
+            </div>
+            <div class="form-floating mb-3">
+                <input asp-for="Input.Postcode" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
+                <label asp-for="Input.Postcode">Postcode</label>
+                <span asp-validation-for="Input.Postcode" class="text-danger"></span>
+            </div>
+            
+            <div class="form-floating mb-3">
                 <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />
                 <label asp-for="Input.Email">Email</label>
                 <span asp-validation-for="Input.Email" class="text-danger"></span>
