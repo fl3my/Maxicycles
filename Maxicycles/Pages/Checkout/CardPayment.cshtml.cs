@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Maxicycles.Data;
 using Maxicycles.Enums;
 using Maxicycles.Models;
+using Maxicycles.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -75,15 +76,15 @@ namespace Maxicycles.Pages.Checkout
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync(int orderId)
         {
-            var userId = _userManager.GetUserId(User);
+            var user = await _userManager.GetUserAsync(User);
 
-            if (userId == null)
+            if (user == null)
             {
                 return Unauthorized();
             }
             
             // Get the users order.
-            var order = _context.Orders.Where(o => o.MaxicyclesUserId == userId).FirstOrDefault(o => o.Id == orderId);
+            var order = _context.Orders.Where(o => o.MaxicyclesUserId == user.Id).FirstOrDefault(o => o.Id == orderId);
 
             if (order == null)
             {
@@ -114,12 +115,12 @@ namespace Maxicycles.Pages.Checkout
             order.OrderStatus = OrderStatus.AwaitingShipment;
             
             _context.Attach(order).State = EntityState.Modified;
-
             
             _context.Cards.Add(card);
+            
             await _context.SaveChangesAsync();
 
-            return RedirectToPage("./Confirmation");
+            return RedirectToPage("./PaymentConfirmation", new { orderId = order.Id});
         }
     }
 }

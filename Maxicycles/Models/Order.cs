@@ -11,6 +11,8 @@ public class Order
     public DateTime RequiredDate { get; set; }
     public DateTime? ShippedDate { get; set; }
     public OrderStatus OrderStatus { get; set; } = OrderStatus.AwaitingPayment;
+
+    public bool ReceiptSent { get; set; }
     public decimal TotalPrice { get; set; }
     
     public string? AddressLine1 { get; set; }

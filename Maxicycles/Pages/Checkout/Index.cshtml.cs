@@ -49,6 +49,13 @@ namespace Maxicycles.Pages.Checkout
         {
             // Get the current userId.
             var userId = _userManager.GetUserId(User);
+
+            var basketItems = _context.BasketItem.Where(b => b.MaxicyclesUserId == userId);
+
+            if (!basketItems.Any())
+            {
+                return Unauthorized();
+            }
             
             // Populate The Model.
             BasketModel = await PopulateBasketModel(userId);
@@ -59,7 +66,7 @@ namespace Maxicycles.Pages.Checkout
                 id = x.Id,
                 name = x.Title + " " + x.Price.ToString("(+£0.00)")
             });
-            
+
             // Add delivery methods to the form.
             ViewData["DeliveryMethodId"] = new SelectList(deliveryMethods, "id", "name");
             
@@ -127,6 +134,7 @@ namespace Maxicycles.Pages.Checkout
                 OrderDate = DateTime.Now.ToUniversalTime(),
                 MaxicyclesUserId = user.Id,
                 OrderStatus = OrderStatus.AwaitingPayment,
+                ReceiptSent = false,
                 TotalPrice = totalPrice,
                 AddressLine1 = user.AddressLine1,
                 AddressLine2 = user.AddressLine2,
@@ -191,6 +199,8 @@ namespace Maxicycles.Pages.Checkout
                     ModelState.AddModelError("", "Sorry, We are currently closed for " + holiday.Title + ". We reopen for online orders on " + holiday.End.ToShortDateString());
                 }
             }
+            
+            // If order only contains products, require a date.
             
             if (!ModelState.IsValid)
             {
