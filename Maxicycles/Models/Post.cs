@@ -13,4 +13,8 @@ public class Post
 
     // One post ot many comments.
     public ICollection<Comment> Comments { get; set; } = new List<Comment>();
+    
+    // Many Posts to one image.
+    public int? ImageId { get; set; }
+    public Image? Image { get; set; }
 }

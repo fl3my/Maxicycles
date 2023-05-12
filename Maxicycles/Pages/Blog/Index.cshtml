@@ -19,6 +19,7 @@
             <div class="col-lg-12 col-xl-6">
                 <div class="card mb-4">
                     <div class="card-body">
+                        <img decoding="async" class="card-img-top" alt="@item.AltText" src="@("/uploads/"+ item.ImageName)" />
                         <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
                         <h6 class="card-subtitle mb-2 text-muted">@Html.DisplayFor(modelItem => item.UploadedAt)</h6>
                         <p class="card-text"> @Html.DisplayFor(modelItem => item.CroppedContent) </p>

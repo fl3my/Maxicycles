@@ -25,6 +25,8 @@ namespace Maxicycles.Pages.Admin.Blog.Posts
 
         public IActionResult OnGet()
         {
+            ViewData["ImageId"] = new SelectList(_context.Image, "Id", "Title");
+            
             return Page();
         }
 
@@ -37,6 +39,8 @@ namespace Maxicycles.Pages.Admin.Blog.Posts
             public string? Title { get; set; }
             [Required]
             public string? Content { get; set; }
+            
+            public int? ImageId { get; set; }
         }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
@@ -58,6 +62,7 @@ namespace Maxicycles.Pages.Admin.Blog.Posts
             {
                 Title = Post.Title,
                 Content = Post.Content,
+                ImageId = Post.ImageId,
                 UploadedAt = DateTime.UtcNow,
                 MaxicyclesUserId = userId
                 

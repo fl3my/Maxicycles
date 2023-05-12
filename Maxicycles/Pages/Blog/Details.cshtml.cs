@@ -41,6 +41,8 @@ namespace Maxicycles.Pages.Blog
             public string? UploadedAt { get; set; }
             public string? AuthorFullName { get; set; }
             public IList<CommentModel>? Comments { get; set; }
+            public string? AltText { get; set; }
+            public string? ImageName { get; set; }
         }
 
         public class CommentModel
@@ -59,6 +61,7 @@ namespace Maxicycles.Pages.Blog
             }
 
             var post = await _context.Post
+                .Include(p => p.Image)
                 .Include(p => p.MaxicyclesUser)
                 .Include(c => c.Comments)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -77,7 +80,9 @@ namespace Maxicycles.Pages.Blog
                     Content = post.Content,
                     AuthorFullName = post.MaxicyclesUser?.FirstName + " " + post.MaxicyclesUser?.LastName,
                     UploadedAt = post.UploadedAt.ToLocalTime().ToLongDateString(),
-                    Comments = new List<CommentModel>()
+                    Comments = new List<CommentModel>(),
+                    AltText = post.Image?.AltText,
+                    ImageName = post.Image?.ImageName,
                 };
 
                 // Fill the comment model.

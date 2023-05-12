@@ -12,6 +12,7 @@
 @{
     ViewData["Title"] = "Details";
 }
+<img decoding="async" class="card-img-top" alt="@Model.Post.AltText" src="@("/uploads/"+ Model.Post.ImageName)" />
 
 <h1>@Html.DisplayFor(model => model.Post.Title)</h1>
 <h3><b>By @Html.DisplayFor(model => model.Post.AuthorFullName)</b> @Html.DisplayFor(model => model.Post.UploadedAt)</h3>

@@ -28,10 +28,13 @@ namespace Maxicycles.Pages.Blog
             public string? CroppedContent { get; set; }
             public string? AuthorFulLName { get; set; }
             public string? UploadedAt { get; set; }
+            public string? AltText { get; set; }
+            public string? ImageName { get; set; }
         }
         public async Task OnGetAsync()
         {
             var posts = await _context.Post
+                .Include(p => p.Image)
                 .Include(p => p.MaxicyclesUser)
                 .ToListAsync();
 
@@ -45,7 +48,9 @@ namespace Maxicycles.Pages.Blog
                     Title = post.Title,
                     CroppedContent = CropContent(post.Content),
                     AuthorFulLName = post.MaxicyclesUser?.FirstName + " " + post.MaxicyclesUser?.LastName,
-                    UploadedAt = post.UploadedAt.ToLocalTime().ToShortDateString()
+                    UploadedAt = post.UploadedAt.ToLocalTime().ToShortDateString(),
+                    AltText = post.Image?.AltText,
+                    ImageName = post.Image?.ImageName,
                 });
             }
         }
