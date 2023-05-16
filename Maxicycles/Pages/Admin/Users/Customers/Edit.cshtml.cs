@@ -23,11 +23,12 @@ public class EditModel : PageModel
     {
         if (id == null) return NotFound();
 
+        // Get the user from the id.
         var user = await _userManager.FindByIdAsync(id);
-        ;
 
         if (user == null) return NotFound();
-
+    
+        // Populate the edit input model.
         Input = new InputModel
         {
             Id = user.Id,
@@ -45,12 +46,15 @@ public class EditModel : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
+        // Check if form input meets validation.
         if (!ModelState.IsValid) return Page();
 
+        // Get the id of the user being editied.
         var user = await _userManager.FindByIdAsync(Input.Id);
 
         if (user == null) return NotFound();
 
+        // Edit the properties of the user.
         user.FirstName = Input.FirstName;
         user.LastName = Input.LastName;
         user.AddressLine1 = Input.AddressLine1;
@@ -59,6 +63,7 @@ public class EditModel : PageModel
         user.Postcode = Input.Postcode;
         user.PhoneNumber = Input.PhoneNumber;
 
+        // Update the user.
         await _userManager.UpdateAsync(user);
 
         return RedirectToPage("./Index");

@@ -13,9 +13,9 @@ namespace Maxicycles.Pages.Admin.Users.Staff;
 public class CreateModel : PageModel
 {
     private readonly IUserEmailStore<MaxicyclesUser> _emailStore;
+    private readonly RoleManager<IdentityRole> _roleManager;
     private readonly UserManager<MaxicyclesUser> _userManager;
     private readonly IUserStore<MaxicyclesUser> _userStore;
-    private readonly RoleManager<IdentityRole> _roleManager;
 
     public CreateModel(
         UserManager<MaxicyclesUser> userManager,
@@ -31,16 +31,19 @@ public class CreateModel : PageModel
 
     public async Task<IActionResult> OnGet()
     {
+        // Get all the roles that are not Customer.
         var roles = await _roleManager.Roles
             .Where(x => x.Name != "Customer")
             .ToListAsync();
-        
+
+        // Put all of the roles in a select list input.
         var rolesList = roles.Select(s => new SelectListItem
         {
             Value = s.Name,
             Text = s.Name
         }).ToList();
-        
+
+        // Create a model with the roles.
         Input = new InputModel
         {
             Roles = rolesList
@@ -51,6 +54,7 @@ public class CreateModel : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
+        // If the validation is successful, create a user.
         if (ModelState.IsValid)
         {
             var user = CreateUser();
@@ -72,12 +76,14 @@ public class CreateModel : PageModel
 
             var result = await _userManager.CreateAsync(user, Input.Password);
 
+            // If succeeded, Add the user to the role selected from the dropdown.
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, Input.Role);
                 return RedirectToPage("./Index");
             }
 
+            // Display all the errors at the top of the form.
             foreach (var error in result.Errors) ModelState.AddModelError(string.Empty, error.Description);
         }
 
@@ -145,10 +151,9 @@ public class CreateModel : PageModel
         [Phone]
         [Display(Name = "Phone number")]
         public string PhoneNumber { get; set; }
-        
-        [Required]
-        public string Role { get; set; }
-        
+
+        [Required] public string Role { get; set; }
+
         public List<SelectListItem> Roles { get; set; }
     }
 }

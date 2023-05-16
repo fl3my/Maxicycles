@@ -13,7 +13,7 @@ public class IndexModel : PageModel
 {
     private readonly UserManager<MaxicyclesUser> _userManager;
 
-    public List<UserModel> Users = new();
+    public List<UserIndexModel> Users = new();
 
     public IndexModel(UserManager<MaxicyclesUser> userManager)
     {
@@ -23,17 +23,18 @@ public class IndexModel : PageModel
     public async Task<IActionResult> OnGetAsync()
     {
         var users = await _userManager.Users.ToListAsync();
-        
+
         // Populate list view model with all users.
         foreach (var user in users)
         {
             // If user is a customer do not add to the list.
             if (await _userManager.IsInRoleAsync(user, "Customer")) continue;
-            
+
             // If user is a manager do not add to the list.
             if (await _userManager.IsInRoleAsync(user, "Manager")) continue;
-            
-            var userModel = new UserModel
+
+            // Populate the list with the users details.
+            var userModel = new UserIndexModel
             {
                 Id = user.Id,
                 Username = user.UserName,
@@ -41,28 +42,24 @@ public class IndexModel : PageModel
                 LastName = user.LastName,
                 Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault()
             };
-                
+
+            // Add to the list.
             Users.Add(userModel);
         }
 
         return Page();
     }
 
-    public class UserModel
+    public class UserIndexModel
     {
         public string Id { get; set; }
-        
-        [Display(Name="Email")]
-        public string Username { get; set; }
-        
-        [Display(Name="Firstname")]
 
-        public string FirstName { get; set; }
-        
-        [Display(Name="Lastname")]
+        [Display(Name = "Email")] public string Username { get; set; }
 
-        public string LastName { get; set; }
-        
+        [Display(Name = "Firstname")] public string FirstName { get; set; }
+
+        [Display(Name = "Lastname")] public string LastName { get; set; }
+
         public string Role { get; set; }
     }
 }

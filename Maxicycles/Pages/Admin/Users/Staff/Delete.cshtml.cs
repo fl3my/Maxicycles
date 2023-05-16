@@ -16,7 +16,7 @@ public class DeleteModel : PageModel
         _userManager = userManager;
     }
 
-    [BindProperty] public UserDetailedModel UserModel { get; set; }
+    [BindProperty] public UserDeleteModel UserDelete { get; set; }
 
     public async Task<IActionResult> OnGetAsync(string id)
     {
@@ -24,9 +24,11 @@ public class DeleteModel : PageModel
 
         var user = await _userManager.FindByIdAsync(id);
 
+        // Get the user from the id if not null.
         if (user == null) return NotFound();
 
-        UserModel = new UserDetailedModel
+        // Populate the model with 
+        UserDelete = new UserDeleteModel
         {
             Id = id,
             Username = user.UserName,
@@ -41,14 +43,16 @@ public class DeleteModel : PageModel
     public async Task<IActionResult> OnPostAsync(string id)
     {
         if (id == null) return NotFound();
+
         var user = await _userManager.FindByIdAsync(id);
 
+        // Delete the user if it exists.
         if (user != null) await _userManager.DeleteAsync(user);
 
         return RedirectToPage("./Index");
     }
 
-    public class UserDetailedModel
+    public class UserDeleteModel
     {
         public string Id { get; set; }
         public string Username { get; set; }

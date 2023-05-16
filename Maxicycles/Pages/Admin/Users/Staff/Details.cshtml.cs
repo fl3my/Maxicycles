@@ -1,6 +1,5 @@
 ﻿#nullable disable
 
-using Maxicycles.Data;
 using Maxicycles.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -10,17 +9,14 @@ namespace Maxicycles.Pages.Admin.Users.Staff;
 
 public class DetailsModel : PageModel
 {
-    private readonly MaxicyclesDbContext _context;
     private readonly UserManager<MaxicyclesUser> _userManager;
 
-    public DetailsModel(MaxicyclesDbContext context, UserManager<MaxicyclesUser> userManager)
+    public DetailsModel(UserManager<MaxicyclesUser> userManager)
     {
-        _context = context;
         _userManager = userManager;
     }
 
-    public UserDetailedModel UserModel { get; set; }
-
+    public UserDetailModel UserDetail { get; set; }
 
     public async Task<IActionResult> OnGetAsync(string id)
     {
@@ -28,9 +24,11 @@ public class DetailsModel : PageModel
 
         var user = await _userManager.FindByIdAsync(id);
 
+        // Get the user if it exists.
         if (user == null) return NotFound();
 
-        UserModel = new UserDetailedModel
+        // Populate the model with all user details.
+        UserDetail = new UserDetailModel
         {
             Id = id,
             Username = user.UserName,
@@ -47,7 +45,7 @@ public class DetailsModel : PageModel
         return Page();
     }
 
-    public class UserDetailedModel
+    public class UserDetailModel
     {
         public string Id { get; set; }
         public string Username { get; set; }

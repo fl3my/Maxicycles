@@ -12,9 +12,9 @@ namespace Maxicycles.Pages.Admin.Users.Staff;
 
 public class EditModel : PageModel
 {
-    private readonly UserManager<MaxicyclesUser> _userManager;
     private readonly RoleManager<IdentityRole> _roleManager;
-    
+    private readonly UserManager<MaxicyclesUser> _userManager;
+
     public EditModel(UserManager<MaxicyclesUser> userManager, RoleManager<IdentityRole> roleManager)
     {
         _userManager = userManager;
@@ -28,20 +28,23 @@ public class EditModel : PageModel
         if (id == null) return NotFound();
 
         var user = await _userManager.FindByIdAsync(id);
-        ;
 
+        // Get the user if it exists.
         if (user == null) return NotFound();
-        
+
+        // Get a list of roles that are not customers.
         var roles = await _roleManager.Roles
             .Where(x => x.Name != "Customer")
             .ToListAsync();
 
+        // Put the roles returned into a select list item.
         var rolesList = roles.Select(s => new SelectListItem
         {
             Value = s.Name,
             Text = s.Name
         }).ToList();
-        
+
+        // Populate the model with user details.
         Input = new InputModel
         {
             Id = user.Id,
@@ -80,14 +83,11 @@ public class EditModel : PageModel
         var oldRole = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
 
         // Remove user from current role if user has role already.
-        if (oldRole != null)
-        {
-            await _userManager.RemoveFromRoleAsync(user, oldRole);       
-        }
- 
+        if (oldRole != null) await _userManager.RemoveFromRoleAsync(user, oldRole);
+
         // Add user to new role.
         await _userManager.AddToRoleAsync(user, Input.Role);
-        
+
         return RedirectToPage("./Index");
     }
 
@@ -116,10 +116,9 @@ public class EditModel : PageModel
         [Phone]
         [Display(Name = "Phone number")]
         public string PhoneNumber { get; set; }
-        
-        [Required]
-        public string Role { get; set; }
-        
+
+        [Required] public string Role { get; set; }
+
         public List<SelectListItem> Roles { get; set; }
     }
 }

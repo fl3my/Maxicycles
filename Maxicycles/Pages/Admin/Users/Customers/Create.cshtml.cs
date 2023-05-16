@@ -32,11 +32,12 @@ public class CreateModel : PageModel
 
     public async Task<IActionResult> OnPostAsync()
     {
+        // Check if the model state is valid.
         if (ModelState.IsValid)
         {
             var user = CreateUser();
 
-            // Custom user properties.
+            // Define custom user properties.
             user.FirstName = Input.FirstName;
             user.LastName = Input.LastName;
             user.AddressLine1 = Input.AddressLine1;
@@ -48,21 +49,25 @@ public class CreateModel : PageModel
             user.EmailConfirmed = true;
             user.PhoneNumberConfirmed = true;
 
+            // Store the username and email in the user store.
             await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
             await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
 
+            // Create the user with a password.
             var result = await _userManager.CreateAsync(user, Input.Password);
 
+            // Add to customer role and return to index if succeed.
             if (result.Succeeded)
             {
                 await _userManager.AddToRoleAsync(user, "Customer");
                 return RedirectToPage("./Index");
             }
 
+            // Display all errors at top of form.
             foreach (var error in result.Errors) ModelState.AddModelError(string.Empty, error.Description);
         }
 
-        // If we got this far, something failed, redisplay form
+        // If we got this far, something failed, redisplay form.
         return Page();
     }
 
