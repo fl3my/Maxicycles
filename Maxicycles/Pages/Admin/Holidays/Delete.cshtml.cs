@@ -1,63 +1,55 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Maxicycles.Data;
+using Maxicycles.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Maxicycles.Data;
-using Maxicycles.Models;
 
-namespace Maxicycles.Pages.Admin.Holidays
+namespace Maxicycles.Pages.Admin.Holidays;
+
+public class DeleteModel : PageModel
 {
-    public class DeleteModel : PageModel
+    private readonly MaxicyclesDbContext _context;
+
+    public DeleteModel(MaxicyclesDbContext context)
     {
-        private readonly Maxicycles.Data.MaxicyclesDbContext _context;
+        _context = context;
+    }
 
-        public DeleteModel(Maxicycles.Data.MaxicyclesDbContext context)
-        {
-            _context = context;
-        }
+    [BindProperty] public Holiday Holiday { get; set; } = default!;
 
-        [BindProperty]
-      public Holiday Holiday { get; set; } = default!;
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        // Check if the id is not null.
+        if (id == null) return NotFound();
 
-        public async Task<IActionResult> OnGetAsync(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        // Get the holiday that matches the id.
+        var holiday = await _context.Holiday.FirstOrDefaultAsync(m => m.Id == id);
 
-            var holiday = await _context.Holiday.FirstOrDefaultAsync(m => m.Id == id);
+        if (holiday == null) return NotFound();
 
-            if (holiday == null)
-            {
-                return NotFound();
-            }
-            else 
-            {
-                Holiday = holiday;
-            }
-            return Page();
-        }
+        // Populate the model with details from the database.
+        Holiday = holiday;
 
-        public async Task<IActionResult> OnPostAsync(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var holiday = await _context.Holiday.FindAsync(id);
+        return Page();
+    }
 
-            if (holiday != null)
-            {
-                Holiday = holiday;
-                _context.Holiday.Remove(Holiday);
-                await _context.SaveChangesAsync();
-            }
+    public async Task<IActionResult> OnPostAsync(int? id)
+    {
+        // Check if the id is not null.
+        if (id == null) return NotFound("Holiday does not exist");
 
-            return RedirectToPage("./Index");
-        }
+        // Find the holiday in the database.
+        var holiday = await _context.Holiday.FindAsync(id);
+
+        // Return to index if the holiday does not exist.
+        if (holiday == null) return RedirectToPage("./Index");
+
+        Holiday = holiday;
+
+        // Remove the holiday from the database.
+        _context.Holiday.Remove(Holiday);
+        await _context.SaveChangesAsync();
+
+        return RedirectToPage("./Index");
     }
 }

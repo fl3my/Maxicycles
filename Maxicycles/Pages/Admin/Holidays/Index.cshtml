@@ -1,5 +1,5 @@
 @page
-@model Maxicycles.Pages.Admin.Holidays.IndexModel
+@model IndexModel
 
 @{
     ViewData["Title"] = "Index";
@@ -12,21 +12,22 @@
 </p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Holiday[0].Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Holiday[0].Start)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Holiday[0].End)
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Holiday[0].Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Holiday[0].Start)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Holiday[0].End)
+        </th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Holiday) {
+    @foreach (var item in Model.Holiday)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
@@ -43,6 +44,6 @@
                 <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>

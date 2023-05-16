@@ -1,54 +1,46 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Maxicycles.Data;
 using Maxicycles.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Maxicycles.Pages.Admin.Holidays
+namespace Maxicycles.Pages.Admin.Holidays;
+
+public class CreateModel : PageModel
 {
-    public class CreateModel : PageModel
+    private readonly MaxicyclesDbContext _context;
+
+    public CreateModel(MaxicyclesDbContext context)
     {
-        private readonly Maxicycles.Data.MaxicyclesDbContext _context;
+        _context = context;
+    }
 
-        public CreateModel(Maxicycles.Data.MaxicyclesDbContext context)
-        {
-            _context = context;
-        }
+    [BindProperty] public Holiday Holiday { get; set; } = default!;
 
-        public IActionResult OnGet()
-        {
-            return Page();
-        }
+    public IActionResult OnGet()
+    {
+        return Page();
+    }
 
-        [BindProperty]
-        public Holiday Holiday { get; set; } = default!;
-        
 
-        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
-        public async Task<IActionResult> OnPostAsync()
-        {
-            // Check if the holiday start date is before the holiday end date.
-            if (Holiday.Start > Holiday.End)
-            {
-                ModelState.AddModelError("Holiday.Start", "Start cannot be greater than end date");
-            }
+    // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
+    public async Task<IActionResult> OnPostAsync()
+    {
+        // Check if the holiday start date is before the holiday end date.
+        if (Holiday.Start > Holiday.End)
+            ModelState.AddModelError("Holiday.Start", "Start cannot be greater than end date");
 
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-          
-            Holiday.Start = Holiday.Start.ToUniversalTime();
-            Holiday.End = Holiday.End.ToUniversalTime();
-          
-            _context.Holiday.Add(Holiday);
-            await _context.SaveChangesAsync();
+        // Check if thee model passes the validation.
+        if (!ModelState.IsValid) return Page();
 
-            return RedirectToPage("./Index");
-        }
+        // Convert from Local time to UTC for storage in the database.
+        Holiday.Start = Holiday.Start.ToUniversalTime();
+        Holiday.End = Holiday.End.ToUniversalTime();
+
+        // Add the holiday to the database.
+        _context.Holiday.Add(Holiday);
+
+        await _context.SaveChangesAsync();
+
+        return RedirectToPage("./Index");
     }
 }
