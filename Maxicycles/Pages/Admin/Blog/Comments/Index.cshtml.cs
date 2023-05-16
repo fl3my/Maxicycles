@@ -1,36 +1,29 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Maxicycles.Data;
 using Maxicycles.Models;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
-namespace Maxicycles.Pages.Admin.Blog.Comments
+namespace Maxicycles.Pages.Admin.Blog.Comments;
+
+public class IndexModel : PageModel
 {
-    public class IndexModel : PageModel
+    private readonly MaxicyclesDbContext _context;
+
+    public IndexModel(MaxicyclesDbContext context)
     {
-        private readonly Maxicycles.Data.MaxicyclesDbContext _context;
+        _context = context;
+    }
 
-        public IndexModel(Maxicycles.Data.MaxicyclesDbContext context)
-        {
-            _context = context;
-        }
+    public IList<Comment> Comment { get; set; } = default!;
 
-        public IList<Comment> Comment { get;set; } = default!;
+    public async Task OnGetAsync()
+    {
+        // Populate the comment list with all comments from the database.
+        Comment = await _context.Comment
+            .Include(c => c.MaxicyclesUser)
+            .Include(c => c.Post).ToListAsync();
 
-        public async Task OnGetAsync()
-        {
-            Comment = await _context.Comment
-                .Include(c => c.MaxicyclesUser)
-                .Include(c => c.Post).ToListAsync();
-
-            foreach (var comment in Comment)
-            {
-                comment.UploadedAt = comment.UploadedAt.ToLocalTime();
-            }
-        }
+        // Foreach comment in the list change the UTC date to local time.
+        foreach (var comment in Comment) comment.UploadedAt = comment.UploadedAt.ToLocalTime();
     }
 }

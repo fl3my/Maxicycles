@@ -1,5 +1,5 @@
 @page
-@model Maxicycles.Pages.Admin.Blog.Comments.IndexModel
+@model IndexModel
 
 @{
     ViewData["Title"] = "Index";
@@ -12,24 +12,25 @@
 </p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Comment[0].Content)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Comment[0].UploadedAt)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Comment[0].MaxicyclesUser)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Comment[0].Post)
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Comment[0].Content)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Comment[0].UploadedAt)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Comment[0].MaxicyclesUser)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Comment[0].Post)
+        </th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Comment) {
+    @foreach (var item in Model.Comment)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Content)
@@ -49,6 +50,6 @@
                 <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>

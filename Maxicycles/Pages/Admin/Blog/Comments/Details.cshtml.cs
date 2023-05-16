@@ -1,45 +1,38 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Maxicycles.Data;
+using Maxicycles.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Maxicycles.Data;
-using Maxicycles.Models;
 
-namespace Maxicycles.Pages.Admin.Blog.Comments
+namespace Maxicycles.Pages.Admin.Blog.Comments;
+
+public class DetailsModel : PageModel
 {
-    public class DetailsModel : PageModel
+    private readonly MaxicyclesDbContext _context;
+
+    public DetailsModel(MaxicyclesDbContext context)
     {
-        private readonly Maxicycles.Data.MaxicyclesDbContext _context;
+        _context = context;
+    }
 
-        public DetailsModel(Maxicycles.Data.MaxicyclesDbContext context)
-        {
-            _context = context;
-        }
+    public Comment Comment { get; set; } = default!;
 
-      public Comment Comment { get; set; } = default!; 
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        // Check if the id is not null.
+        if (id == null) return NotFound();
 
-        public async Task<IActionResult> OnGetAsync(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        // Get the comment that matches the id.
+        var comment = await _context.Comment.Include(c => c.MaxicyclesUser).FirstOrDefaultAsync(m => m.Id == id);
 
-            var comment = await _context.Comment.Include(c => c.MaxicyclesUser).FirstOrDefaultAsync(m => m.Id == id);
-            
-            if (comment == null)
-            {
-                return NotFound();
-            }
-            else 
-            {
-                Comment = comment;
-                Comment.UploadedAt = Comment.UploadedAt.ToLocalTime();
-            }
-            return Page();
-        }
+        // Return not found if the comment is not found.
+        if (comment == null) return NotFound("Comment does not exist.");
+
+        Comment = comment;
+
+        // Convert the UTC to local date time.
+        Comment.UploadedAt = Comment.UploadedAt.ToLocalTime();
+
+        return Page();
     }
 }

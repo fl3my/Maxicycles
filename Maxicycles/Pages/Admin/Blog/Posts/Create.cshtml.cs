@@ -1,76 +1,71 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Maxicycles.Data;
 using Maxicycles.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace Maxicycles.Pages.Admin.Blog.Posts
+namespace Maxicycles.Pages.Admin.Blog.Posts;
+
+public class CreateModel : PageModel
 {
-    public class CreateModel : PageModel
+    private readonly MaxicyclesDbContext _context;
+    private readonly UserManager<MaxicyclesUser> _userManager;
+
+    public CreateModel(MaxicyclesDbContext context, UserManager<MaxicyclesUser> userManager)
     {
-        private readonly Maxicycles.Data.MaxicyclesDbContext _context;
-        private readonly UserManager<MaxicyclesUser> _userManager;
+        _context = context;
+        _userManager = userManager;
+    }
 
-        public CreateModel(Maxicycles.Data.MaxicyclesDbContext context, UserManager<MaxicyclesUser> userManager)
+    [BindProperty] public PostCreateModel Post { get; set; } = default!;
+
+    public IActionResult OnGet()
+    {
+        // Populate the image list with image names.
+        ViewData["ImageId"] = new SelectList(_context.Image, "Id", "Title");
+        return Page();
+    }
+
+    // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
+    public async Task<IActionResult> OnPostAsync()
+    {
+        // Get the current logged in user.
+        var userId = _userManager.GetUserId(User);
+
+        // If the user does not exist, return unauthorized.
+        if (userId == null) return Unauthorized();
+
+        // Return with validation errors if does not meet criteria.
+        if (!ModelState.IsValid) return Page();
+
+        // Populate a new post object.
+        var post = new Post
         {
-            _context = context;
-            _userManager = userManager;
-        }
+            Title = Post.Title,
+            Content = Post.Content,
+            ImageId = Post.ImageId,
+            UploadedAt = DateTime.UtcNow,
+            MaxicyclesUserId = userId
+        };
 
-        public IActionResult OnGet()
-        {
-            ViewData["ImageId"] = new SelectList(_context.Image, "Id", "Title");
-            
-            return Page();
-        }
+        _context.Post.Add(post);
 
-        [BindProperty]
-        public PostCreateModel Post { get; set; } = default!;
+        // Add the post to the database.
+        await _context.SaveChangesAsync();
 
-        public class PostCreateModel
-        {
-            [Required]
-            public string? Title { get; set; }
-            [Required]
-            public string? Content { get; set; }
-            
-            public int? ImageId { get; set; }
-        }
+        return RedirectToPage("./Index");
+    }
 
-        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
-        public async Task<IActionResult> OnPostAsync()
-        {
-            var userId = _userManager.GetUserId(User);
+    public class PostCreateModel
+    {
+        [Required] public string? Title { get; set; }
 
-            if (userId == null)
-            {
-                return Unauthorized();
-            }
-            
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
+        [Required]
+        [DataType(DataType.MultilineText)]
+        public string? Content { get; set; }
 
-            var post = new Post
-            {
-                Title = Post.Title,
-                Content = Post.Content,
-                ImageId = Post.ImageId,
-                UploadedAt = DateTime.UtcNow,
-                MaxicyclesUserId = userId
-                
-            };
-            _context.Post.Add(post);
-            await _context.SaveChangesAsync();
-
-            return RedirectToPage("./Index");
-        }
+        public int? ImageId { get; set; }
     }
 }

@@ -1,64 +1,58 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Maxicycles.Data;
+using Maxicycles.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Maxicycles.Data;
-using Maxicycles.Models;
 
-namespace Maxicycles.Pages.Admin.Blog.Comments
+namespace Maxicycles.Pages.Admin.Blog.Comments;
+
+public class DeleteModel : PageModel
 {
-    public class DeleteModel : PageModel
+    private readonly MaxicyclesDbContext _context;
+
+    public DeleteModel(MaxicyclesDbContext context)
     {
-        private readonly Maxicycles.Data.MaxicyclesDbContext _context;
+        _context = context;
+    }
 
-        public DeleteModel(Maxicycles.Data.MaxicyclesDbContext context)
-        {
-            _context = context;
-        }
+    [BindProperty] public Comment Comment { get; set; } = default!;
 
-        [BindProperty]
-      public Comment Comment { get; set; } = default!;
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        // Check if the id is not null.
+        if (id == null) return NotFound();
 
-        public async Task<IActionResult> OnGetAsync(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        // Get the comment that matches the id.
+        var comment = await _context.Comment.Include(c => c.MaxicyclesUser).FirstOrDefaultAsync(m => m.Id == id);
 
-            var comment = await _context.Comment.Include(c => c.MaxicyclesUser).FirstOrDefaultAsync(m => m.Id == id);
+        if (comment == null) return NotFound();
 
-            if (comment == null)
-            {
-                return NotFound();
-            }
-            else 
-            {
-                Comment = comment;
-                Comment.UploadedAt = Comment.UploadedAt.ToLocalTime();
-            }
-            return Page();
-        }
+        // Populate comment model.
+        Comment = comment;
 
-        public async Task<IActionResult> OnPostAsync(int? id)
-        {
-            if (id == null || _context.Comment == null)
-            {
-                return NotFound();
-            }
-            var comment = await _context.Comment.FindAsync(id);
+        // Convert the UTC time to Local time.
+        Comment.UploadedAt = Comment.UploadedAt.ToLocalTime();
 
-            if (comment != null)
-            {
-                Comment = comment;
-                _context.Comment.Remove(Comment);
-                await _context.SaveChangesAsync();
-            }
+        return Page();
+    }
 
-            return RedirectToPage("./Index");
-        }
+    public async Task<IActionResult> OnPostAsync(int? id)
+    {
+        // Check if the id is not null.
+        if (id == null) return NotFound();
+
+        // Get the comment that matches the id.
+        var comment = await _context.Comment.FindAsync(id);
+
+        // If the comment is null redirect to index.
+        if (comment == null) return RedirectToPage("./Index");
+
+        Comment = comment;
+
+        // Remove the comment from the database.
+        _context.Comment.Remove(Comment);
+        await _context.SaveChangesAsync();
+
+        return RedirectToPage("./Index");
     }
 }

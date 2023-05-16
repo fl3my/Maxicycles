@@ -1,35 +1,28 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Maxicycles.Data;
 using Maxicycles.Models;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
-namespace Maxicycles.Pages.Admin.Blog.Posts
+namespace Maxicycles.Pages.Admin.Blog.Posts;
+
+public class IndexModel : PageModel
 {
-    public class IndexModel : PageModel
+    private readonly MaxicyclesDbContext _context;
+
+    public IndexModel(MaxicyclesDbContext context)
     {
-        private readonly Maxicycles.Data.MaxicyclesDbContext _context;
+        _context = context;
+    }
 
-        public IndexModel(Maxicycles.Data.MaxicyclesDbContext context)
-        {
-            _context = context;
-        }
+    public IList<Post> Post { get; set; } = default!;
 
-        public IList<Post> Post { get;set; } = default!;
+    public async Task OnGetAsync()
+    {
+        // Get a list of all posts from the database.
+        Post = await _context.Post
+            .Include(p => p.MaxicyclesUser).ToListAsync();
 
-        public async Task OnGetAsync()
-        {
-            Post = await _context.Post
-                .Include(p => p.MaxicyclesUser).ToListAsync();
-
-            foreach (var post in Post)
-            {
-                post.UploadedAt = post.UploadedAt.ToLocalTime();
-            }
-        }
+        // For each post convert the uploaded at time to local time for display.
+        foreach (var post in Post) post.UploadedAt = post.UploadedAt.ToLocalTime();
     }
 }

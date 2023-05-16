@@ -1,104 +1,88 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Maxicycles.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Maxicycles.Data;
-using Maxicycles.Models;
 
-namespace Maxicycles.Pages.Admin.Blog.Comments
+namespace Maxicycles.Pages.Admin.Blog.Comments;
+
+public class EditModel : PageModel
 {
-    public class EditModel : PageModel
+    private readonly MaxicyclesDbContext _context;
+
+    public EditModel(MaxicyclesDbContext context)
     {
-        private readonly Maxicycles.Data.MaxicyclesDbContext _context;
+        _context = context;
+    }
 
-        public EditModel(Maxicycles.Data.MaxicyclesDbContext context)
+    [BindProperty] public EditCommentModel EditComment { get; set; } = default!;
+
+    [BindProperty] public string? UserEmail { get; set; }
+
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        // Check if the id is not null.
+        if (id == null) return NotFound();
+
+        // Get the comment that matches the id.
+        var comment = await _context.Comment.Include(c => c.MaxicyclesUser).FirstOrDefaultAsync(m => m.Id == id);
+
+        // Return not found if the comment does not exist.
+        if (comment == null) return NotFound("Comment does not exist.");
+
+        //Populate the editCommentModel with details from the database.
+        EditComment = new EditCommentModel
         {
-            _context = context;
+            Id = comment.Id,
+            Content = comment.Content
+        };
+
+        // Get the users email.
+        UserEmail = comment.MaxicyclesUser?.Email;
+
+        return Page();
+    }
+
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see https://aka.ms/RazorPagesCRUD.
+    public async Task<IActionResult> OnPostAsync()
+    {
+        // Get the comment by id.
+        var comment = await _context.Comment.FindAsync(EditComment.Id);
+
+        if (comment == null) return NotFound();
+
+        // Check if the model passes the validation.
+        if (!ModelState.IsValid) return Page();
+
+        // Populate the content field with the new content.
+        comment.Content = EditComment.Content;
+
+        // Track changes.
+        _context.Attach(comment).State = EntityState.Modified;
+
+        // Save changes to the database.
+        try
+        {
+            await _context.SaveChangesAsync();
         }
-        
-        [BindProperty]
-        public EditCommentModel Comment { get; set; } = default!;
-        
-        [BindProperty]
-        public string? UserEmail { get; set; }
-        
-        public class EditCommentModel
+        catch (DbUpdateConcurrencyException)
         {
-            public int Id { get; set; }
-            public string? Content { get; set; }
-        }
-        
-        public async Task<IActionResult> OnGetAsync(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var comment =  await _context.Comment.Include(c => c.MaxicyclesUser).FirstOrDefaultAsync(m => m.Id == id);
-            
-            if (comment == null)
-            {
-                return NotFound();
-            }
-            
-            Comment =  new EditCommentModel
-            {
-                Id = comment.Id,
-                Content = comment.Content
-            };
-
-            UserEmail = comment.MaxicyclesUser?.Email;
-            
-            return Page();
-        }
-
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
-        {
-            var comment = await _context.Comment.FindAsync(Comment.Id);
-
-            if (comment == null)
-            {
-                return NotFound();
-            }
-            
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
-            comment.Content = Comment.Content;
-            
-            _context.Attach(comment).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!CommentExists(Comment.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return RedirectToPage("./Index");
+            if (!CommentExists(EditComment.Id)) return NotFound();
+            throw;
         }
 
-        private bool CommentExists(int id)
-        {
-          return (_context.Comment?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+        return RedirectToPage("./Index");
+    }
+
+    // Check if the comment exists in the database.
+    private bool CommentExists(int id)
+    {
+        return (_context.Comment?.Any(e => e.Id == id)).GetValueOrDefault();
+    }
+
+    public class EditCommentModel
+    {
+        public int Id { get; set; }
+        public string? Content { get; set; }
     }
 }
