@@ -1,46 +1,42 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Maxicycles.Data;
+using Maxicycles.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Maxicycles.Data;
-using Maxicycles.Models;
 
-namespace Maxicycles.Pages.Admin.Services
+namespace Maxicycles.Pages.Admin.Services;
+
+public class CreateModel : PageModel
 {
-    public class CreateModel : PageModel
+    private readonly MaxicyclesDbContext _context;
+
+    public CreateModel(MaxicyclesDbContext context)
     {
-        private readonly Maxicycles.Data.MaxicyclesDbContext _context;
+        _context = context;
+    }
 
-        public CreateModel(Maxicycles.Data.MaxicyclesDbContext context)
-        {
-            _context = context;
-        }
+    [BindProperty] public OrderItem OrderItem { get; set; } = default!;
 
-        public IActionResult OnGet()
-        {
+    public IActionResult OnGet()
+    {
+        // Fill a select list with a list of all available orders.
         ViewData["OrderId"] = new SelectList(_context.Orders, "Id", "Id");
-            return Page();
-        }
+        return Page();
+    }
 
-        [BindProperty]
-        public OrderItem OrderItem { get; set; } = default!;
-        
 
-        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
-        public async Task<IActionResult> OnPostAsync()
-        {
-          if (!ModelState.IsValid || _context.OrderItems == null || OrderItem == null)
-            {
-                return Page();
-            }
+    // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
+    public async Task<IActionResult> OnPostAsync()
+    {
+        // Check if form input meets the validation criteria.
+        if (!ModelState.IsValid) return Page();
 
-            _context.OrderItems.Add(OrderItem);
-            await _context.SaveChangesAsync();
+        // Add the order item to the database.
+        _context.OrderItems.Add(OrderItem);
 
-            return RedirectToPage("./Index");
-        }
+        await _context.SaveChangesAsync();
+
+        // Redirect to main view.
+        return RedirectToPage("./Index");
     }
 }

@@ -8,32 +8,32 @@
 <h1>Create</h1>
 
 <h4>OrderItem</h4>
-<hr />
+<hr/>
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="OrderItem.Quantity" class="control-label"></label>
-                <input asp-for="OrderItem.Quantity" class="form-control" />
+                <input asp-for="OrderItem.Quantity" class="form-control"/>
                 <span asp-validation-for="OrderItem.Quantity" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="OrderItem.ItemPrice" class="control-label"></label>
-                <input asp-for="OrderItem.ItemPrice" class="form-control" />
+                <input asp-for="OrderItem.ItemPrice" class="form-control"/>
                 <span asp-validation-for="OrderItem.ItemPrice" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="OrderItem.Title" class="control-label"></label>
-                <input asp-for="OrderItem.Title" class="form-control" />
+                <input asp-for="OrderItem.Title" class="form-control"/>
                 <span asp-validation-for="OrderItem.Title" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="OrderItem.OrderId" class="control-label"></label>
-                <select asp-for="OrderItem.OrderId" class ="form-control" asp-items="ViewBag.OrderId"></select>
+                <select asp-for="OrderItem.OrderId" class="form-control" asp-items="ViewBag.OrderId"></select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary"/>
             </div>
         </form>
     </div>
@@ -42,4 +42,3 @@
 <div>
     <a asp-page="Index">Back to List</a>
 </div>
-

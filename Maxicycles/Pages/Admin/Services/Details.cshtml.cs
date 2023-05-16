@@ -1,43 +1,36 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Maxicycles.Data;
+using Maxicycles.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Maxicycles.Data;
-using Maxicycles.Models;
 
-namespace Maxicycles.Pages.Admin.Services
+namespace Maxicycles.Pages.Admin.Services;
+
+public class DetailsModel : PageModel
 {
-    public class DetailsModel : PageModel
+    private readonly MaxicyclesDbContext _context;
+
+    public DetailsModel(MaxicyclesDbContext context)
     {
-        private readonly Maxicycles.Data.MaxicyclesDbContext _context;
+        _context = context;
+    }
 
-        public DetailsModel(Maxicycles.Data.MaxicyclesDbContext context)
-        {
-            _context = context;
-        }
+    public OrderItem OrderItem { get; set; } = default!;
 
-      public OrderItem OrderItem { get; set; } = default!; 
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        // if the ID is not null.
+        if (id == null) return NotFound();
 
-        public async Task<IActionResult> OnGetAsync(int? id)
-        {
-            if (id == null || _context.OrderItems == null)
-            {
-                return NotFound();
-            }
+        // Get the order item that matches the ID from the parameter.
+        var orderItem = await _context.OrderItems.FirstOrDefaultAsync(m => m.Id == id);
 
-            var orderitem = await _context.OrderItems.FirstOrDefaultAsync(m => m.Id == id);
-            if (orderitem == null)
-            {
-                return NotFound();
-            }
-            else 
-            {
-                OrderItem = orderitem;
-            }
-            return Page();
-        }
+        // If the product is not found in the database.
+        if (orderItem == null) return NotFound();
+
+        // Populate the model with order information from the database.
+        OrderItem = orderItem;
+
+        return Page();
     }
 }
