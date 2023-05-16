@@ -9,20 +9,20 @@
 
 <h1>Edit Order</h1>
 
-<hr />
+<hr/>
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="OrderEdit.Id" />
+            <input type="hidden" asp-for="OrderEdit.Id"/>
             <div class="form-group">
                 <label asp-for="OrderEdit.RequiredDate" class="control-label"></label>
-                <input asp-for="OrderEdit.RequiredDate" class="form-control" />
+                <input asp-for="OrderEdit.RequiredDate" class="form-control"/>
                 <span asp-validation-for="OrderEdit.RequiredDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="OrderEdit.ShippedDate" class="control-label"></label>
-                <input asp-for="OrderEdit.ShippedDate" class="form-control" />
+                <input asp-for="OrderEdit.ShippedDate" class="form-control"/>
                 <span asp-validation-for="OrderEdit.ShippedDate" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -31,7 +31,7 @@
                 <span asp-validation-for="OrderEdit.OrderStatus" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary"/>
             </div>
         </form>
     </div>
@@ -40,4 +40,3 @@
 <div>
     <a asp-page="./Index">Back to All Orders</a>
 </div>
-

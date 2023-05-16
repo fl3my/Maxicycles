@@ -1,43 +1,46 @@
+using Maxicycles.Data;
 using Maxicycles.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace Maxicycles.Pages.Admin.Store.Services
+namespace Maxicycles.Pages.Admin.Store.Services;
+
+public class CreateModel : PageModel
 {
-    public class CreateModel : PageModel
+    private readonly MaxicyclesDbContext _context;
+    private IWebHostEnvironment _environment;
+
+    public CreateModel(MaxicyclesDbContext context, IWebHostEnvironment environment)
     {
-        private readonly Maxicycles.Data.MaxicyclesDbContext _context;
-        private IWebHostEnvironment _environment;
-        
-        public CreateModel(Maxicycles.Data.MaxicyclesDbContext context, IWebHostEnvironment environment)
-        {
-            _context = context;
-            _environment = environment;
-        }
+        _context = context;
+        _environment = environment;
+    }
 
-        public IActionResult OnGet()
-        {
-            ViewData["SubcategoryId"] = new SelectList(_context.SubCategory, "Id", "Title");
-            ViewData["ImageId"] = new SelectList(_context.Image, "Id", "Title");
-            return Page();
-        }
+    [BindProperty] public Service Service { get; set; } = default!;
 
-        [BindProperty]
-        public Service Service { get; set; } = default!;
+    public IActionResult OnGet()
+    {
+        // Pass a new select list with subcategory data.
+        ViewData["SubcategoryId"] = new SelectList(_context.SubCategory, "Id", "Title");
 
-        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
-        public async Task<IActionResult> OnPostAsync()
-        {
-          if (!ModelState.IsValid)
-          {
-              return Page();
-          }
+        // Pass a new select list with image data.
+        ViewData["ImageId"] = new SelectList(_context.Image, "Id", "Title");
 
-          _context.Service.Add(Service);
-          await _context.SaveChangesAsync();
+        return Page();
+    }
 
-          return RedirectToPage("./Index");
-        }
+    // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
+    public async Task<IActionResult> OnPostAsync()
+    {
+        // Check if input form passes the validation.
+        if (!ModelState.IsValid) return Page();
+
+        // Add the product to the database.
+        _context.Service.Add(Service);
+
+        await _context.SaveChangesAsync();
+
+        return RedirectToPage("./Index");
     }
 }

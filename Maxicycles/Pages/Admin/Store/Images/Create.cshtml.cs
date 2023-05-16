@@ -1,61 +1,61 @@
+using Maxicycles.Data;
 using Maxicycles.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Maxicycles.Pages.Admin.Store.Images
+namespace Maxicycles.Pages.Admin.Store.Images;
+
+public class CreateModel : PageModel
 {
-    public class CreateModel : PageModel
+    private readonly MaxicyclesDbContext _context;
+    private readonly IWebHostEnvironment _environment;
+
+    public CreateModel(MaxicyclesDbContext context, IWebHostEnvironment environment)
     {
-        private readonly Maxicycles.Data.MaxicyclesDbContext _context;
-        private readonly IWebHostEnvironment _environment;
-        
-        public CreateModel(Maxicycles.Data.MaxicyclesDbContext context, IWebHostEnvironment environment)
+        _context = context;
+        _environment = environment;
+    }
+
+    [BindProperty] public Image Image { get; set; } = default!;
+
+    [BindProperty] public IFormFile? ImageFile { get; set; }
+
+    public IActionResult OnGet()
+    {
+        return Page();
+    }
+
+    // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
+    public async Task<IActionResult> OnPostAsync()
+    {
+        // Check if the input passes the model validation.
+        if (!ModelState.IsValid) return Page();
+
+        // if the user has uploaded an Image.
+        if (ImageFile != null)
         {
-            _context = context;
-            _environment = environment;
+            // Get the filename and extension.
+            var fileName = Path.GetFileNameWithoutExtension(ImageFile.FileName);
+            var extension = Path.GetExtension(ImageFile.FileName);
+
+            // Create unique name for the image.
+            Image.ImageName = fileName + "_" + Guid.NewGuid() + extension;
+
+            var path = Path.Combine(_environment.WebRootPath + "/uploads/" + Image.ImageName);
+
+            // Write the file to the image directory.
+            await using var fileStream = new FileStream(path, FileMode.Create);
+            await ImageFile.CopyToAsync(fileStream);
         }
 
-        public IActionResult OnGet()
-        {
-            return Page();
-        }
+        // Add the image upload time.
+        Image.UploadedAt = DateTime.UtcNow;
 
-        [BindProperty]
-        public Image Image { get; set; } = default!;
+        // Add the image to the database.
+        _context.Image.Add(Image);
 
-        [BindProperty]
-        public IFormFile? ImageFile { get; set; }
+        await _context.SaveChangesAsync();
 
-        // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
-        public async Task<IActionResult> OnPostAsync()
-        {
-          if (!ModelState.IsValid)
-          {
-              return Page();
-          }
-
-          if (ImageFile != null)
-          {
-              // Get the filename and extension.
-              var fileName = Path.GetFileNameWithoutExtension(ImageFile.FileName);
-              var extension = Path.GetExtension(ImageFile.FileName);
-
-              // Create unique name for the image.
-              Image.ImageName = fileName + "_" + Guid.NewGuid() + extension;
-
-              var path = Path.Combine(_environment.WebRootPath + "/uploads/" + Image.ImageName);
-            
-              // Write the file to the image directory.
-              await using var fileStream = new FileStream(path, FileMode.Create);
-              await ImageFile.CopyToAsync(fileStream);
-          }
-          
-          Image.UploadedAt = DateTime.Now.ToUniversalTime();
-          
-          _context.Image.Add(Image);
-          await _context.SaveChangesAsync();
-
-          return RedirectToPage("./Index");
-        }
+        return RedirectToPage("./Index");
     }
 }

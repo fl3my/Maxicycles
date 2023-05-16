@@ -1,80 +1,73 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Maxicycles.Data;
+using Maxicycles.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Maxicycles.Data;
-using Maxicycles.Models;
 
-namespace Maxicycles.Pages.Admin.Store.Products
+namespace Maxicycles.Pages.Admin.Store.Products;
+
+public class EditModel : PageModel
 {
-    public class EditModel : PageModel
+    private readonly MaxicyclesDbContext _context;
+
+    public EditModel(MaxicyclesDbContext context)
     {
-        private readonly Maxicycles.Data.MaxicyclesDbContext _context;
+        _context = context;
+    }
 
-        public EditModel(Maxicycles.Data.MaxicyclesDbContext context)
+    [BindProperty] public Product Product { get; set; } = default!;
+
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        // Check that the id is not null.
+        if (id == null) return NotFound();
+
+        // Get the product from the database that matches the parameter id.
+        var product = await _context.Product.FindAsync(id);
+
+        // If the product does not exist.
+        if (product == null) return NotFound("Product does not exist.");
+
+        // Populate the product model with product data from the database.
+        Product = product;
+
+        // Pass a new select list with subcategory data.
+        ViewData["SubcategoryId"] = new SelectList(_context.SubCategory, "Id", "Title");
+
+        // Pass a new select list with image data.
+        ViewData["ImageId"] = new SelectList(_context.Image, "Id", "Title");
+
+        return Page();
+    }
+
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see https://aka.ms/RazorPagesCRUD.
+    public async Task<IActionResult> OnPostAsync()
+    {
+        // Check if the input form passes validation.
+        if (!ModelState.IsValid) return Page();
+
+        // Track changes.
+        _context.Attach(Product).State = EntityState.Modified;
+
+        // Save changes to the database.
+        try
         {
-            _context = context;
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!ProductExists(Product.Id)) return NotFound();
+            throw;
         }
 
-        [BindProperty]
-        public Product Product { get; set; } = default!;
+        return RedirectToPage("./Index");
+    }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var product =  await _context.Product.FirstOrDefaultAsync(m => m.Id == id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-            Product = product;
-            ViewData["SubcategoryId"] = new SelectList(_context.SubCategory, "Id", "Title");
-           ViewData["ImageId"] = new SelectList(_context.Image, "Id", "Title");
-           
-           return Page();
-        }
-
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
-        {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
-            _context.Attach(Product).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ProductExists(Product.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return RedirectToPage("./Index");
-        }
-
-        private bool ProductExists(int id)
-        {
-          return (_context.Product?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+    // Function to check if the product exists in the database.
+    private bool ProductExists(int id)
+    {
+        return (_context.Product?.Any(e => e.Id == id)).GetValueOrDefault();
     }
 }

@@ -1,58 +1,57 @@
+using Maxicycles.Data;
 using Maxicycles.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
-namespace Maxicycles.Pages.Admin.Store.DeliveryMethods
+namespace Maxicycles.Pages.Admin.Store.DeliveryMethods;
+
+public class DeleteModel : PageModel
 {
-    public class DeleteModel : PageModel
+    private readonly MaxicyclesDbContext _context;
+
+    public DeleteModel(MaxicyclesDbContext context)
     {
-        private readonly Maxicycles.Data.MaxicyclesDbContext _context;
+        _context = context;
+    }
 
-        public DeleteModel(Maxicycles.Data.MaxicyclesDbContext context)
-        {
-            _context = context;
-        }
+    [BindProperty] public DeliveryMethod DeliveryMethod { get; set; } = default!;
 
-        [BindProperty]
-      public DeliveryMethod DeliveryMethod { get; set; } = default!;
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        // Check if the id is not null.
+        if (id == null) return NotFound();
 
-        public async Task<IActionResult> OnGetAsync(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        // Get the delivery method that matches the parameter id.
+        var delivery = await _context.DeliveryMethods.FirstOrDefaultAsync(m => m.Id == id);
 
-            var delivery = await _context.DeliveryMethods.FirstOrDefaultAsync(m => m.Id == id);
+        // If the delivery does not exist in the database.
+        if (delivery == null) return NotFound("Delivery does not exist");
 
-            if (delivery == null)
-            {
-                return NotFound();
-            }
-            else 
-            {
-                DeliveryMethod = delivery;
-            }
-            return Page();
-        }
+        // Populate the DeliveryMethod model with data from the database.
+        DeliveryMethod = delivery;
 
-        public async Task<IActionResult> OnPostAsync(int? id)
-        {
-            if (id == null || _context.DeliveryMethods == null)
-            {
-                return NotFound();
-            }
-            var delivery = await _context.DeliveryMethods.FindAsync(id);
+        return Page();
+    }
 
-            if (delivery != null)
-            {
-                DeliveryMethod = delivery;
-                _context.DeliveryMethods.Remove(DeliveryMethod);
-                await _context.SaveChangesAsync();
-            }
+    public async Task<IActionResult> OnPostAsync(int? id)
+    {
+        // Check if the id is not null.
+        if (id == null) return NotFound();
 
-            return RedirectToPage("./Index");
-        }
+        // Get the delivery details form the database that matches the id.
+        var delivery = await _context.DeliveryMethods.FindAsync(id);
+
+        // Return to index if the delivery does not exist.
+        if (delivery == null) return RedirectToPage("./Index");
+
+        DeliveryMethod = delivery;
+
+        // Remove the deliveryMethod from the database.
+        _context.DeliveryMethods.Remove(DeliveryMethod);
+
+        await _context.SaveChangesAsync();
+
+        return RedirectToPage("./Index");
     }
 }

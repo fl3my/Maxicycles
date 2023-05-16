@@ -1,38 +1,36 @@
+using Maxicycles.Data;
 using Maxicycles.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
-namespace Maxicycles.Pages.Admin.Store.Images
+namespace Maxicycles.Pages.Admin.Store.Images;
+
+public class DetailsModel : PageModel
 {
-    public class DetailsModel : PageModel
+    private readonly MaxicyclesDbContext _context;
+
+    public DetailsModel(MaxicyclesDbContext context)
     {
-        private readonly Maxicycles.Data.MaxicyclesDbContext _context;
+        _context = context;
+    }
 
-        public DetailsModel(Maxicycles.Data.MaxicyclesDbContext context)
-        {
-            _context = context;
-        }
+    public Image Image { get; set; } = default!;
 
-      public Image Image { get; set; } = default!; 
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        // Check if id is not null.
+        if (id == null) return NotFound();
 
-        public async Task<IActionResult> OnGetAsync(int? id)
-        {
-            if (id == null || _context.Image == null)
-            {
-                return NotFound();
-            }
+        // get the image that matches the id from the database.
+        var image = await _context.Image.FirstOrDefaultAsync(m => m.Id == id);
 
-            var image = await _context.Image.FirstOrDefaultAsync(m => m.Id == id);
-            if (image == null)
-            {
-                return NotFound();
-            }
-            else 
-            {
-                Image = image;
-            }
-            return Page();
-        }
+        // Return not found if the image does not exist.
+        if (image == null) return NotFound("Image does not exist.");
+
+        // Populate the image from the database.
+        Image = image;
+
+        return Page();
     }
 }

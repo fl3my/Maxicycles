@@ -1,5 +1,5 @@
 @page
-@model Maxicycles.Pages.Admin.Store.Products.IndexModel
+@model IndexModel
 
 @{
     ViewData["Title"] = "Index";
@@ -12,30 +12,31 @@
 </p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Product[0].Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Product[0].Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Product[0].Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Product[0].Quantity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Product[0].SubCategory)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Product[0].Image)
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Product[0].Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Product[0].Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Product[0].Price)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Product[0].Quantity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Product[0].SubCategory)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Product[0].Image)
+        </th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Product) {
+    @foreach (var item in Model.Product)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Title)
@@ -61,6 +62,6 @@
                 <a asp-page="./Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>

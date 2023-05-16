@@ -8,46 +8,46 @@
 <h1>Create</h1>
 
 <h4>Product</h4>
-<hr />
+<hr/>
 <div class="row">
     <div class="col-md-4">
         <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Service.Title" class="control-label"></label>
-                <input asp-for="Service.Title" class="form-control" />
+                <input asp-for="Service.Title" class="form-control"/>
                 <span asp-validation-for="Service.Title" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Service.Description" class="control-label"></label>
-                <input asp-for="Service.Description" class="form-control" />
+                <input asp-for="Service.Description" class="form-control"/>
                 <span asp-validation-for="Service.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Service.Slug" class="control-label"></label>
-                <input asp-for="Service.Slug" class="form-control" />
+                <input asp-for="Service.Slug" class="form-control"/>
                 <span asp-validation-for="Service.Slug" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Service.Price" class="control-label"></label>
-                <input asp-for="Service.Price" class="form-control" />
+                <input asp-for="Service.Price" class="form-control"/>
                 <span asp-validation-for="Service.Price" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Service.DailyMaxServices" class="control-label"></label>
-                <input asp-for="Service.DailyMaxServices" class="form-control" />
+                <input asp-for="Service.DailyMaxServices" class="form-control"/>
                 <span asp-validation-for="Service.DailyMaxServices" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Service.SubCategoryId" class="control-label"></label>
-                <select asp-for="Service.SubCategoryId" class ="form-control" asp-items="ViewBag.SubcategoryId"></select>
+                <select asp-for="Service.SubCategoryId" class="form-control" asp-items="ViewBag.SubcategoryId"></select>
             </div>
             <div class="form-group">
                 <label asp-for="Service.ImageId" class="control-label"></label>
-                <select asp-for="Service.ImageId" class ="form-control" asp-items="ViewBag.ImageId"></select>
+                <select asp-for="Service.ImageId" class="form-control" asp-items="ViewBag.ImageId"></select>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Create" class="btn btn-primary"/>
             </div>
         </form>
     </div>
@@ -56,4 +56,3 @@
 <div>
     <a asp-page="Index">Back to List</a>
 </div>
-

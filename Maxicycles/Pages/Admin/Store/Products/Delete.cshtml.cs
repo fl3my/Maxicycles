@@ -1,67 +1,61 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Maxicycles.Data;
+using Maxicycles.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Maxicycles.Data;
-using Maxicycles.Models;
 
-namespace Maxicycles.Pages.Admin.Store.Products
+namespace Maxicycles.Pages.Admin.Store.Products;
+
+public class DeleteModel : PageModel
 {
-    public class DeleteModel : PageModel
+    private readonly MaxicyclesDbContext _context;
+
+    public DeleteModel(MaxicyclesDbContext context)
     {
-        private readonly Maxicycles.Data.MaxicyclesDbContext _context;
+        _context = context;
+    }
 
-        public DeleteModel(Maxicycles.Data.MaxicyclesDbContext context)
-        {
-            _context = context;
-        }
+    [BindProperty] public Product Product { get; set; } = default!;
 
-        [BindProperty]
-      public Product Product { get; set; } = default!;
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        // Check if the id is not null.
+        if (id == null) return NotFound();
 
-        public async Task<IActionResult> OnGetAsync(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        // Get the product detail that matches the id from the database.
+        var product = await _context
+            .Product
+            .Include(p => p.SubCategory)
+            .Include(p => p.Image)
+            .FirstOrDefaultAsync(m => m.Id == id);
 
-            var product = await _context
-                .Product
-                .Include(p => p.SubCategory)
-                .Include(p => p.Image)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            
-            if (product == null)
-            {
-                return NotFound();
-            }
-            else 
-            {
-                Product = product;
-            }
-            return Page();
-        }
+        // Check if the product does not exist.
+        if (product == null) return NotFound();
 
-        public async Task<IActionResult> OnPostAsync(int? id)
-        {
-            if (id == null || _context.Product == null)
-            {
-                return NotFound();
-            }
-            var product = await _context.Product.FindAsync(id);
+        // Populate the Product model with product details from the database.
+        Product = product;
 
-            if (product != null)
-            {
-                Product = product;
-                _context.Product.Remove(Product);
-                await _context.SaveChangesAsync();
-            }
+        return Page();
+    }
 
-            return RedirectToPage("./Index");
-        }
+    public async Task<IActionResult> OnPostAsync(int? id)
+    {
+        // Check that the id is not null.
+        if (id == null) return NotFound();
+
+        // Get the product from the database that matches the parameter id.
+        var product = await _context.Product.FindAsync(id);
+
+        // If the product does not exist, go to the index.
+        if (product == null) return RedirectToPage("./Index");
+
+        Product = product;
+
+        // Remove the product from the database.
+        _context.Product.Remove(Product);
+
+        await _context.SaveChangesAsync();
+
+        return RedirectToPage("./Index");
     }
 }

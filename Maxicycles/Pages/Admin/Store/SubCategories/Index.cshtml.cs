@@ -1,30 +1,25 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Maxicycles.Data;
 using Maxicycles.Models;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
-namespace Maxicycles.Pages.Admin.Store.SubCategories
+namespace Maxicycles.Pages.Admin.Store.SubCategories;
+
+public class IndexModel : PageModel
 {
-    public class IndexModel : PageModel
+    private readonly MaxicyclesDbContext _context;
+
+    public IndexModel(MaxicyclesDbContext context)
     {
-        private readonly Maxicycles.Data.MaxicyclesDbContext _context;
+        _context = context;
+    }
 
-        public IndexModel(Maxicycles.Data.MaxicyclesDbContext context)
-        {
-            _context = context;
-        }
+    public IList<SubCategory> SubCategory { get; set; } = default!;
 
-        public IList<SubCategory> SubCategory { get;set; } = default!;
-
-        public async Task OnGetAsync()
-        {
-            SubCategory = await _context.SubCategory
-                .Include(s => s.Category).ToListAsync();
-        }
+    public async Task OnGetAsync()
+    {
+        // Populate the subcategory list model with subcategories from the database.
+        SubCategory = await _context.SubCategory
+            .Include(s => s.Category).ToListAsync();
     }
 }

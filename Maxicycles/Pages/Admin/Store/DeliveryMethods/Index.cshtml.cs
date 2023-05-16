@@ -1,23 +1,24 @@
+using Maxicycles.Data;
 using Maxicycles.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
-namespace Maxicycles.Pages.Admin.Store.DeliveryMethods
+namespace Maxicycles.Pages.Admin.Store.DeliveryMethods;
+
+public class IndexModel : PageModel
 {
-    public class IndexModel : PageModel
+    private readonly MaxicyclesDbContext _context;
+
+    public IndexModel(MaxicyclesDbContext context)
     {
-        private readonly Maxicycles.Data.MaxicyclesDbContext _context;
+        _context = context;
+    }
 
-        public IndexModel(Maxicycles.Data.MaxicyclesDbContext context)
-        {
-            _context = context;
-        }
+    public IList<DeliveryMethod> Delivery { get; set; } = default!;
 
-        public IList<DeliveryMethod> Delivery { get;set; } = default!;
-
-        public async Task OnGetAsync()
-        {
-            Delivery = await _context.DeliveryMethods.ToListAsync();
-        }
+    public async Task OnGetAsync()
+    {
+        // Populate the list model with the delivery methods from the database.
+        Delivery = await _context.DeliveryMethods.ToListAsync();
     }
 }

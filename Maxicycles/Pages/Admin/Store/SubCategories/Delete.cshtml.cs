@@ -1,63 +1,56 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Maxicycles.Data;
 using Maxicycles.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Maxicycles.Pages.Admin.Store.SubCategories
+namespace Maxicycles.Pages.Admin.Store.SubCategories;
+
+public class DeleteModel : PageModel
 {
-    public class DeleteModel : PageModel
+    private readonly MaxicyclesDbContext _context;
+
+    public DeleteModel(MaxicyclesDbContext context)
     {
-        private readonly Maxicycles.Data.MaxicyclesDbContext _context;
+        _context = context;
+    }
 
-        public DeleteModel(Maxicycles.Data.MaxicyclesDbContext context)
-        {
-            _context = context;
-        }
+    [BindProperty] public SubCategory SubCategory { get; set; } = default!;
 
-        [BindProperty]
-      public SubCategory SubCategory { get; set; } = default!;
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        // Check if the id is not null.
+        if (id == null) return NotFound();
 
-        public async Task<IActionResult> OnGetAsync(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        // Get the subcategory that matches the parameter id.
+        var subcategory = await _context.SubCategory.FindAsync(id);
 
-            var subcategory = await _context.SubCategory.FirstOrDefaultAsync(m => m.Id == id);
+        // If the subcategory does not exist.
+        if (subcategory == null) return NotFound("Subcategory does not exist.");
 
-            if (subcategory == null)
-            {
-                return NotFound();
-            }
-            else 
-            {
-                SubCategory = subcategory;
-            }
-            return Page();
-        }
+        // Populate model with subcategory details from the database.
+        SubCategory = subcategory;
 
-        public async Task<IActionResult> OnPostAsync(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-            var subcategory = await _context.SubCategory.FindAsync(id);
+        return Page();
+    }
 
-            if (subcategory != null)
-            {
-                SubCategory = subcategory;
-                _context.SubCategory.Remove(SubCategory);
-                await _context.SaveChangesAsync();
-            }
+    public async Task<IActionResult> OnPostAsync(int? id)
+    {
+        // Check if the id is not null.
+        if (id == null) return NotFound();
 
-            return RedirectToPage("./Index");
-        }
+        // Get the subcategory from the database that matches the parameter id.
+        var subcategory = await _context.SubCategory.FindAsync(id);
+
+        // Redirect to index if subcategory is null.
+        if (subcategory == null) return RedirectToPage("./Index");
+
+        SubCategory = subcategory;
+
+        // Remove the subcategory from the database.
+        _context.SubCategory.Remove(SubCategory);
+
+        await _context.SaveChangesAsync();
+
+        return RedirectToPage("./Index");
     }
 }

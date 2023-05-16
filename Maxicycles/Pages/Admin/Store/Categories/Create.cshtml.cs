@@ -31,17 +31,17 @@ namespace Maxicycles.Pages.Admin.Store.Categories
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
-          if (!ModelState.IsValid)
-          {
-              return Page();
-          }
-          
-          
-          
-          _context.Category.Add(Category);
-          await _context.SaveChangesAsync();
+            // Check if the form input matches validation.
+            if (!ModelState.IsValid)
+            {
+                return Page();
+            }
+            
+            // Add the category to the database.
+            _context.Category.Add(Category);
+            await _context.SaveChangesAsync();
 
-          return RedirectToPage("./Index");
+            return RedirectToPage("./Index");
         }
     }
 }

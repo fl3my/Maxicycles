@@ -23,6 +23,7 @@ namespace Maxicycles.Pages.Admin.Store.Categories
 
         public async Task OnGetAsync()
         {
+            // Populate the list model with all the categories from the database.
             Category = await _context.Category.ToListAsync();
         }
     }

@@ -1,43 +1,35 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Maxicycles.Data;
 using Maxicycles.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Maxicycles.Pages.Admin.Store.SubCategories
+namespace Maxicycles.Pages.Admin.Store.SubCategories;
+
+public class DetailsModel : PageModel
 {
-    public class DetailsModel : PageModel
+    private readonly MaxicyclesDbContext _context;
+
+    public DetailsModel(MaxicyclesDbContext context)
     {
-        private readonly Maxicycles.Data.MaxicyclesDbContext _context;
+        _context = context;
+    }
 
-        public DetailsModel(Maxicycles.Data.MaxicyclesDbContext context)
-        {
-            _context = context;
-        }
+    public SubCategory SubCategory { get; set; } = default!;
 
-      public SubCategory SubCategory { get; set; } = default!; 
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        // Check if the id is not null.
+        if (id == null) return NotFound();
 
-        public async Task<IActionResult> OnGetAsync(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
+        // Get the subcategory that matches the id.
+        var subcategory = await _context.SubCategory.FindAsync(id);
 
-            var subcategory = await _context.SubCategory.FirstOrDefaultAsync(m => m.Id == id);
-            if (subcategory == null)
-            {
-                return NotFound();
-            }
-            else 
-            {
-                SubCategory = subcategory;
-            }
-            return Page();
-        }
+        // If the subcategory does not exist return not found.
+        if (subcategory == null) return NotFound("Subcategory does not exist.");
+
+        // Populate the subcategory model with subcategory details from the database.
+        SubCategory = subcategory;
+
+        return Page();
     }
 }

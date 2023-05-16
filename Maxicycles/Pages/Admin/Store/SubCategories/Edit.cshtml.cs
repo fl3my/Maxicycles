@@ -1,78 +1,71 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Maxicycles.Data;
+using Maxicycles.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Maxicycles.Data;
-using Maxicycles.Models;
 
-namespace Maxicycles.Pages.Admin.Store.SubCategories
+namespace Maxicycles.Pages.Admin.Store.SubCategories;
+
+public class EditModel : PageModel
 {
-    public class EditModel : PageModel
+    private readonly MaxicyclesDbContext _context;
+
+    public EditModel(MaxicyclesDbContext context)
     {
-        private readonly Maxicycles.Data.MaxicyclesDbContext _context;
+        _context = context;
+    }
 
-        public EditModel(Maxicycles.Data.MaxicyclesDbContext context)
+    [BindProperty] public SubCategory SubCategory { get; set; } = default!;
+
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        // Check if the id is not null.
+        if (id == null) return NotFound();
+
+        // Get the subcategory that matches the id parameter.
+        var subcategory = await _context.SubCategory.FindAsync(id);
+
+        // Return not found if the subcategory does not exist.
+        if (subcategory == null) return NotFound("Subcategory does not exist.");
+
+        // Populate the subcategory model with details from the database.
+        SubCategory = subcategory;
+
+        // Add the category details toa new select list input.
+        ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Title");
+
+        return Page();
+    }
+
+    // To protect from overposting attacks, enable the specific properties you want to bind to.
+    // For more details, see https://aka.ms/RazorPagesCRUD.
+    public async Task<IActionResult> OnPostAsync()
+    {
+        // Check if form input passes the validation.
+        if (!ModelState.IsValid) return Page();
+
+        // Track changes.
+        _context.Attach(SubCategory).State = EntityState.Modified;
+
+        // Save changes to the database.
+        try
         {
-            _context = context;
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException)
+        {
+            if (!SubCategoryExists(SubCategory.Id)) return NotFound();
+
+            throw;
         }
 
-        [BindProperty]
-        public SubCategory SubCategory { get; set; } = default!;
+        return RedirectToPage("./Index");
+    }
 
-        public async Task<IActionResult> OnGetAsync(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var subcategory =  await _context.SubCategory.FirstOrDefaultAsync(m => m.Id == id);
-            if (subcategory == null)
-            {
-                return NotFound();
-            }
-            SubCategory = subcategory;
-           ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Id");
-            return Page();
-        }
-
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
-        {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
-            _context.Attach(SubCategory).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SubCategoryExists(SubCategory.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return RedirectToPage("./Index");
-        }
-
-        private bool SubCategoryExists(int id)
-        {
-          return (_context.SubCategory?.Any(e => e.Id == id)).GetValueOrDefault();
-        }
+    // Function that checks if the subcategory exists in the database.
+    private bool SubCategoryExists(int id)
+    {
+        return (_context.SubCategory?.Any(e => e.Id == id)).GetValueOrDefault();
     }
 }

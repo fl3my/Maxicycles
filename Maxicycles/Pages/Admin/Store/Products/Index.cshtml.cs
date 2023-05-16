@@ -1,32 +1,27 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Maxicycles.Data;
 using Maxicycles.Models;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
-namespace Maxicycles.Pages.Admin.Store.Products
+namespace Maxicycles.Pages.Admin.Store.Products;
+
+public class IndexModel : PageModel
 {
-    public class IndexModel : PageModel
+    private readonly MaxicyclesDbContext _context;
+
+    public IndexModel(MaxicyclesDbContext context)
     {
-        private readonly Maxicycles.Data.MaxicyclesDbContext _context;
+        _context = context;
+    }
 
-        public IndexModel(Maxicycles.Data.MaxicyclesDbContext context)
-        {
-            _context = context;
-        }
+    public IList<Product> Product { get; set; } = default!;
 
-        public IList<Product> Product { get;set; } = default!;
-
-        public async Task OnGetAsync()
-        {
-            Product = await _context.Product
-                .Include(p => p.SubCategory)
-                .Include(p => p.Image)
-                .ToListAsync();
-        }
+    public async Task OnGetAsync()
+    {
+        // Put all products into the list from the database.
+        Product = await _context.Product
+            .Include(p => p.SubCategory)
+            .Include(p => p.Image)
+            .ToListAsync();
     }
 }

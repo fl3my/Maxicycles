@@ -23,20 +23,23 @@ namespace Maxicycles.Pages.Admin.Store.Categories
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
+            // Check if the id is not null.
             if (id == null)
             {
                 return NotFound();
             }
 
+            // Get the category from the database that matches the id from the parameter.
             var category = await _context.Category.FirstOrDefaultAsync(m => m.Id == id);
+            
+            // If the category does not exist.
             if (category == null)
             {
-                return NotFound();
+                return NotFound("Category does not exist.");
             }
-            else 
-            {
-                Category = category;
-            }
+
+            Category = category;
+            
             return Page();
         }
     }

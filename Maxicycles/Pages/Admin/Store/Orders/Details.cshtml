@@ -1,12 +1,12 @@
 @page
-@model Maxicycles.Pages.Admin.Store.Orders.DetailsModel
+@model DetailsModel
 
 @{
     ViewData["Title"] = "Details";
 }
 
 <h1>Order</h1>
-<hr />
+<hr/>
 
 <dl class="row">
     <dt class="col-sm-2">
@@ -42,7 +42,7 @@
 </dl>
 
 <h4>Buyer Details</h4>
-<hr />
+<hr/>
 <dl class="row">
     <dt class="col-sm-2">
         @Html.DisplayNameFor(model => model.MaxicyclesUser.Email)
@@ -71,7 +71,7 @@
 </dl>
 
 <h4>Shipping Address</h4>
-<hr />
+<hr/>
 <dl class="row">
     <dt class="col-sm-2">
         @Html.DisplayNameFor(model => model.Order.AddressLine1)
@@ -100,7 +100,7 @@
 </dl>
 
 <h4>Payment Details</h4>
-<hr />
+<hr/>
 <dl class="row">
     <dt class="col-sm-2">
         @Html.DisplayNameFor(model => model.Card.IsPaid)
@@ -161,19 +161,19 @@
     <thead>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.OrderItem[0].Title)
+            @Html.DisplayNameFor(model => model.OrderItemDetails[0].Title)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.OrderItem[0].Quantity)
+            @Html.DisplayNameFor(model => model.OrderItemDetails[0].Quantity)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.OrderItem[0].ItemPrice)
+            @Html.DisplayNameFor(model => model.OrderItemDetails[0].ItemPrice)
         </th>
         <th>Line Price</th>
     </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model.OrderItem)
+    @foreach (var item in Model.OrderItemDetails)
     {
         <tr>
             <td>
