@@ -1,5 +1,5 @@
 @page
-@model Maxicycles.Pages.MyOrders.CancelModel
+@model CancelModel
 
 @{
     ViewData["Title"] = "Cancel";
@@ -10,7 +10,7 @@
 <h3>Are you sure you want to cancel this order?</h3>
 <div>
     <h4>Order</h4>
-    <hr />
+    <hr/>
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Order.OrderDate)
@@ -31,10 +31,10 @@
             @Html.DisplayFor(model => model.Order.TotalPrice)
         </dd>
     </dl>
-    
+
     <form method="post">
-        <input type="hidden" asp-for="Order.Id" />
-        <input type="submit" value="Cancel Order" class="btn btn-danger" /> |
+        <input type="hidden" asp-for="Order.Id"/>
+        <input type="submit" value="Cancel Order" class="btn btn-danger"/> |
         <a asp-page="./Index">Back to My Orders</a>
     </form>
 </div>

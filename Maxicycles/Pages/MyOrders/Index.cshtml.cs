@@ -1,45 +1,41 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Maxicycles.Data;
 using Maxicycles.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
-namespace Maxicycles.Pages.MyOrders
+namespace Maxicycles.Pages.MyOrders;
+
+public class IndexModel : PageModel
 {
-    public class IndexModel : PageModel
+    private readonly MaxicyclesDbContext _context;
+    private readonly UserManager<MaxicyclesUser> _userManager;
+
+    public IndexModel(MaxicyclesDbContext context, UserManager<MaxicyclesUser> userManager)
     {
-        private readonly Maxicycles.Data.MaxicyclesDbContext _context;
-        private readonly UserManager<MaxicyclesUser> _userManager;
+        _context = context;
+        _userManager = userManager;
+    }
 
-        public IndexModel(Maxicycles.Data.MaxicyclesDbContext context, UserManager<MaxicyclesUser> userManager)
+    public IList<Order> Order { get; set; } = default!;
+
+    public async Task OnGetAsync()
+    {
+        // Find the id for the current logged in user.
+        var userId = _userManager.GetUserId(User);
+
+        // Populate a list of order models with order details from the database that the user has made.
+        Order = await _context.Orders
+            .Where(b => b.MaxicyclesUserId == userId)
+            .Include(o => o.DeliveryMethod)
+            .Include(o => o.MaxicyclesUser).ToListAsync();
+
+        // Convert UTC to local time.
+        foreach (var order in Order)
         {
-            _context = context;
-            _userManager = userManager;
-        }
-
-        public IList<Order> Order { get;set; } = default!;
-
-        public async Task OnGetAsync()
-        {
-            var userId = _userManager.GetUserId(User);
-
-            Order = await _context.Orders
-                .Where(b => b.MaxicyclesUserId == userId)
-                .Include(o => o.DeliveryMethod)
-                .Include(o => o.MaxicyclesUser).ToListAsync();
-            
-            // Convert UTC to local time.
-            foreach (var order in Order)
-            {
-                order.OrderDate = order.OrderDate.ToLocalTime();
-                order.RequiredDate = order.RequiredDate.ToLocalTime();
-                order.ShippedDate = order.ShippedDate?.ToLocalTime();
-            }
+            order.OrderDate = order.OrderDate.ToLocalTime();
+            order.RequiredDate = order.RequiredDate.ToLocalTime();
+            order.ShippedDate = order.ShippedDate?.ToLocalTime();
         }
     }
 }

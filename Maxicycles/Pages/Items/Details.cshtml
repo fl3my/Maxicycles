@@ -1,6 +1,6 @@
 @page "{slug}"
 @using Maxicycles.Models
-@model Maxicycles.Pages.Items.DetailsModel
+@model DetailsModel
 
 @{
     ViewData["Title"] = "Details";
@@ -8,7 +8,9 @@
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="#">Items</a></li>
+        <li class="breadcrumb-item">
+            <a href="#">Items</a>
+        </li>
         <li class="breadcrumb-item active" aria-current="page">Detail</li>
     </ol>
 </nav>
@@ -17,7 +19,7 @@
 
 <div>
     <h4>Product</h4>
-    <hr />
+    <hr/>
     <dl class="row">
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Item.Title)
@@ -53,7 +55,7 @@
 </div>
 <div>
     <a asp-page="./Index">Back to List</a>
-    
+
     @if (Model.Item is Service)
     {
         <a asp-page="/Basket/AddService" asp-route-id="@Model.Item.Id">Book Now</a>

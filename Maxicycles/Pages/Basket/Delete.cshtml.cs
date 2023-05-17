@@ -1,63 +1,58 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Maxicycles.Data;
+using Maxicycles.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Maxicycles.Data;
-using Maxicycles.Models;
 
-namespace Maxicycles.Pages.Basket
+namespace Maxicycles.Pages.Basket;
+
+public class DeleteModel : PageModel
 {
-    public class DeleteModel : PageModel
+    private readonly MaxicyclesDbContext _context;
+
+    public DeleteModel(MaxicyclesDbContext context)
     {
-        private readonly Maxicycles.Data.MaxicyclesDbContext _context;
+        _context = context;
+    }
 
-        public DeleteModel(Maxicycles.Data.MaxicyclesDbContext context)
-        {
-            _context = context;
-        }
+    [BindProperty] public BasketItem BasketItem { get; set; } = default!;
 
-        [BindProperty]
-      public BasketItem BasketItem { get; set; } = default!;
+    public async Task<IActionResult> OnGetAsync(int? id)
+    {
+        // Check if the id is not null.
+        if (id == null) return NotFound();
 
-        public async Task<IActionResult> OnGetAsync(int? id)
-        {
-            if (id == null || _context.BasketItem == null)
-            {
-                return NotFound();
-            }
+        // Get the basket item from the ID parameter.
+        var basketItem = await _context.BasketItem.FirstOrDefaultAsync(m => m.Id == id);
 
-            var basketitem = await _context.BasketItem.FirstOrDefaultAsync(m => m.Id == id);
+        // Check if the basket item exists.
+        if (basketItem == null) return NotFound("BasketItem does not exist.");
 
-            if (basketitem == null)
-            {
-                return NotFound();
-            }
-            else 
-            {
-                BasketItem = basketitem;
-            }
-            return Page();
-        }
+        // Populate the BasketItem model with basket item data from the database.
+        BasketItem = basketItem;
 
-        public async Task<IActionResult> OnPostAsync(int? id)
-        {
-            if (id == null || _context.BasketItem == null)
-            {
-                return NotFound();
-            }
-            var basketitem = await _context.BasketItem.FindAsync(id);
+        return Page();
+    }
 
-            if (basketitem != null)
-            {
-                BasketItem = basketitem;
-                _context.BasketItem.Remove(BasketItem);
-                await _context.SaveChangesAsync();
-            }
+    public async Task<IActionResult> OnPostAsync(int? id)
+    {
+        // Check if the id is not null.
+        if (id == null) return NotFound();
 
-            return RedirectToPage("./Index");
-        }
+        // Get the basket item from the id parameter.
+        var basketItem = await _context.BasketItem.FindAsync(id);
+
+        // If the basket item does not exist redirect to index.
+        if (basketItem == null) return RedirectToPage("./Index");
+
+        BasketItem = basketItem;
+
+        // Remove the basket item from the database.
+        _context.BasketItem.Remove(BasketItem);
+
+        // Save changes to the database.
+        await _context.SaveChangesAsync();
+
+        return RedirectToPage("./Index");
     }
 }

@@ -1,6 +1,5 @@
 @page
-@using Maxicycles.Models
-@model Maxicycles.Pages.Basket.IndexModel
+@model IndexModel
 
 @{
     ViewData["Title"] = "Index";
@@ -35,7 +34,8 @@
         </tr>
         </thead>
         <tbody>
-        @foreach (var item in Model.BasketItemModels) {
+        @foreach (var item in Model.BasketItemModels)
+        {
             <tr>
                 <td>
                     @Html.DisplayFor(modelItem => item.Quantity)
@@ -59,7 +59,7 @@
         }
         </tbody>
     </table>
-    
+
     <a asp-page="/Checkout/Index">Checkout</a>
 }
 else

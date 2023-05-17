@@ -1,102 +1,87 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Azure;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Maxicycles.Data;
 using Maxicycles.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Maxicycles.Pages.Basket
+namespace Maxicycles.Pages.Basket;
+
+public class AddProductModel : PageModel
 {
-    public class AddProductModel : PageModel
+    private readonly MaxicyclesDbContext _context;
+    private readonly UserManager<MaxicyclesUser> _userManager;
+
+    public AddProductModel(MaxicyclesDbContext context, UserManager<MaxicyclesUser> userManager)
     {
-        private readonly Maxicycles.Data.MaxicyclesDbContext _context;
-        private readonly UserManager<MaxicyclesUser> _userManager;
+        _context = context;
+        _userManager = userManager;
+    }
 
-        public AddProductModel(Maxicycles.Data.MaxicyclesDbContext context, UserManager<MaxicyclesUser> userManager)
+    [BindProperty] public BasketProduct BasketProduct { get; set; } = default!;
+
+    public IActionResult OnGet(int? id)
+    {
+        // Check if the id is not null.
+        if (id == null) return NotFound();
+
+        // Get the product from the id parameter.
+        var product = _context.Product.FirstOrDefault(i => i.Id == id);
+
+        // If the product does not exist.
+        if (product == null) return NotFound("Product does not exist.");
+
+        // Create a basket product model with a default value of 1 and details of the current product.
+        BasketProduct = new BasketProduct
         {
-            _context = context;
-            _userManager = userManager;
-        }
+            Item = product,
+            Quantity = 1
+        };
 
-        public IActionResult OnGet(int id)
-        {
-            var product = _context.Product.FirstOrDefault(i => i.Id == id);
+        return Page();
+    }
 
-            if (product == null)
-            {
-                return NotFound();
-            }
+    public async Task<IActionResult> OnPostAsync(int? id)
+    {
+        // Check that the id is not null.
+        if (id == null) return NotFound();
 
-            BasketProduct = new BasketProduct()
-            {
-                Item = product,
-                Quantity = 1
-            };
+        // Get the product from the id parameter.
+        var product = _context.Product.FirstOrDefault(i => i.Id == id);
 
-            return Page();
-        }
+        // Return not found if the product does not exist.
+        if (product == null) return NotFound("Product does not exist.");
 
-        [BindProperty]
-        public BasketProduct BasketProduct { get; set; } = default!;
+        // Get the current User Id from the logged in user.
+        var userId = _userManager.GetUserId(User);
 
-        public async Task<IActionResult> OnPostAsync(int id)
-        {
-            // Get the product from the id.
-            var product = _context.Product
-                .FirstOrDefault(i => i.Id == id);
-   
-            if (product == null)
-            {
-                return NotFound();
-            }
-            
-            // Get the current User Id.
-            var userId = _userManager.GetUserId(User);
+        // Return unauthorized if the user is not logged in.
+        if (userId == null) return Unauthorized();
 
-            if (userId == null)
-            {
-                return Unauthorized();
-            }
-            
-            // Check if the user already has the current product in their basket.
-            var alreadyInBasket = _context.BasketItem
-                .Where(b => b.MaxicyclesUserId == userId)
-                .Any(b => b.ItemId == product.Id);
-            
-            if (alreadyInBasket)
-            {
-                ModelState.AddModelError("", "Already in basket");
-            }
-            
-            // Add the product and the userId to the model.
-            BasketProduct.Item = product;
-            BasketProduct.MaxicyclesUserId = userId;
-            
-            // Add a model error is the quantity in basket is more than is available in stock.
-            if (BasketProduct.Quantity > product.Quantity)
-            {
-                ModelState.AddModelError("BasketProduct.Quantity", "Not enough items in stock");
-            }
-            
-            // If validation is not successful.
-            if (!ModelState.IsValid)
-            {
-                BasketProduct.MaxicyclesUserId = userId;
-                BasketProduct.Item = product;
-                return Page();
-            }
-            
-            // Add the product to the basketItem Table.
-            _context.BasketProduct.Add(BasketProduct);
-            await _context.SaveChangesAsync();
+        // Check if the user already has the current product in their basket.
+        var alreadyInBasket = _context.BasketItem
+            .Where(b => b.MaxicyclesUserId == userId)
+            .Any(b => b.ItemId == product.Id);
 
-            return RedirectToPage("./Index");
-        }
+        // Add a model error to the model if alreadyInBasket is true.
+        if (alreadyInBasket) ModelState.AddModelError("", "Already in basket");
+
+        // Add a model error fs the quantity in basket is more than is available in stock.
+        if (BasketProduct.Quantity > product.Quantity)
+            ModelState.AddModelError("BasketProduct.Quantity", "Not enough items in stock");
+
+        // Add the product and the userId to the model.
+        BasketProduct.Item = product;
+        BasketProduct.MaxicyclesUserId = userId;
+
+        // If validation is not successful.
+        if (!ModelState.IsValid) return Page();
+
+        // Add the product to the basketItem Table.
+        _context.BasketProduct.Add(BasketProduct);
+
+        // Save changes to the database.
+        await _context.SaveChangesAsync();
+
+        return RedirectToPage("./Index");
     }
 }

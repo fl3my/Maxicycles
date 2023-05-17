@@ -1,51 +1,43 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using Maxicycles.Data;
+using Maxicycles.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
-using Maxicycles.Data;
-using Maxicycles.Models;
 
-namespace Maxicycles.Pages.Items
+namespace Maxicycles.Pages.Items;
+
+public class DetailsModel : PageModel
 {
-    public class DetailsModel : PageModel
+    private readonly MaxicyclesDbContext _context;
+
+    public DetailsModel(MaxicyclesDbContext context)
     {
-        private readonly Maxicycles.Data.MaxicyclesDbContext _context;
+        _context = context;
+    }
 
-        public DetailsModel(Maxicycles.Data.MaxicyclesDbContext context)
-        {
-            _context = context;
-        }
-        
-        public Item Item { get; set; } = default!;
+    public Item Item { get; set; } = default!;
 
-        public int Quantity { get; set; } = default!;
-        
+    public int Quantity { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(string slug)
-        {
-            if (string.IsNullOrEmpty(slug))
-            {
-                return NotFound();
-            }
 
-            var item = await _context
-                .Item
-                .Include(m => m.Image)
-                .Include(c => c.SubCategory)
-                .FirstOrDefaultAsync(m => m.Slug == slug);
-            
-            if (item == null)
-            {
-                return NotFound();
-            }
-            else 
-            {
-                Item = item;
-            }
-            return Page();
-        }
+    public async Task<IActionResult> OnGetAsync(string slug)
+    {
+        // Check if the slug string is null or empty.
+        if (string.IsNullOrEmpty(slug)) return NotFound();
+
+        // Find the first item in the database that matches the slug parameter.
+        var item = await _context
+            .Item
+            .Include(m => m.Image)
+            .Include(c => c.SubCategory)
+            .FirstOrDefaultAsync(m => m.Slug == slug);
+
+        // If the item does not exist.
+        if (item == null) return NotFound("Item does not exist.");
+
+        // Populate the Item model with item details from the database.
+        Item = item;
+
+        return Page();
     }
 }
