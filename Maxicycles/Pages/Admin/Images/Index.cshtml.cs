@@ -3,7 +3,7 @@ using Maxicycles.Models;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
-namespace Maxicycles.Pages.Admin.Store.Images;
+namespace Maxicycles.Pages.Admin.Images;
 
 public class IndexModel : PageModel
 {

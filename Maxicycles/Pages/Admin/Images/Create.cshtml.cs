@@ -1,9 +1,10 @@
 using Maxicycles.Data;
 using Maxicycles.Models;
+using Maxicycles.Validators;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Maxicycles.Pages.Admin.Store.Images;
+namespace Maxicycles.Pages.Admin.Images;
 
 public class CreateModel : PageModel
 {
@@ -18,7 +19,10 @@ public class CreateModel : PageModel
 
     [BindProperty] public Image Image { get; set; } = default!;
 
-    [BindProperty] public IFormFile? ImageFile { get; set; }
+    [BindProperty]
+    [AllowedExtensions(new[] {"jpeg", "png", "jpg"})]
+    [MaxFileSize(2 * 1024 * 1024)]
+    public IFormFile? ImageFile { get; set; }
 
     public IActionResult OnGet()
     {
@@ -45,6 +49,7 @@ public class CreateModel : PageModel
 
             // Write the file to the image directory.
             await using var fileStream = new FileStream(path, FileMode.Create);
+            
             await ImageFile.CopyToAsync(fileStream);
         }
 

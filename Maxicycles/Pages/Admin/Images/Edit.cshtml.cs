@@ -1,10 +1,11 @@
 using Maxicycles.Data;
 using Maxicycles.Models;
+using Maxicycles.Validators;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
-namespace Maxicycles.Pages.Admin.Store.Images;
+namespace Maxicycles.Pages.Admin.Images;
 
 public class EditModel : PageModel
 {
@@ -19,7 +20,10 @@ public class EditModel : PageModel
 
     [BindProperty] public Image Image { get; set; } = default!;
 
-    [BindProperty] public IFormFile? ImageFile { get; set; }
+    [BindProperty]
+    [MaxFileSize(2 * 1024 * 1024)]
+    [AllowedExtensions(new[] {"jpeg", "png", "jpg"})]
+    public IFormFile? ImageFile { get; set; }
 
     public async Task<IActionResult> OnGetAsync(int? id)
     {

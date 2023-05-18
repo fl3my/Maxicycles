@@ -51,14 +51,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <AdditionalFiles Include="Pages\Admin\Store\Images\Create.cshtml" />
-      <AdditionalFiles Include="Pages\Admin\Store\Images\Delete.cshtml" />
-      <AdditionalFiles Include="Pages\Admin\Store\Images\Details.cshtml" />
-      <AdditionalFiles Include="Pages\Admin\Store\Images\Edit.cshtml" />
-      <AdditionalFiles Include="Pages\Admin\Store\Images\Index.cshtml" />
-    </ItemGroup>
-
-    <ItemGroup>
       <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css" />
       <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.css.map" />
       <_ContentIncludedByDefault Remove="wwwroot\lib\bootstrap\dist\css\bootstrap-grid.min.css" />
@@ -109,6 +101,11 @@
       <_ContentIncludedByDefault Remove="Pages\Admin\Store\Repairs\Details.cshtml" />
       <_ContentIncludedByDefault Remove="Pages\Admin\Store\Repairs\Edit.cshtml" />
       <_ContentIncludedByDefault Remove="Pages\Admin\Store\Repairs\Index.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Store\Images\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Store\Images\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Store\Images\Details.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Store\Images\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Pages\Admin\Store\Images\Index.cshtml" />
     </ItemGroup>
 
 </Project>
