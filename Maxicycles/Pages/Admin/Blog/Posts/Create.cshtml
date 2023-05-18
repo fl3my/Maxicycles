@@ -9,8 +9,62 @@
 
 <h4>Post</h4>
 <hr/>
+
+<p>
+    This content field makes use of the markdown syntax.
+    <a data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+        Click here
+    </a>
+    for a cheatsheet.
+</p>
+
+<div class="collapse" id="collapseExample">
+    <div class="card card-body">
+        <h2>Headers</h2>
+          <code># Heading 1</code><br>
+          <code>## Heading 2</code><br>
+          <code>### Heading 3</code>
+          
+          <h2>Emphasis</h2>
+          <code>*Italic*</code><br>
+          <code>**Bold**</code><br>
+          <code>~~Strikethrough~~</code>
+        
+          <h2>Lists</h2>
+          <code>- Item 1</code><br>
+          <code>  - Nested Item 1</code><br>
+          <code>  - Nested Item 2</code><br>
+          <code>1. Ordered Item 1</code><br>
+          <code>2. Ordered Item 2</code>
+        
+          <h2>Links</h2>
+          <code>[Link Text](https://example.com)</code>
+        
+          <h2>Images</h2>
+          <code>![Alt Text](image.jpg)</code>
+        
+          <h2>Code</h2>
+          <code>`Inline Code`</code><br>
+          <code>```<br>Code Block<br>```</code>
+        
+          <h2>Tables</h2>
+          <code>| Header 1 | Header 2 |</code><br>
+          <code>| -------- | -------- |</code><br>
+          <code>| Cell 1   | Cell 2   |</code>
+        
+          <h2>Blockquotes</h2>
+          <code>> Blockquote</code>
+        
+          <h2>Horizontal Rule</h2>
+          <code>---</code>
+        
+          <h2>Escaping Characters</h2>
+          <code>\* Asterisks \*</code>
+    </div>
+</div>
+
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-12">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
@@ -19,8 +73,13 @@
                 <span asp-validation-for="Post.Title" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="Post.Excerpt" class="control-label"></label>
+                <input asp-for="Post.Excerpt" class="form-control"/>
+                <span asp-validation-for="Post.Excerpt" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <label asp-for="Post.Content" class="control-label"></label>
-                <input asp-for="Post.Content" class="form-control"/>
+                <textarea asp-for="Post.Content" class="form-control" rows="20"></textarea>
                 <span asp-validation-for="Post.Content" class="text-danger"></span>
             </div>
             <div class="form-group">

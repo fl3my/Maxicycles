@@ -38,13 +38,17 @@ public class CreateModel : PageModel
         if (userId == null) return Unauthorized();
 
         // Return with validation errors if does not meet criteria.
-        if (!ModelState.IsValid) return Page();
+        if (!ModelState.IsValid)
+        {
+            return Page();
+        }
 
         // Populate a new post object.
         var post = new Post
         {
             Title = Post.Title,
             Content = Post.Content,
+            Excerpt = Post.Excerpt,
             ImageId = Post.ImageId,
             UploadedAt = DateTime.UtcNow,
             MaxicyclesUserId = userId
@@ -60,11 +64,21 @@ public class CreateModel : PageModel
 
     public class PostCreateModel
     {
-        [Required] public string? Title { get; set; }
+        [Required]
+        [MinLength(5)]
+        [MaxLength(100)]
+        public string? Title { get; set; }
 
         [Required]
+        [MinLength(10)]
+        [MaxLength(2000)]
         [DataType(DataType.MultilineText)]
         public string? Content { get; set; }
+        
+        [Required]
+        [MinLength(20)]
+        [MaxLength(200)]
+        public string? Excerpt { get; set; }
 
         public int? ImageId { get; set; }
     }

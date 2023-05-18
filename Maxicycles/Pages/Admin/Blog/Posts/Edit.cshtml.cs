@@ -1,6 +1,8 @@
+using System.ComponentModel.DataAnnotations;
 using Maxicycles.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace Maxicycles.Pages.Admin.Blog.Posts;
@@ -27,12 +29,17 @@ public class EditModel : PageModel
         // Return not found is post does not exist.
         if (post == null) return NotFound("Post does not exist.");
 
+        // Populate the image list with image names.
+        ViewData["ImageId"] = new SelectList(_context.Image, "Id", "Title");
+        
         // Populate the edit post model with details from the post.
         EditPost = new EditPostModel
         {
             Id = post.Id,
             Content = post.Content,
-            Title = post.Title
+            Excerpt = post.Excerpt,
+            Title = post.Title,
+            ImageId = post.ImageId
         };
 
         return Page();
@@ -53,7 +60,10 @@ public class EditModel : PageModel
 
         // Update the properties of the post.
         post.Content = EditPost.Content;
-        post.Title = post.Title;
+        post.Title = EditPost.Title;
+        post.Excerpt = EditPost.Excerpt;
+        post.ImageId = EditPost.ImageId;
+        
         post.UploadedAt = DateTime.UtcNow;
 
         // Track changes.
@@ -83,7 +93,22 @@ public class EditModel : PageModel
     public class EditPostModel
     {
         public int Id { get; set; }
+        [Required]
+        [MinLength(5)]
+        [MaxLength(100)]
         public string? Title { get; set; }
+        
+        [Required]
+        [MinLength(20)]
+        [MaxLength(200)]
+        public string? Excerpt { get; set; }
+        
+        [Required]
+        [DataType(DataType.MultilineText)]
+        [MinLength(10)]
+        [MaxLength(2000)]
         public string? Content { get; set; }
+        
+        public int? ImageId { get; set; }
     }
 }

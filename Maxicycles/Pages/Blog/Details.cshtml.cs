@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Maxicycles.Data;
 using Maxicycles.Models;
+using Maxicycles.Validators;
 using Microsoft.AspNetCore.Identity;
 using Npgsql.PostgresTypes;
 
@@ -30,6 +32,10 @@ namespace Maxicycles.Pages.Blog
 
         public class CommentCreateModel
         {
+            [Required]
+            [MinLength(5)]
+            [MaxLength(1024)]
+            [NoProfanity]
             public string? Content { get; set; }
         }
 
@@ -72,31 +78,7 @@ namespace Maxicycles.Pages.Blog
             }
             else
             {
-                // Fill the post model.
-                Post = new PostDetailsModel
-                {
-                    Id = post.Id,
-                    Title = post.Title,
-                    Content = post.Content,
-                    AuthorFullName = post.MaxicyclesUser?.FirstName + " " + post.MaxicyclesUser?.LastName,
-                    UploadedAt = post.UploadedAt.ToLocalTime().ToLongDateString(),
-                    Comments = new List<CommentModel>(),
-                    AltText = post.Image?.AltText,
-                    ImageName = post.Image?.ImageName,
-                };
-
-                // Fill the comment model.
-                foreach (var comment in post.Comments)
-                {
-                    Post.Comments.Add(new CommentModel
-                    {
-                        Id = comment.Id,
-                        Content = comment.Content,
-                        AuthorFullName = comment.MaxicyclesUser?.FirstName + " " + comment.MaxicyclesUser?.LastName,
-                        UploadedAt = post.UploadedAt.ToLocalTime().ToShortDateString()
-                    });
-                }
-
+                Post = PopulatePostDetailsModel(post);
             }
 
             return Page();
@@ -114,6 +96,21 @@ namespace Maxicycles.Pages.Blog
 
             if (!ModelState.IsValid)
             {
+                var post = await _context.Post
+                    .Include(p => p.Image)
+                    .Include(p => p.MaxicyclesUser)
+                    .Include(c => c.Comments)
+                    .FirstOrDefaultAsync(m => m.Id == Post.Id);
+
+                if (post == null)
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    Post = PopulatePostDetailsModel(post);
+                }
+                
                 return Page();
             }
 
@@ -131,6 +128,36 @@ namespace Maxicycles.Pages.Blog
 
             // Redirect to the same page to refresh the comments.
             return RedirectToPage("./Details", new { id = Post.Id });
+        }
+
+        private PostDetailsModel PopulatePostDetailsModel(Post post)
+        {
+            // Fill the post model.
+            var postDetailsModel = new PostDetailsModel
+            {
+                Id = post.Id,
+                Title = post.Title,
+                Content = post.Content,
+                AuthorFullName = post.MaxicyclesUser?.FirstName + " " + post.MaxicyclesUser?.LastName,
+                UploadedAt = post.UploadedAt.ToLocalTime().ToLongDateString(),
+                Comments = new List<CommentModel>(),
+                AltText = post.Image?.AltText,
+                ImageName = post.Image?.ImageName,
+            };
+
+            // Fill the comment model.
+            foreach (var comment in post.Comments)
+            {
+                postDetailsModel.Comments.Add(new CommentModel
+                {
+                    Id = comment.Id,
+                    Content = comment.Content,
+                    AuthorFullName = comment.MaxicyclesUser?.FirstName + " " + comment.MaxicyclesUser?.LastName,
+                    UploadedAt = post.UploadedAt.ToLocalTime().ToShortDateString()
+                });
+            }
+
+            return postDetailsModel;
         }
     }
 }

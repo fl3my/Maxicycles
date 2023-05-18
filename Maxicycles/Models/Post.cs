@@ -5,6 +5,8 @@ public class Post
     public int Id { get; set; }
     public string? Title { get; set; }
     public string? Content { get; set; }
+    public string? Excerpt { get; set; }
+
     public DateTime UploadedAt { get; set; }
     
     // Many post to one user.

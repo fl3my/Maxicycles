@@ -25,7 +25,7 @@ namespace Maxicycles.Pages.Blog
         {
             public int Id { get; set; }
             public string? Title { get; set; }
-            public string? CroppedContent { get; set; }
+            public string? Excerpt { get; set; }
             public string? AuthorFulLName { get; set; }
             public string? UploadedAt { get; set; }
             public string? AltText { get; set; }
@@ -46,25 +46,13 @@ namespace Maxicycles.Pages.Blog
                 {
                     Id = post.Id,
                     Title = post.Title,
-                    CroppedContent = CropContent(post.Content),
+                    Excerpt = post.Excerpt,
                     AuthorFulLName = post.MaxicyclesUser?.FirstName + " " + post.MaxicyclesUser?.LastName,
                     UploadedAt = post.UploadedAt.ToLocalTime().ToShortDateString(),
                     AltText = post.Image?.AltText,
                     ImageName = post.Image?.ImageName,
                 });
             }
-        }
-
-        public string CropContent(string? fullContent)
-        {
-            fullContent ??= "Content Empty";
-            
-            if (fullContent.Length > 150)
-            {
-                fullContent = fullContent.Remove(150) + "...";
-            }
-
-            return fullContent;
         }
     }
 }
