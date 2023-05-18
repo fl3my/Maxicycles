@@ -39,7 +39,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="row g-3">
                 <div class="col-sm-6">
-                    <label asp-for="OrderInput.FirstName" class="form-label">First name</label>
+                    <label asp-for="OrderInput.FirstName" class="form-label"></label>
                     <input asp-for="OrderInput.FirstName" class="form-control">
                     <span asp-validation-for="OrderInput.FirstName" class="text-danger"></span>
                 </div>
@@ -71,7 +71,7 @@
 
                 </div>
 
-                <div class="col-md-8">
+                <div class="col-md-5">
                     <label asp-for="OrderInput.Country" class="form-label"></label>
                     <select asp-for="OrderInput.Country" class="form-select">
                         <option value="">Choose...</option>
@@ -94,16 +94,16 @@
                     <span asp-validation-for="OrderInput.Postcode" class="text-danger"></span>
                 </div>
             </div>
-    
+
             <hr class="my-4">
-            
+
             <h4 class="mb-4">Shipping information</h4>
-            
+
             <div class="form-check">
                 <input type="checkbox" class="form-check-input" id="same-address" checked>
                 <label class="form-check-label" for="same-address">Shipping address is the same as my billing address</label>
             </div>
-            
+
             <div class="col-md-8">
                 <label asp-for="OrderInput.DeliveryMethodId" class="form-label"></label>
                 <select asp-for="OrderInput.DeliveryMethodId" asp-items="ViewBag.DeliveryMethodId" class="form-select">
@@ -117,43 +117,53 @@
             <h4 class="mb-3">Payment</h4>
 
             <div class="my-3">
-                <div class="form-check">
-                    <input id="debit" name="paymentMethod" type="radio" class="form-check-input" required>
-                    <label class="form-check-label" for="debit">Debit card</label>
+                <div  class="form-check">
+                    <input asp-for="OrderInput.PaymentMethod" type="radio" data-bs-toggle="collapse" data-bs-target="#debit" aria-expanded="false" checked aria-controls="debit" value="@PaymentMethod.Debit.ToString()" class="form-check-input">
+                    <label value="@PaymentMethod.Debit.ToString()" class="form-check-label" asp-for="OrderInput.PaymentMethod">Debit card</label>
                 </div>
                 <div class="form-check">
-                    <input id="paypal" name="paymentMethod" type="radio" class="form-check-input" required>
-                    <label class="form-check-label" for="paypal">PayPal</label>
+                    <input asp-for="OrderInput.PaymentMethod" type="radio" data-bs-toggle="collapse" data-bs-target="#paypal" aria-expanded="false" aria-controls="paypal" value="@PaymentMethod.Paypal.ToString()" class="form-check-input">
+                    <label value="@PaymentMethod.Paypal.ToString()" class="form-check-label" asp-for="OrderInput.PaymentMethod">Paypal</label>
                 </div>
             </div>
+            
+            <div id="sector_descriptions">
+                <div class="row gy-3 collapse" id="debit" data-bs-parent="#sector_descriptions">
+                    <div class="col-md-6">
+                        <label asp-for="OrderInput.Card.Name" class="form-label"></label>
+                        <input asp-for="OrderInput.Card.Name" class="form-control" placeholder="">
+                        <span asp-validation-for="OrderInput.Card.Name" class="text-danger"></span>
 
-            <div class="row gy-3">
-                <div class="col-md-6">
-                    <label asp-for="OrderInput.Card.Name" class="form-label"></label>
-                    <input asp-for="OrderInput.Card.Name" class="form-control" placeholder="">
-                    <span asp-validation-for="OrderInput.Card.Name" class="text-danger"></span>
+                        <small class="text-muted">Full name as displayed on card</small>
+                    </div>
 
-                    <small class="text-muted">Full name as displayed on card</small>
+                    <div class="col-md-6">
+                        <label asp-for="OrderInput.Card.LongNumber" class="form-label"></label>
+                        <input asp-for="OrderInput.Card.LongNumber" class="form-control" placeholder="">
+                        <span asp-validation-for="OrderInput.Card.LongNumber" class="text-danger"></span>
+
+                    </div>
+
+                    <div class="col-md-3">
+                        <label asp-for="OrderInput.Card.ExpiryMonth" class="form-label"></label>
+                        <input asp-for="OrderInput.Card.ExpiryMonth" class="form-control" placeholder="">
+                        <span asp-validation-for="OrderInput.Card.ExpiryMonth" class="text-danger"></span>
+                    </div>
+                    
+                    <div class="col-md-3">
+                        <label asp-for="OrderInput.Card.ExpiryYear" class="form-label"></label>
+                        <input asp-for="OrderInput.Card.ExpiryYear" class="form-control" placeholder="">
+                        <span asp-validation-for="OrderInput.Card.ExpiryYear" class="text-danger"></span>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label asp-for="OrderInput.Card.Cvv" class="form-label">CVV</label>
+                        <input asp-for="OrderInput.Card.Cvv" class="form-control" placeholder="">
+                        <span asp-validation-for="OrderInput.Card.Cvv" class="text-danger"></span>
+                    </div>
                 </div>
-
-                <div class="col-md-6">
-                    <label asp-for="OrderInput.Card.LongNumber" class="form-label"></label>
-                    <input asp-for="OrderInput.Card.LongNumber" class="form-control" placeholder="">
-                    <span asp-validation-for="OrderInput.Card.LongNumber" class="text-danger"></span>
-
-                </div>
-
-                <div class="col-md-3">
-                    <label asp-for="OrderInput.Card.ExpiryDate" class="form-label"></label>
-                    <input asp-for="OrderInput.Card.ExpiryDate" class="form-control" placeholder="">
-                    <span asp-validation-for="OrderInput.Card.ExpiryDate" class="text-danger"></span>
-                </div>
-
-                <div class="col-md-3">
-                    <label asp-for="OrderInput.Card.Cvv" class="form-label">CVV</label>
-                    <input asp-for="OrderInput.Card.Cvv" class="form-control" placeholder="">
-                    <span asp-validation-for="OrderInput.Card.Cvv" class="text-danger"></span>
-
+                <div class="collapse" id="paypal" data-bs-parent="#sector_descriptions">
+                    <p>Paypal payment Selected</p>
                 </div>
             </div>
 

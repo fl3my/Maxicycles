@@ -44,7 +44,7 @@ public class IndexModel : PageModel
 
         return Page();
     }
-    
+
     public async Task<IActionResult> OnPostAsync()
     {
         // Get the current userId for the logged in user.
@@ -52,17 +52,6 @@ public class IndexModel : PageModel
 
         // If the user is null then return unauthorized.
         if (user == null) return Unauthorized();
-        
-        // Get delivery method.
-        var deliveryMethod = await _context.DeliveryMethods.FindAsync(OrderInput.DeliveryMethodId);
-
-        if (deliveryMethod == null)
-        {
-            return NotFound();
-        }
-        
-        // Calculate the estimated delivery day.
-        OrderInput.RequiredDate = DateTime.Today.AddDays(deliveryMethod.MinDaysToDeliver);
 
         // Get the basket items for the current user.
         var basketItems = await _context.BasketItem
@@ -71,17 +60,45 @@ public class IndexModel : PageModel
             .Include(b => b.MaxicyclesUser)
             .ToListAsync();
 
-        // Calculate the total value of the order including deliveryCost.
-        var totalPrice = basketItems.Sum(b => b.Quantity * b.Item!.Price) + deliveryMethod.Price;
-
-        // Create a new card object and populate it with values from the validation.
-        var card = new Card
+        var payment = new Payment();
+        
+        // If the payment method is debit.
+        if (OrderInput.PaymentMethod == PaymentMethod.Debit.ToString())
         {
-            Name = OrderInput.Card.Name,
-            LongNumber = OrderInput.Card.LongNumber,
-            ExpiryDate = OrderInput.Card.ExpiryDate.ToUniversalTime(),
-            Cvv = OrderInput.Card.Cvv
-        };
+            if (OrderInput.Card is { ExpiryYear: > 0, ExpiryMonth: > 0 })
+            {
+                var cardExpiryDate = new DateTime(OrderInput.Card.ExpiryYear, OrderInput.Card.ExpiryMonth, 1);
+                
+                if (DateTime.Now >= cardExpiryDate)
+                {
+                    ModelState.AddModelError("OrderInput.Card.ExpiryMonth","Card is Expired");
+                }
+            }
+            else
+            {
+                ModelState.AddModelError("OrderInput.Card.ExpiryMonth", "Card input not valid");
+            }
+
+            // Create a new card object and populate it with values from the validation.
+            payment = new Card
+            {
+                Name = OrderInput.Card.Name,
+                LongNumber = OrderInput.Card.LongNumber,
+                ExpiryYear = OrderInput.Card.ExpiryYear,
+                ExpiryMonth = OrderInput.Card.ExpiryMonth,
+                Cvv = OrderInput.Card.Cvv
+            };
+        } else if (OrderInput.PaymentMethod == PaymentMethod.Paypal.ToString())
+        {
+            // If the payment is paypal, Remove validation from the card.
+            ModelState.Remove("OrderInput.Card.Cvv");
+            ModelState.Remove("OrderInput.Card.LongNumber");
+            ModelState.Remove("OrderInput.Card.Name");
+            ModelState.Remove("OrderInput.Card.ExpiryMonth");
+            ModelState.Remove("OrderInput.Card.ExpiryYear");
+
+            // Redirect the user to external payment provider.
+        }
 
         // Create a new order object.
         var order = new Order
@@ -90,8 +107,6 @@ public class IndexModel : PageModel
             MaxicyclesUserId = user.Id,
             OrderStatus = OrderStatus.AwaitingPayment,
             ReceiptSent = false,
-            TotalPrice = totalPrice,
-            RequiredDate = OrderInput.RequiredDate.ToUniversalTime(),
             FirstName = OrderInput.FirstName,
             LastName = OrderInput.LastName,
             Email = OrderInput.Email,
@@ -101,7 +116,7 @@ public class IndexModel : PageModel
             Country = OrderInput.Country,
             Postcode = OrderInput.Postcode,
             DeliveryMethodId = OrderInput.DeliveryMethodId,
-            Payment = card
+            Payment = payment
         };
 
         // Create a list to store the new order items.
@@ -155,7 +170,7 @@ public class IndexModel : PageModel
                 ModelState.AddModelError("",
                     "Sorry, We are currently closed for " + holiday.Title + ". We reopen for online orders on " +
                     holiday.End.ToShortDateString());
-        
+
         // Check if form validation is true.
         if (!ModelState.IsValid)
         {
@@ -167,6 +182,25 @@ public class IndexModel : PageModel
 
             return Page();
         }
+
+        // Get delivery method.
+        var deliveryMethod = await _context.DeliveryMethods.FindAsync(OrderInput.DeliveryMethodId);
+        if (deliveryMethod == null) return NotFound();
+
+        // Calculate the estimated delivery day.
+        var estimatedDeliveryDate = DateTime.Today.AddDays(deliveryMethod.MinDaysToDeliver);
+        
+        // If the estimated date is on a holiday move the date to the next available date.
+        foreach (var holiday in _context.Holiday)
+            // Check if date is in the holiday window.
+            if (estimatedDeliveryDate >= holiday.Start && estimatedDeliveryDate <= holiday.End)
+                estimatedDeliveryDate = holiday.End;
+        
+        order.RequiredDate = estimatedDeliveryDate.ToUniversalTime();
+
+        // Calculate the total value of the order including deliveryCost.
+        var totalPrice = basketItems.Sum(b => b.Quantity * b.Item!.Price) + deliveryMethod.Price;
+        order.TotalPrice = totalPrice;
 
         // Add the orderItems to the order object.
         order.OrderItems = orderItems;
@@ -181,11 +215,8 @@ public class IndexModel : PageModel
         await _context.SaveChangesAsync();
 
         // If user has selected any day delivery go to the select day page.
-        if (deliveryMethod.IsDaySelectable)
-        {
-            return RedirectToPage("./DeliveryDaySelection", new { orderId = order.Id });
-        }
-        
+        if (deliveryMethod.IsDaySelectable) return RedirectToPage("./DeliveryDaySelection", new { orderId = order.Id });
+
         // Otherwise, Go to the order confirmation page.
         return RedirectToPage("./OrderConfirmation", new { orderId = order.Id });
     }
@@ -263,17 +294,35 @@ public class IndexModel : PageModel
 
     public class OrderInputModel
     {
-        [Required] public string? FirstName { get; set; }
-        [Required] public string? LastName { get; set; }
-        [Required] public string? Email { get; set; }
-        [Required] public string? AddressLine1 { get; set; }
-        public string? AddressLine2 { get; set; }
+        [Required]
+        [Display(Name = "First name")]
+        public string? FirstName { get; set; }
+
+        [Required]
+        [Display(Name = "Last name")]
+
+        public string? LastName { get; set; }
+
+        [Required] [EmailAddress] public string? Email { get; set; }
+
+        [Required] [Display(Name = "Address")] public string? AddressLine1 { get; set; }
+
+        [Display(Name = "Address 2")] public string? AddressLine2 { get; set; }
+
         [Required] public string? City { get; set; }
         [Required] public string? Country { get; set; }
-        [Required] public string? Postcode { get; set; }
-        [Required] public int DeliveryMethodId { get; set; }
-        [Required] public DateTime RequiredDate { get; set; }
 
+        [Required]
+        [RegularExpression(
+            @"([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})",
+            ErrorMessage = "Must be a valid UK Postcode")]
+        public string? Postcode { get; set; }
+
+        [Required]
+        [Display(Name = "Delivery Method")]
+        public int DeliveryMethodId { get; set; }
+
+        [Required] public string? PaymentMethod { get; set; }
         public Card Card { get; set; } = null!;
     }
 }

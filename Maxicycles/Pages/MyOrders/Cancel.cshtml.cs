@@ -11,9 +11,9 @@ namespace Maxicycles.Pages.MyOrders;
 public class CancelModel : PageModel
 {
     private readonly MaxicyclesDbContext _context;
-    private readonly UserManager<MaxicyclesDbContext> _userManager;
+    private readonly UserManager<MaxicyclesUser> _userManager;
 
-    public CancelModel(MaxicyclesDbContext context, UserManager<MaxicyclesDbContext> userManager)
+    public CancelModel(MaxicyclesDbContext context, UserManager<MaxicyclesUser> userManager)
     {
         _context = context;
         _userManager = userManager;

@@ -51,7 +51,6 @@ public class DetailsModel : PageModel
         {
             // Add card details from the database to the model.
             Card = card;
-            Card.ExpiryDate = Card.ExpiryDate.ToLocalTime();
         }
 
         // Populate the list model with a list of item details.

@@ -109,10 +109,16 @@
         @Html.DisplayFor(model => model.Card.LongNumber)
     </dd>
     <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.Card.ExpiryDate)
+        @Html.DisplayNameFor(model => model.Card.ExpiryMonth)
     </dt>
     <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.Card.ExpiryDate)
+        @Html.DisplayFor(model => model.Card.ExpiryMonth)
+    </dd>
+    <dt class="col-sm-2">
+        @Html.DisplayNameFor(model => model.Card.ExpiryYear)
+    </dt>
+    <dd class="col-sm-10">
+        @Html.DisplayFor(model => model.Card.ExpiryYear)
     </dd>
     <dt class="col-sm-2">
         @Html.DisplayNameFor(model => model.Card.Name)
