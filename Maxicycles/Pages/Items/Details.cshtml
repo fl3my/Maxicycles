@@ -9,66 +9,104 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="#">Items</a>
+            <a asp-page="./index">Items</a>
         </li>
-        <li class="breadcrumb-item active" aria-current="page">Detail</li>
+        <li class="breadcrumb-item active" aria-current="page">@Html.DisplayFor(model => model.Item.SubCategory.Title)</li>
     </ol>
 </nav>
 
-<h1>Details</h1>
+<div class="row bg-white rounded-3 pt-5">
 
-<div>
-    <h4>Product</h4>
-    <hr/>
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Item.Title)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Item.Title)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Item.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Item.Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Item.Price)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Item.Price)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Item.SubCategory)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Item.SubCategory.Title)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Item.Image)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Item.Image.Title)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-page="./Index">Back to List</a>
+    <div class="col-md-8">
+        <img decoding="async" alt="@Model.Item.Image!.AltText" src="@("/uploads/" + Model.Item.Image.ImageName)" class="card-img-top p-2"/>
+    </div>
+    <div class="col-md-4 px-4">
+        <h1 class="mb-2">@Html.DisplayFor(model => model.Item.Title)</h1>
 
-    @if (Model.Item is Service)
-    {
-        <a asp-page="/Basket/AddService" asp-route-id="@Model.Item.Id">Book Now</a>
-    }
-    else if (Model.Item is Product product)
-    {
-        @if (product.Quantity <= 0)
+        <span>
+            @for (int i = 1; i <= 5; i++)
+            {
+                <i class="@(i <= 0 ? "fa-solid" : "fa-regular") fa-star"></i>
+            }
+        </span>
+
+        <h3 class="mt-4">£@Html.DisplayFor(model => model.Item.Price)</h3>
+
+        @if (Model.Item is Service)
         {
-            <p>OUT OF STOCK</p>
+            <a asp-page="/Basket/AddService" asp-route-id="@Model.Item.Id" class="btn btn-primary btn-lg">Book Now</a>
         }
-        else
+        else if (Model.Item is Product product)
         {
-            <a asp-page="/Basket/AddProduct" asp-route-id="@Model.Item.Id">Add to Basket</a>
+            @if (product.Quantity <= 0)
+            {
+                <p>OUT OF STOCK</p>
+            }
+            else
+            {
+                <a asp-page="/Basket/AddProduct" asp-route-id="@Model.Item.Id" class="btn btn-primary">Add to Basket</a>
+            }
         }
-    }
+    </div>
+    <div class="accordion p-4 mt-4" id="accordionExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Description
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    @Model.Item.Description
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                    @(Model.Item is Service ? "Booking Information" : "Delivery Information")
+                </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    @if (Model.Item is Service)
+                    {
+                        <h2>Booking Information</h2>
+                        <ol>
+                            <li>Select a day for your appointment.</li>
+                            <li>Go to checkout.</li>
+                            <li>Our staff will contact you to confirm the appointment time.</li>
+                            <li>Finalize the booking details with our staff.</li>
+                            <li>Receive a reminder as your appointment approaches.</li>
+                        </ol>
+                        <p>Please note that specific time slots are subject to availability. Contact our customer support for assistance.</p>
+                    }
+                    else
+                    {
+                        <ul>
+                            <li>We offer reliable shipping services with trusted carriers.</li>
+                            <li><a asp-page="/ShippingOptions">Click here</a> to view our current shipping options.</li>
+                            <li>Estimated delivery timeframes will be provided during checkout.</li>
+                            <li>A tracking number will be provided to track your shipment.</li>
+                            <li>International shipping is available with potential customs fees.</li>
+                            <li>Contact our customer support for any order or shipping inquiries.</li>
+                        </ul>
+                        <p>We prioritize a seamless shipping experience to ensure your products reach you promptly and in great condition. Thank you for choosing our services!</p>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                    Reviews
+                </button>
+            </h2>
+            <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    No Reviews yet.
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

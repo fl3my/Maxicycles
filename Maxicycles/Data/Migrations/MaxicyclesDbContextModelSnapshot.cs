@@ -49,7 +49,7 @@ namespace Maxicycles.Data.Migrations
 
                     b.HasIndex("MaxicyclesUserId");
 
-                    b.ToTable("BasketItem");
+                    b.ToTable("BasketItem", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("BasketItem");
 
@@ -74,7 +74,7 @@ namespace Maxicycles.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Category");
+                    b.ToTable("Category", (string)null);
                 });
 
             modelBuilder.Entity("Maxicycles.Models.Comment", b =>
@@ -103,7 +103,7 @@ namespace Maxicycles.Data.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("Comment");
+                    b.ToTable("Comment", (string)null);
                 });
 
             modelBuilder.Entity("Maxicycles.Models.DeliveryMethod", b =>
@@ -128,7 +128,7 @@ namespace Maxicycles.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("DeliveryMethods");
+                    b.ToTable("DeliveryMethods", (string)null);
                 });
 
             modelBuilder.Entity("Maxicycles.Models.Holiday", b =>
@@ -150,7 +150,7 @@ namespace Maxicycles.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Holiday");
+                    b.ToTable("Holiday", (string)null);
                 });
 
             modelBuilder.Entity("Maxicycles.Models.Image", b =>
@@ -177,7 +177,7 @@ namespace Maxicycles.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Image");
+                    b.ToTable("Image", (string)null);
                 });
 
             modelBuilder.Entity("Maxicycles.Models.Item", b =>
@@ -219,7 +219,7 @@ namespace Maxicycles.Data.Migrations
 
                     b.HasIndex("SubCategoryId");
 
-                    b.ToTable("Item");
+                    b.ToTable("Item", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Item");
 
@@ -289,7 +289,7 @@ namespace Maxicycles.Data.Migrations
 
                     b.HasIndex("MaxicyclesUserId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("Maxicycles.Models.OrderItem", b =>
@@ -320,7 +320,7 @@ namespace Maxicycles.Data.Migrations
 
                     b.HasIndex("OrderId");
 
-                    b.ToTable("OrderItems");
+                    b.ToTable("OrderItems", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("OrderItem");
 
@@ -347,7 +347,7 @@ namespace Maxicycles.Data.Migrations
                     b.HasIndex("OrderId")
                         .IsUnique();
 
-                    b.ToTable("Payment");
+                    b.ToTable("Payment", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("Payment");
 
@@ -386,7 +386,7 @@ namespace Maxicycles.Data.Migrations
 
                     b.HasIndex("MaxicyclesUserId");
 
-                    b.ToTable("Post");
+                    b.ToTable("Post", (string)null);
                 });
 
             modelBuilder.Entity("Maxicycles.Models.SubCategory", b =>
@@ -412,7 +412,7 @@ namespace Maxicycles.Data.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.ToTable("SubCategory");
+                    b.ToTable("SubCategory", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

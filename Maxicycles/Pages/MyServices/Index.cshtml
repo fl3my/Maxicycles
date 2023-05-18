@@ -1,0 +1,46 @@
+@page
+@using Maxicycles.Enums
+@model IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Your Service Bookings</h1>
+<hr />
+
+<form class="d-inline-flex">
+    <select asp-for="@Model.BookingStatus" class="form-select" asp-items="Html.GetEnumSelectList<BookingStatus>()">
+    </select>
+    <input type="submit" value="Filter" class="btn btn-primary"/>
+</form>
+
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Service[0].Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Service[0].ServiceDate)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.Service)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ServiceDate)
+            </td>
+            <td>
+                <a asp-page="./Details" asp-route-id="@item.Id">Details</a>
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>
