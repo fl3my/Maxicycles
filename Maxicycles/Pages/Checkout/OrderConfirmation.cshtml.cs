@@ -9,13 +9,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Maxicycles.Pages.Checkout;
 
-public class ConfirmationModel : PageModel
+public class OrderConfirmationModel : PageModel
 {
     private readonly MaxicyclesDbContext _context;
     private readonly IEmailSender _sender;
     private readonly UserManager<MaxicyclesUser> _userManager;
 
-    public ConfirmationModel(UserManager<MaxicyclesUser> userManager, IEmailSender sender, MaxicyclesDbContext context)
+    public OrderConfirmationModel(UserManager<MaxicyclesUser> userManager, IEmailSender sender, MaxicyclesDbContext context)
     {
         _userManager = userManager;
         _sender = sender;
@@ -48,8 +48,6 @@ public class ConfirmationModel : PageModel
         if (order.ReceiptSent) return NotFound("Sorry a receipt has already been sent");
 
         if (order.Payment == null) return NotFound();
-
-        if (!order.Payment.IsPaid) return NotFound();
 
         Email = user.Email;
 

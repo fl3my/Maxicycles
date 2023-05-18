@@ -2,7 +2,6 @@ using System.ComponentModel.DataAnnotations;
 using Maxicycles.Data;
 using Maxicycles.Enums;
 using Maxicycles.Models;
-using Maxicycles.Validators;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -45,8 +44,7 @@ public class IndexModel : PageModel
 
         return Page();
     }
-
-    // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
+    
     public async Task<IActionResult> OnPostAsync()
     {
         // Get the current userId for the logged in user.
@@ -54,15 +52,17 @@ public class IndexModel : PageModel
 
         // If the user is null then return unauthorized.
         if (user == null) return Unauthorized();
+        
+        // Get delivery method.
+        var deliveryMethod = await _context.DeliveryMethods.FindAsync(OrderInput.DeliveryMethodId);
 
-        // Check if date is a valid time in the future.
-        var minDaysToDeliver =
-            (await _context.DeliveryMethods.FindAsync(OrderInput.DeliveryMethodId))!.MinDaysToDeliver;
-
-        // Validate minimum days after delivery.
-        if (DateTime.Today.AddDays(minDaysToDeliver) > OrderInput.RequiredDate)
-            ModelState.AddModelError("OrderInput.RequiredDate",
-                "The selected delivery method requires minimum " + minDaysToDeliver + " days to deliver");
+        if (deliveryMethod == null)
+        {
+            return NotFound();
+        }
+        
+        // Calculate the estimated delivery day.
+        OrderInput.RequiredDate = DateTime.Today.AddDays(deliveryMethod.MinDaysToDeliver);
 
         // Get the basket items for the current user.
         var basketItems = await _context.BasketItem
@@ -72,27 +72,36 @@ public class IndexModel : PageModel
             .ToListAsync();
 
         // Calculate the total value of the order including deliveryCost.
-        var basketPrice = basketItems.Sum(b => b.Quantity * b.Item!.Price);
-        var deliveryCost = (await _context.DeliveryMethods.FindAsync(OrderInput.DeliveryMethodId))!.Price;
-        var totalPrice = basketPrice + deliveryCost;
+        var totalPrice = basketItems.Sum(b => b.Quantity * b.Item!.Price) + deliveryMethod.Price;
 
-        // Convert the date from the user to UTC for storage in the database.
-        OrderInput.RequiredDate = OrderInput.RequiredDate.ToUniversalTime();
+        // Create a new card object and populate it with values from the validation.
+        var card = new Card
+        {
+            Name = OrderInput.Card.Name,
+            LongNumber = OrderInput.Card.LongNumber,
+            ExpiryDate = OrderInput.Card.ExpiryDate.ToUniversalTime(),
+            Cvv = OrderInput.Card.Cvv
+        };
 
         // Create a new order object.
         var order = new Order
         {
-            DeliveryMethodId = OrderInput.DeliveryMethodId,
-            RequiredDate = OrderInput.RequiredDate,
-            OrderDate = DateTime.Now.ToUniversalTime(),
+            OrderDate = DateTime.UtcNow,
             MaxicyclesUserId = user.Id,
             OrderStatus = OrderStatus.AwaitingPayment,
             ReceiptSent = false,
             TotalPrice = totalPrice,
-            AddressLine1 = user.AddressLine1,
-            AddressLine2 = user.AddressLine2,
-            City = user.City,
-            Postcode = user.Postcode
+            RequiredDate = OrderInput.RequiredDate.ToUniversalTime(),
+            FirstName = OrderInput.FirstName,
+            LastName = OrderInput.LastName,
+            Email = OrderInput.Email,
+            AddressLine1 = OrderInput.AddressLine1,
+            AddressLine2 = OrderInput.AddressLine2,
+            City = OrderInput.City,
+            Country = OrderInput.Country,
+            Postcode = OrderInput.Postcode,
+            DeliveryMethodId = OrderInput.DeliveryMethodId,
+            Payment = card
         };
 
         // Create a list to store the new order items.
@@ -146,7 +155,7 @@ public class IndexModel : PageModel
                 ModelState.AddModelError("",
                     "Sorry, We are currently closed for " + holiday.Title + ". We reopen for online orders on " +
                     holiday.End.ToShortDateString());
-
+        
         // Check if form validation is true.
         if (!ModelState.IsValid)
         {
@@ -168,15 +177,17 @@ public class IndexModel : PageModel
         // Remove all the items in the users basket.
         _context.BasketItem.RemoveRange(basketItems);
 
+        // Save changes to the database.
         await _context.SaveChangesAsync();
 
-        // Redirect the user to the required payment page.
-        return OrderInput.PaymentMethod switch
+        // If user has selected any day delivery go to the select day page.
+        if (deliveryMethod.IsDaySelectable)
         {
-            PaymentMethod.Card => RedirectToPage("./CardPayment", new { orderId = order.Id }),
-            PaymentMethod.External => RedirectToPage("./External", new { orderId = order.Id }),
-            _ => NotFound()
-        };
+            return RedirectToPage("./DeliveryDaySelection", new { orderId = order.Id });
+        }
+        
+        // Otherwise, Go to the order confirmation page.
+        return RedirectToPage("./OrderConfirmation", new { orderId = order.Id });
     }
 
     private async Task<BasketIndexModel> PopulateBasketModel(string? userId)
@@ -203,7 +214,8 @@ public class IndexModel : PageModel
                 Title = item.Item?.Title,
                 Quantity = item.Quantity,
                 ItemPrice = item.Item!.Price,
-                TotalPrice = item.Quantity * item.Item.Price
+                TotalPrice = item.Quantity * item.Item.Price,
+                ItemType = item.Item.GetType().Name
             };
 
             // If the model is a service add the serviceDate.
@@ -246,24 +258,22 @@ public class IndexModel : PageModel
 
         public decimal ItemPrice { get; set; }
         public decimal TotalPrice { get; set; }
+        public string? ItemType { get; set; }
     }
 
     public class OrderInputModel
     {
-        // Make user of custom validators for date input.
-        [Required]
-        [NotOnHoliday]
-        [WithinFourteenDays]
-        [Display(Name = "Required Date")]
-        [DataType(DataType.Date)]
-        public DateTime RequiredDate { get; set; }
+        [Required] public string? FirstName { get; set; }
+        [Required] public string? LastName { get; set; }
+        [Required] public string? Email { get; set; }
+        [Required] public string? AddressLine1 { get; set; }
+        public string? AddressLine2 { get; set; }
+        [Required] public string? City { get; set; }
+        [Required] public string? Country { get; set; }
+        [Required] public string? Postcode { get; set; }
+        [Required] public int DeliveryMethodId { get; set; }
+        [Required] public DateTime RequiredDate { get; set; }
 
-        [Required]
-        [Display(Name = "Delivery Method")]
-        public int DeliveryMethodId { get; set; }
-
-        [Required]
-        [Display(Name = "Payment Method")]
-        public PaymentMethod PaymentMethod { get; set; }
+        public Card Card { get; set; } = null!;
     }
 }

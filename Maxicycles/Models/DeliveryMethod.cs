@@ -6,7 +6,8 @@ public class DeliveryMethod
     public string? Title { get; set; }
     public decimal Price { get; set; }
     public int MinDaysToDeliver { get; set; }
+    public bool IsDaySelectable { get; set; }
 
-    // Many DeliveryMethods to one order.
+// Many DeliveryMethods to one order.
     public ICollection<Order> Orders { get; } = new List<Order>();
 }

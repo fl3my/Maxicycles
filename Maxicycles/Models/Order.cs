@@ -14,7 +14,11 @@ public class Order
 
     public bool ReceiptSent { get; set; }
     public decimal TotalPrice { get; set; }
-    
+
+    public string? FirstName { get; set; }
+    public string? LastName { get; set; }
+    public string? Email { get; set; }
+    public string? Country { get; set; }
     public string? AddressLine1 { get; set; }
     public string? AddressLine2 { get; set; } 
     public string? City { get; set; }
@@ -27,8 +31,8 @@ public class Order
     public Payment? Payment { get; set; }
     
     // One Order to many Delivery.
-    public int DeliveryMethodId { get; set; }
-    public DeliveryMethod DeliveryMethod { get; set; } = null!;
+    public int? DeliveryMethodId { get; set; }
+    public DeliveryMethod? DeliveryMethod { get; set; }
 
     // Many Order to one MaxicyclesUser.
     public string MaxicyclesUserId { get; set; } = string.Empty;

@@ -30,6 +30,12 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.DeliveryMethod.MinDaysToDeliver)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.DeliveryMethod.IsDaySelectable)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.DeliveryMethod.IsDaySelectable)
+        </dd>
     </dl>
 
     <form method="post">

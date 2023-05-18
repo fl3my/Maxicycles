@@ -29,6 +29,11 @@
                 <span asp-validation-for="DeliveryMethod.MinDaysToDeliver" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="DeliveryMethod.IsDaySelectable" class="control-label"></label>
+                <input asp-for="DeliveryMethod.IsDaySelectable" class="form-control"/>
+                <span asp-validation-for="DeliveryMethod.IsDaySelectable" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary"/>
             </div>
         </form>
