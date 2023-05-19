@@ -87,9 +87,12 @@ public class IndexModel : PageModel
 
             return Page();
         }
+
+        // Create a stripe external payment record to be stored in the database.
+        var stripeExternal = new ExternalPayment{ Title = "Stripe" };
         
         // Use custom function to populate an order.
-        var order = PopulateOrder(basketItems, new Payment(), deliveryMethod, user.Id);
+        var order = PopulateOrder(basketItems, stripeExternal, deliveryMethod, user.Id);
 
         // Add the order to the database.
         _context.Orders.Add(order);
@@ -135,12 +138,14 @@ public class IndexModel : PageModel
                 });
 
 
+        // Create the shipping option on the stripe payment.
         var options = new SessionCreateOptions
         {
             ShippingOptions = new List<SessionShippingOptionOptions>
             {
                 new()
                 {
+                    // Add the new shipping option with data selected by the user.
                     ShippingRateData = new SessionShippingOptionShippingRateDataOptions
                     {
                         Type = "fixed_amount",
@@ -161,6 +166,7 @@ public class IndexModel : PageModel
                     }
                 }
             },
+            // Add the basket items to the stripe api.
             LineItems = stripeBasketList,
 
             // One time payment mode.

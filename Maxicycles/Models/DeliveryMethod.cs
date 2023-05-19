@@ -16,7 +16,7 @@ public class DeliveryMethod
     
     [Required]
     [Display(Name = "Minimum Days to Deliver")]
-    [Range(0, 30)]
+    [Range(1, 30)]
     public int MinDaysToDeliver { get; set; }
     
     [Display(Name = "Is Shipping Day Selectable")]

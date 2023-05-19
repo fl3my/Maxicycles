@@ -118,9 +118,9 @@
             <div id="sector_descriptions">
                 <div class="row gy-3 collapse" id="debit" data-bs-parent="#sector_descriptions">
                     
-                <div class="collapse" id="paypal" data-bs-parent="#sector_descriptions">
+                    <div class="collapse" id="paypal" data-bs-parent="#sector_descriptions">
+                    </div>
                 </div>
-            </div>
             
                 <div class="accordion" id="accordionExample">
                     <div class="accordion-item">
@@ -164,7 +164,7 @@
                                         <input asp-for="OrderInput.Card.Cvv" class="form-control" placeholder="">
                                         <span asp-validation-for="OrderInput.Card.Cvv" class="text-danger"></span>
                                     </div>
-                                    <button class="w-100 btn btn-primary btn-lg" type="submit" asp-page-handler="CheckoutDebit">Continue with Card</button>
+                                    <button class="w-100 btn btn-primary btn-lg mt-3" type="submit" asp-page-handler="CheckoutDebit">Checkout with debit</button>
                                 </div>
                             </div>
                         </div>
@@ -177,7 +177,7 @@
                         </h2>
                         <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                             <div class="accordion-body">
-                                <button class="w-100 btn btn-primary btn-lg" type="submit" asp-page-handler="CheckoutStripe">Continue with Paypal</button>
+                                <button class="w-100 btn btn-primary btn-lg" type="submit" asp-page-handler="CheckoutStripe">Checkout with Stripe</button>
                             </div>
                         </div>
                     </div>

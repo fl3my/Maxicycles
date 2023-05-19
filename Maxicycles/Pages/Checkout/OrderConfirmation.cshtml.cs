@@ -1,5 +1,6 @@
 using System.Text;
 using Maxicycles.Data;
+using Maxicycles.Enums;
 using Maxicycles.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
@@ -58,6 +59,10 @@ public class OrderConfirmationModel : PageModel
 
         // Change the status to awaiting shipment as payment has been made.
         order.ReceiptSent = true;
+        
+        // By this point, payment has been made, change the order status to awaiting payment.
+        order.OrderStatus = OrderStatus.AwaitingShipment;
+        
         _context.Attach(order).State = EntityState.Modified;
 
         await _context.SaveChangesAsync();
