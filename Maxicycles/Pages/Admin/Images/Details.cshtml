@@ -34,8 +34,7 @@
             Uploaded Image
         </dt>
         <dd class="col-sm-10">
-            <img decoding="async" alt="@Model.Image" src="@("/images/" + Model.Image.ImageName)"/>
-
+            <img decoding="async" alt="@Model.Image.AltText" src="@("/uploads/" + Model.Image.ImageName)"/>
         </dd>
     </dl>
 </div>
