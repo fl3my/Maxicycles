@@ -17,9 +17,9 @@ public class NotOnHolidayAttribute : ValidationAttribute
         foreach (var holiday in context.Holiday)
         {
             // Check if date is in the holiday window.
-            if (date >= holiday.Start && date <= holiday.End)
+            if (date >= holiday.Start && date < holiday.End)
             {
-                return new ValidationResult(GetErrorMessage(holiday.Title!, holiday.End.ToShortDateString()));
+                return new ValidationResult(GetErrorMessage(holiday.Title!, holiday.End.AddDays(1).ToShortDateString()));
             }
         }
         return ValidationResult.Success;

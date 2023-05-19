@@ -40,8 +40,7 @@
                     @Html.DisplayFor(modelItem => item.Title)
                 </td>
                 <td>
-                    @(item.Item is BasketService ? item.ServiceDate : "N/A")
-                    @Html.DisplayFor(modelItem => item.ServiceDate)
+                    @(item.Item is BasketService ? item.ServiceDate?.ToShortDateString() : "N/A")
                 </td>
                 <td>
                     £@Html.DisplayFor(modelItem => item.ItemPrice)
