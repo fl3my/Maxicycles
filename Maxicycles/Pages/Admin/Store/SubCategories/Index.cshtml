@@ -5,11 +5,18 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>All Sub Categories</h1>
 
 <p>
     <a asp-page="Create">Create New</a>
 </p>
+<form class="d-inline-flex">
+    <select asp-for="@Model.ParentCategoryId" class="form-select" asp-items="ViewBag.ParentCategoryId">
+        <option>All</option>
+    </select>
+    <input type="submit" value="Filter" class="btn btn-primary"/>
+</form>
+
 <table class="table">
     <thead>
     <tr>
@@ -17,7 +24,7 @@
             @Html.DisplayNameFor(model => model.SubCategory[0].Title)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.SubCategory[0].Category)
+            Parent Category
         </th>
         <th></th>
     </tr>
@@ -30,7 +37,7 @@
                 @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Category.Id)
+                @Html.DisplayFor(modelItem => item.Category.Title)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.Id">Edit</a> |

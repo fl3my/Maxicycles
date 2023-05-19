@@ -7,10 +7,10 @@
 
 <h1>Edit</h1>
 
-<h4>Product</h4>
+<h4>Service</h4>
 <hr/>
 <div class="row">
-    <div class="col-md-4">
+    <div class="col-md-8">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Service.Id"/>
@@ -21,7 +21,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Service.Description" class="control-label"></label>
-                <input asp-for="Service.Description" class="form-control"/>
+                <textarea asp-for="Service.Description" class="form-control" rows="10"></textarea>
                 <span asp-validation-for="Service.Description" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -40,12 +40,12 @@
                 <span asp-validation-for="Service.DailyMaxServices" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Service.SubCategoryId" class="control-label"></label>
+                <label asp-for="Service.SubCategoryId" class="control-label">Sub Category Name</label>
                 <select asp-for="Service.SubCategoryId" class="form-control" asp-items="ViewBag.SubcategoryId"></select>
                 <span asp-validation-for="Service.SubCategoryId" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Service.ImageId" class="control-label"></label>
+                <label asp-for="Service.ImageId" class="control-label">Image Name</label>
                 <select asp-for="Service.ImageId" class="form-control" asp-items="ViewBag.ImageId"></select>
                 <span asp-validation-for="Service.ImageId" class="text-danger"></span>
             </div>

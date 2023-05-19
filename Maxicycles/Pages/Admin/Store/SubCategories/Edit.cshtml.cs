@@ -43,7 +43,13 @@ public class EditModel : PageModel
     public async Task<IActionResult> OnPostAsync()
     {
         // Check if form input passes the validation.
-        if (!ModelState.IsValid) return Page();
+        if (!ModelState.IsValid)
+        {
+            // Add the category details toa new select list input.
+            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Title");
+            
+            return Page();
+        }
 
         // Track changes.
         _context.Attach(SubCategory).State = EntityState.Modified;

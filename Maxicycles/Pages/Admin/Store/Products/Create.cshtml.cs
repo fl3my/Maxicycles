@@ -19,12 +19,12 @@ public class CreateModel : PageModel
 
     public IActionResult OnGet()
     {
+
         // Pass a new select list with subcategory data.
         ViewData["SubcategoryId"] = new SelectList(_context.SubCategory, "Id", "Title");
 
         // Pass a new select list with image data.
         ViewData["ImageId"] = new SelectList(_context.Image, "Id", "Title");
-
         return Page();
     }
 
@@ -32,8 +32,17 @@ public class CreateModel : PageModel
     public async Task<IActionResult> OnPostAsync()
     {
         // Check if input form passes the validation.
-        if (!ModelState.IsValid) return Page();
+        if (!ModelState.IsValid)
+        {
+            // Pass a new select list with subcategory data.
+            ViewData["SubcategoryId"] = new SelectList(_context.SubCategory, "Id", "Title");
 
+            // Pass a new select list with image data.
+            ViewData["ImageId"] = new SelectList(_context.Image, "Id", "Title");
+            
+            return Page();
+        }
+        
         // Add the product to the database.
         _context.Product.Add(Product);
 

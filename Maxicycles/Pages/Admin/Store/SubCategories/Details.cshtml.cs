@@ -2,6 +2,7 @@ using Maxicycles.Data;
 using Maxicycles.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 
 namespace Maxicycles.Pages.Admin.Store.SubCategories;
 
@@ -22,7 +23,7 @@ public class DetailsModel : PageModel
         if (id == null) return NotFound();
 
         // Get the subcategory that matches the id.
-        var subcategory = await _context.SubCategory.FindAsync(id);
+        var subcategory = await _context.SubCategory.Include(s => s.Category).FirstOrDefaultAsync(s => s.Id == id);
 
         // If the subcategory does not exist return not found.
         if (subcategory == null) return NotFound("Subcategory does not exist.");

@@ -8,6 +8,7 @@ public class Category
     [Required]
     public string? Title { get; set; }
     [Required]
+    [RegularExpression("^[a-z](-?[a-z])*$", ErrorMessage = "Slug must be a string in format 'a-fantastic-product'")]
     public string? Slug { get; set; }
     
     // One category has many subcategory.
