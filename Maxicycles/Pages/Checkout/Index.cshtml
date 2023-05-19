@@ -107,7 +107,6 @@
             <div class="col-md-8">
                 <label asp-for="OrderInput.DeliveryMethodId" class="form-label"></label>
                 <select asp-for="OrderInput.DeliveryMethodId" asp-items="ViewBag.DeliveryMethodId" class="form-select">
-                    <option value="">Choose...</option>
                 </select>
                 <span asp-validation-for="OrderInput.DeliveryMethodId" class="text-danger"></span>
             </div>
@@ -116,60 +115,74 @@
 
             <h4 class="mb-3">Payment</h4>
 
-            <div class="my-3">
-                <div  class="form-check">
-                    <input asp-for="OrderInput.PaymentMethod" type="radio" data-bs-toggle="collapse" data-bs-target="#debit" aria-expanded="false" checked aria-controls="debit" value="@PaymentMethod.Debit.ToString()" class="form-check-input">
-                    <label value="@PaymentMethod.Debit.ToString()" class="form-check-label" asp-for="OrderInput.PaymentMethod">Debit card</label>
-                </div>
-                <div class="form-check">
-                    <input asp-for="OrderInput.PaymentMethod" type="radio" data-bs-toggle="collapse" data-bs-target="#paypal" aria-expanded="false" aria-controls="paypal" value="@PaymentMethod.Paypal.ToString()" class="form-check-input">
-                    <label value="@PaymentMethod.Paypal.ToString()" class="form-check-label" asp-for="OrderInput.PaymentMethod">Paypal</label>
+            <div id="sector_descriptions">
+                <div class="row gy-3 collapse" id="debit" data-bs-parent="#sector_descriptions">
+                    
+                <div class="collapse" id="paypal" data-bs-parent="#sector_descriptions">
                 </div>
             </div>
             
-            <div id="sector_descriptions">
-                <div class="row gy-3 collapse" id="debit" data-bs-parent="#sector_descriptions">
-                    <div class="col-md-6">
-                        <label asp-for="OrderInput.Card.Name" class="form-label"></label>
-                        <input asp-for="OrderInput.Card.Name" class="form-control" placeholder="">
-                        <span asp-validation-for="OrderInput.Card.Name" class="text-danger"></span>
+                <div class="accordion" id="accordionExample">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingOne">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                Debit Card Payment
+                            </button>
+                        </h2>
+                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label asp-for="OrderInput.Card.Name" class="form-label"></label>
+                                        <input asp-for="OrderInput.Card.Name" class="form-control" placeholder="">
+                                        <span asp-validation-for="OrderInput.Card.Name" class="text-danger"></span>
 
-                        <small class="text-muted">Full name as displayed on card</small>
-                    </div>
+                                        <small class="text-muted">Full name as displayed on card</small>
+                                    </div>
 
-                    <div class="col-md-6">
-                        <label asp-for="OrderInput.Card.LongNumber" class="form-label"></label>
-                        <input asp-for="OrderInput.Card.LongNumber" class="form-control" placeholder="">
-                        <span asp-validation-for="OrderInput.Card.LongNumber" class="text-danger"></span>
+                                    <div class="col-md-6">
+                                        <label asp-for="OrderInput.Card.LongNumber" class="form-label"></label>
+                                        <input asp-for="OrderInput.Card.LongNumber" class="form-control" placeholder="">
+                                        <span asp-validation-for="OrderInput.Card.LongNumber" class="text-danger"></span>
 
-                    </div>
+                                    </div>
 
-                    <div class="col-md-3">
-                        <label asp-for="OrderInput.Card.ExpiryMonth" class="form-label"></label>
-                        <input asp-for="OrderInput.Card.ExpiryMonth" class="form-control" placeholder="">
-                        <span asp-validation-for="OrderInput.Card.ExpiryMonth" class="text-danger"></span>
-                    </div>
-                    
-                    <div class="col-md-3">
-                        <label asp-for="OrderInput.Card.ExpiryYear" class="form-label"></label>
-                        <input asp-for="OrderInput.Card.ExpiryYear" class="form-control" placeholder="">
-                        <span asp-validation-for="OrderInput.Card.ExpiryYear" class="text-danger"></span>
-                    </div>
+                                    <div class="col-md-3">
+                                        <label asp-for="OrderInput.Card.ExpiryMonth" class="form-label"></label>
+                                        <input asp-for="OrderInput.Card.ExpiryMonth" class="form-control" placeholder="">
+                                        <span asp-validation-for="OrderInput.Card.ExpiryMonth" class="text-danger"></span>
+                                    </div>
 
-                    <div class="col-md-3">
-                        <label asp-for="OrderInput.Card.Cvv" class="form-label">CVV</label>
-                        <input asp-for="OrderInput.Card.Cvv" class="form-control" placeholder="">
-                        <span asp-validation-for="OrderInput.Card.Cvv" class="text-danger"></span>
+                                    <div class="col-md-3">
+                                        <label asp-for="OrderInput.Card.ExpiryYear" class="form-label"></label>
+                                        <input asp-for="OrderInput.Card.ExpiryYear" class="form-control" placeholder="">
+                                        <span asp-validation-for="OrderInput.Card.ExpiryYear" class="text-danger"></span>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <label asp-for="OrderInput.Card.Cvv" class="form-label">CVV</label>
+                                        <input asp-for="OrderInput.Card.Cvv" class="form-control" placeholder="">
+                                        <span asp-validation-for="OrderInput.Card.Cvv" class="text-danger"></span>
+                                    </div>
+                                    <button class="w-100 btn btn-primary btn-lg" type="submit" asp-page-handler="CheckoutDebit">Continue with Card</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                </div>
-                <div class="collapse" id="paypal" data-bs-parent="#sector_descriptions">
-                    <p>Paypal payment Selected</p>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="headingTwo">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                Stripe Payment
+                            </button>
+                        </h2>
+                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                            <div class="accordion-body">
+                                <button class="w-100 btn btn-primary btn-lg" type="submit" asp-page-handler="CheckoutStripe">Continue with Paypal</button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-
-            <hr class="my-4">
-
-            <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to checkout</button>
         </form>
     </div>
 </div>

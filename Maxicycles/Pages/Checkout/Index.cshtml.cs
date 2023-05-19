@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Stripe.Checkout;
 
 namespace Maxicycles.Pages.Checkout;
 
@@ -45,8 +46,169 @@ public class IndexModel : PageModel
         return Page();
     }
 
-    public async Task<IActionResult> OnPostAsync()
+    public async Task<IActionResult> OnPostCheckoutStripeAsync()
     {
+        // Remove Model State from card fields.
+        ModelState.Remove("OrderInput.Card.Cvv");
+        ModelState.Remove("OrderInput.Card.LongNumber");
+        ModelState.Remove("OrderInput.Card.Name");
+        ModelState.Remove("OrderInput.Card.ExpiryMonth");
+        ModelState.Remove("OrderInput.Card.ExpiryYear");
+
+        // TODO VALIDATION
+
+        // Get the current userId for the logged in user.
+        var user = await _userManager.GetUserAsync(User);
+
+        // If the user is null then return unauthorized.
+        if (user == null) return Unauthorized();
+
+        // Get the basket items for the current user.
+        var basketItems = await _context.BasketItem
+            .Where(b => b.MaxicyclesUserId == user.Id)
+            .Include(b => b.MaxicyclesUser)
+            .Include(b => b.Item)
+            .ThenInclude(b => b.Image)
+            .ToListAsync();
+
+        // Get delivery method.
+        var deliveryMethod = await _context.DeliveryMethods.FindAsync(OrderInput.DeliveryMethodId);
+
+        if (deliveryMethod == null) return NotFound();
+
+        // Check if form validation is true.
+        if (!ModelState.IsValid)
+        {
+            // Add formatted delivery methods to the form.
+            ViewData["DeliveryMethodId"] = GetFormattedDeliveryMethods();
+
+            // Populate the basketModel.
+            BasketModel = await PopulateBasketModel(user.Id);
+
+            return Page();
+        }
+        
+        // Use custom function to populate an order.
+        var order = PopulateOrder(basketItems, new Payment(), deliveryMethod, user.Id);
+
+        // Add the order to the database.
+        _context.Orders.Add(order);
+
+        // Remove all the items in the users basket.
+        _context.BasketItem.RemoveRange(basketItems);
+
+        // Save changes to the database.
+        await _context.SaveChangesAsync();
+        
+        const string domain = "http://localhost:5888";
+
+        // Get the delivery day selection page if user has selected any day delivery, otherwise get confirmation.
+        var successUrl = deliveryMethod.IsDaySelectable ? "/checkout/DeliveryDaySelection?orderId=" : "/checkout/OrderConfirmation?orderId=";
+        
+        // Add the order.Id onto the end of the success urls.
+        successUrl += order.Id;
+        
+        // Create a list of stripe line items.
+        var stripeBasketList = new List<SessionLineItemOptions>();
+
+        // Iterate over the customers current basket.
+        foreach (var basketItem in basketItems)
+            // If the basket.Item is not null
+            if (basketItem.Item != null)
+                // Add a new item to the list.
+                stripeBasketList.Add(new SessionLineItemOptions
+                {
+                    // Create price data for the stripe api.
+                    PriceData = new SessionLineItemPriceDataOptions
+                    {
+                        // Unit amount is in pence, so convert to pence.
+                        UnitAmount = (int)(basketItem.Item.Price * 100),
+                        Currency = "gbp",
+                        // Add the product data.
+                        ProductData = new SessionLineItemPriceDataProductDataOptions
+                        {
+                            Name = basketItem.Item.Title,
+                            Description = basketItem.Item.GetType().Name
+                        }
+                    },
+                    Quantity = basketItem.Quantity
+                });
+
+
+        var options = new SessionCreateOptions
+        {
+            ShippingOptions = new List<SessionShippingOptionOptions>
+            {
+                new()
+                {
+                    ShippingRateData = new SessionShippingOptionShippingRateDataOptions
+                    {
+                        Type = "fixed_amount",
+                        FixedAmount = new SessionShippingOptionShippingRateDataFixedAmountOptions
+                        {
+                            Amount = (int)deliveryMethod.Price * 100,
+                            Currency = "gbp"
+                        },
+                        DisplayName = deliveryMethod.Title,
+                        DeliveryEstimate = new SessionShippingOptionShippingRateDataDeliveryEstimateOptions
+                        {
+                            Minimum = new SessionShippingOptionShippingRateDataDeliveryEstimateMinimumOptions
+                            {
+                                Unit = "day",
+                                Value = deliveryMethod.MinDaysToDeliver
+                            }
+                        }
+                    }
+                }
+            },
+            LineItems = stripeBasketList,
+
+            // One time payment mode.
+            Mode = "payment",
+
+            // The success and cancel urls.
+            SuccessUrl = domain + successUrl,
+            CancelUrl = domain + "/checkout/CancelOrder?orderId=" + order.Id,
+        };
+
+        // Create a stripe checkout session.
+        // This controls what the customer sees on the payment page.
+        var service = new SessionService();
+        var session = await service.CreateAsync(options);
+
+        // After creating the session, redirect the customer to the url for the checkout page.
+        Response.Headers.Add("Location", session.Url);
+
+        return new StatusCodeResult(303);
+    }
+
+    public async Task<IActionResult> OnPostCheckoutDebitAsync()
+    {
+        // Check that the input card is valid.
+        if (OrderInput.Card is { ExpiryYear: > 0, ExpiryMonth: > 0 })
+        {
+            // Convert the month and year values into a datetime object.
+            var cardExpiryDate = new DateTime(OrderInput.Card.ExpiryYear, OrderInput.Card.ExpiryMonth, 1);
+
+            // Check if the card date is not in the past.
+            if (DateTime.Now >= cardExpiryDate)
+                ModelState.AddModelError("OrderInput.Card.ExpiryMonth", "Card is Expired");
+        }
+        else
+        {
+            ModelState.AddModelError("OrderInput.Card.ExpiryMonth", "Card input not valid");
+        }
+
+        // Create a new card object and populate it with values from the validation.
+        var payment = new Card
+        {
+            Name = OrderInput.Card.Name,
+            LongNumber = OrderInput.Card.LongNumber,
+            ExpiryYear = OrderInput.Card.ExpiryYear,
+            ExpiryMonth = OrderInput.Card.ExpiryMonth,
+            Cvv = OrderInput.Card.Cvv
+        };
+
         // Get the current userId for the logged in user.
         var user = await _userManager.GetUserAsync(User);
 
@@ -60,51 +222,48 @@ public class IndexModel : PageModel
             .Include(b => b.MaxicyclesUser)
             .ToListAsync();
 
-        var payment = new Payment();
-        
-        // If the payment method is debit.
-        if (OrderInput.PaymentMethod == PaymentMethod.Debit.ToString())
-        {
-            if (OrderInput.Card is { ExpiryYear: > 0, ExpiryMonth: > 0 })
-            {
-                var cardExpiryDate = new DateTime(OrderInput.Card.ExpiryYear, OrderInput.Card.ExpiryMonth, 1);
-                
-                if (DateTime.Now >= cardExpiryDate)
-                {
-                    ModelState.AddModelError("OrderInput.Card.ExpiryMonth","Card is Expired");
-                }
-            }
-            else
-            {
-                ModelState.AddModelError("OrderInput.Card.ExpiryMonth", "Card input not valid");
-            }
+        // Get delivery method.
+        var deliveryMethod = await _context.DeliveryMethods.FindAsync(OrderInput.DeliveryMethodId);
+        if (deliveryMethod == null) return NotFound();
 
-            // Create a new card object and populate it with values from the validation.
-            payment = new Card
-            {
-                Name = OrderInput.Card.Name,
-                LongNumber = OrderInput.Card.LongNumber,
-                ExpiryYear = OrderInput.Card.ExpiryYear,
-                ExpiryMonth = OrderInput.Card.ExpiryMonth,
-                Cvv = OrderInput.Card.Cvv
-            };
-        } else if (OrderInput.PaymentMethod == PaymentMethod.Paypal.ToString())
+        // Check if form validation is true.
+        if (!ModelState.IsValid)
         {
-            // If the payment is paypal, Remove validation from the card.
-            ModelState.Remove("OrderInput.Card.Cvv");
-            ModelState.Remove("OrderInput.Card.LongNumber");
-            ModelState.Remove("OrderInput.Card.Name");
-            ModelState.Remove("OrderInput.Card.ExpiryMonth");
-            ModelState.Remove("OrderInput.Card.ExpiryYear");
+            // Add formatted delivery methods to the form.
+            ViewData["DeliveryMethodId"] = GetFormattedDeliveryMethods();
 
-            // Redirect the user to external payment provider.
+            // Populate the basketModel.
+            BasketModel = await PopulateBasketModel(user.Id);
+
+            return Page();
         }
 
-        // Create a new order object.
+        // Use the populate order function to populate the order class.
+        var order = PopulateOrder(basketItems, payment, deliveryMethod, user.Id);
+
+        // Add the order to the database.
+        _context.Orders.Add(order);
+
+        // Remove all the items in the users basket.
+        _context.BasketItem.RemoveRange(basketItems);
+
+        // Save changes to the database.
+        await _context.SaveChangesAsync();
+
+        // If user has selected any day delivery go to the select day page.
+        if (deliveryMethod.IsDaySelectable) return RedirectToPage("./DeliveryDaySelection", new { orderId = order.Id });
+
+        // Otherwise, Go to the order confirmation page.
+        return RedirectToPage("./OrderConfirmation", new { orderId = order.Id });
+    }
+
+    public Order PopulateOrder(List<BasketItem> basketItems, Payment payment, DeliveryMethod deliveryMethod,
+        string userId)
+    {
         var order = new Order
         {
             OrderDate = DateTime.UtcNow,
-            MaxicyclesUserId = user.Id,
+            MaxicyclesUserId = userId,
             OrderStatus = OrderStatus.AwaitingPayment,
             ReceiptSent = false,
             FirstName = OrderInput.FirstName,
@@ -171,54 +330,25 @@ public class IndexModel : PageModel
                     "Sorry, We are currently closed for " + holiday.Title + ". We reopen for online orders on " +
                     holiday.End.ToShortDateString());
 
-        // Check if form validation is true.
-        if (!ModelState.IsValid)
-        {
-            // Add formatted delivery methods to the form.
-            ViewData["DeliveryMethodId"] = GetFormattedDeliveryMethods();
-
-            // Populate the basketModel.
-            BasketModel = await PopulateBasketModel(user.Id);
-
-            return Page();
-        }
-
-        // Get delivery method.
-        var deliveryMethod = await _context.DeliveryMethods.FindAsync(OrderInput.DeliveryMethodId);
-        if (deliveryMethod == null) return NotFound();
+        // Add the orderItems to the order object.
+        order.OrderItems = orderItems;
 
         // Calculate the estimated delivery day.
         var estimatedDeliveryDate = DateTime.Today.AddDays(deliveryMethod.MinDaysToDeliver);
-        
+
         // If the estimated date is on a holiday move the date to the next available date.
         foreach (var holiday in _context.Holiday)
             // Check if date is in the holiday window.
             if (estimatedDeliveryDate >= holiday.Start && estimatedDeliveryDate <= holiday.End)
                 estimatedDeliveryDate = holiday.End;
-        
+
         order.RequiredDate = estimatedDeliveryDate.ToUniversalTime();
 
         // Calculate the total value of the order including deliveryCost.
         var totalPrice = basketItems.Sum(b => b.Quantity * b.Item!.Price) + deliveryMethod.Price;
         order.TotalPrice = totalPrice;
 
-        // Add the orderItems to the order object.
-        order.OrderItems = orderItems;
-
-        // Add the order to the database.
-        _context.Orders.Add(order);
-
-        // Remove all the items in the users basket.
-        _context.BasketItem.RemoveRange(basketItems);
-
-        // Save changes to the database.
-        await _context.SaveChangesAsync();
-
-        // If user has selected any day delivery go to the select day page.
-        if (deliveryMethod.IsDaySelectable) return RedirectToPage("./DeliveryDaySelection", new { orderId = order.Id });
-
-        // Otherwise, Go to the order confirmation page.
-        return RedirectToPage("./OrderConfirmation", new { orderId = order.Id });
+        return order;
     }
 
     private async Task<BasketIndexModel> PopulateBasketModel(string? userId)
@@ -322,7 +452,6 @@ public class IndexModel : PageModel
         [Display(Name = "Delivery Method")]
         public int DeliveryMethodId { get; set; }
 
-        [Required] public string? PaymentMethod { get; set; }
         public Card Card { get; set; } = null!;
     }
 }

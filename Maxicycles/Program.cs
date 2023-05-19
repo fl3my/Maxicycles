@@ -4,6 +4,9 @@ using Maxicycles.Models;
 using Maxicycles.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
+using Microsoft.Extensions.Options;
+using Stripe;
+using Stripe.Terminal;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +48,10 @@ builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
 
 var app = builder.Build();
 
+
+// This is your test secret API key.
+StripeConfiguration.ApiKey = builder.Configuration["Stripe:SecretKey"];
+    
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
