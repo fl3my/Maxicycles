@@ -34,17 +34,18 @@
 
         @if (Model.Item is Service)
         {
-            <a asp-page="/Basket/AddService" asp-route-id="@Model.Item.Id" class="btn btn-primary btn-lg">Book Now</a>
+            <a asp-page="/Basket/AddService" asp-route-id="@Model.Item.Id" class="btn btn-primary btn-lg mt-4">Book Now</a>
         }
         else if (Model.Item is Product product)
         {
             @if (product.Quantity <= 0)
             {
-                <p>OUT OF STOCK</p>
+                <h5 class="text-danger mt-4 mb-0">Currently Unavailable</h5>
+                <small>We dont know when or if this item will be back in stock.</small>
             }
             else
             {
-                <a asp-page="/Basket/AddProduct" asp-route-id="@Model.Item.Id" class="btn btn-primary">Add to Basket</a>
+                <a asp-page="/Basket/AddProduct" asp-route-id="@Model.Item.Id" class="btn btn-primary btn-lg mt-4" disabled="@(product.Quantity <=0 ? true : false)">Add to Basket</a>
             }
         }
     </div>
@@ -99,7 +100,7 @@
         <div class="accordion-item">
             <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                    Reviews
+                    Reviews (0)
                 </button>
             </h2>
             <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">

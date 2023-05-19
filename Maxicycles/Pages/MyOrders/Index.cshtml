@@ -6,6 +6,7 @@
 }
 
 <h1>My Orders</h1>
+<hr />
 
 <table class="table">
     <thead>
@@ -42,16 +43,16 @@
                 @Html.DisplayFor(modelItem => item.RequiredDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ShippedDate)
+                @(item.ShippedDate == null ? "Not Shipped Yet" : item.ShippedDate)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.OrderStatus)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TotalPrice)
+                £@Html.DisplayFor(modelItem => item.TotalPrice)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DeliveryMethod.Id)
+                @Html.DisplayFor(modelItem => item.DeliveryMethod.Title)
             </td>
             <td>
                 <a asp-page="./Details" asp-route-id="@item.Id">Details</a>

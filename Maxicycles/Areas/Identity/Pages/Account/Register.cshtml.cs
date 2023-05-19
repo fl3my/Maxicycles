@@ -11,6 +11,7 @@ using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
 using Maxicycles.Models;
+using Maxicycles.Validators;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -80,7 +81,7 @@ namespace Maxicycles.Areas.Identity.Pages.Account
             [Display(Name = "Last Name")]
             public string LastName { get; set; }
             
-            [Required]
+            [CheckBoxRequired]
             public bool AcceptTerms { get; set; }
 
             [Required]

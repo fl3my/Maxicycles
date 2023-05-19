@@ -19,7 +19,7 @@ public class DetailsModel : PageModel
     public Card Card { get; set; } = default!;
     public IList<OrderItemDetailsModel> OrderItemDetails { get; set; } = default!;
     public MaxicyclesUser MaxicyclesUser { get; set; } = default!;
-
+    
     public async Task<IActionResult> OnGetAsync(int? id)
     {
         // Check if the is not null.

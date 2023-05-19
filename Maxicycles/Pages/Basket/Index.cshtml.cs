@@ -19,7 +19,8 @@ public class IndexModel : PageModel
     }
 
     public IList<BasketItemModel> BasketItemModels { get; set; } = default!;
-
+    public decimal OverallTotal { get; set; }
+    
     public async Task OnGetAsync()
     {
         // Get the current userId.
@@ -28,8 +29,8 @@ public class IndexModel : PageModel
         // Get the basket items for the current user.
         var basketItems = await _context.BasketItem
             .Where(b => b.MaxicyclesUserId == userId)
-            .Include(b => b.Item)
             .Include(b => b.MaxicyclesUser)
+            .Include(b => b.Item)
             .ToListAsync();
 
         // Create a list of view models.
@@ -47,7 +48,9 @@ public class IndexModel : PageModel
                 Item = item,
                 TotalPrice = item.Quantity * item.Item.Price
             };
-
+            
+            OverallTotal += basketItemModel.TotalPrice;
+            
             // If the model is a service add the serviceDate.
             if (item is BasketService service) basketItemModel.ServiceDate = service.ServiceDate.ToLocalTime();
 
@@ -62,9 +65,12 @@ public class IndexModel : PageModel
         public string? Title { get; set; }
         public int Quantity { get; set; }
 
-        [DataType(DataType.Date)] public DateTime? ServiceDate { get; set; }
+        [DataType(DataType.Date)] [Display(Name = "Date of Service")] public DateTime? ServiceDate { get; set; }
 
+        [Display(Name = "Each")]
         public decimal ItemPrice { get; set; }
+        
+        [Display(Name = "Total")]
         public decimal TotalPrice { get; set; }
         public BasketItem? Item { get; set; }
     }

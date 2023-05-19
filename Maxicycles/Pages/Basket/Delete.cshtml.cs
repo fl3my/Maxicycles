@@ -23,7 +23,7 @@ public class DeleteModel : PageModel
         if (id == null) return NotFound();
 
         // Get the basket item from the ID parameter.
-        var basketItem = await _context.BasketItem.FirstOrDefaultAsync(m => m.Id == id);
+        var basketItem = await _context.BasketItem.Include(b => b.Item).FirstOrDefaultAsync(m => m.Id == id);
 
         // Check if the basket item exists.
         if (basketItem == null) return NotFound("BasketItem does not exist.");

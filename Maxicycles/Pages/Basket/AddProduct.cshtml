@@ -5,9 +5,7 @@
     ViewData["Title"] = "AddProduct";
 }
 
-<h1>AddProduct</h1>
-
-<h4>BasketItem</h4>
+<h1>Add Product</h1>
 <hr/>
 <div class="row">
     <div class="col-md-4">
@@ -18,17 +16,46 @@
                 <input asp-for="BasketProduct.Item.Title" class="form-control" disabled/>
             </div>
             <div class="form-group">
+                <label asp-for="BasketProduct.Item.Price" class="control-label"></label>
+                <input asp-for="BasketProduct.Item.Price" class="form-control" disabled/>
+            </div>
+            <div class="form-group">
                 <label asp-for="BasketProduct.Quantity" class="control-label"></label>
                 <input asp-for="BasketProduct.Quantity" class="form-control" min="1"/>
                 <span asp-validation-for="BasketProduct.Quantity" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary"/>
+                <label class="control-label">Total Price</label>
+                <input id="totalPrice" class="form-control" disabled/>
+            </div>
+            <div class="form-group mt-3">
+                <input type="submit" value="Add to Basket" class="btn btn-primary"/>
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-page="Index">Back to List</a>
+    <a asp-page="/Items/Details" asp-route-slug="@Model.BasketProduct.Item.Slug">Back to Product</a>
 </div>
+
+@section Scripts {
+    <script type="text/javascript">
+    
+        // Function to calculate the live total.
+        function calculateLiveTotal() {
+            const itemPrice = $("#BasketProduct_Item_Price").val();
+            let quantity = $("#BasketProduct_Quantity").val();
+            $("#totalPrice").val(itemPrice * quantity)
+        }
+        
+        // Call the calculate total first when page load.
+        calculateLiveTotal();
+        
+        // Whenever the quantity field changes, recalculate.
+        $('#BasketProduct_Quantity').on('change', function () {
+            calculateLiveTotal();
+        })
+    
+    </script>
+}
