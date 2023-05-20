@@ -1,0 +1,118 @@
+@page
+@model Maxicycles.Pages.Admin.Store.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h1 class="h2">Dashboard</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        
+        <button type="button" class="btn btn-sm btn-outline-primary me-2">Export</button>
+        <button type="button" class="btn btn-sm btn-outline-primary dropdown-toggle">
+            <span data-feather="calendar" class="align-text-bottom"></span>
+            Last 7 Days
+        </button>
+    </div>
+</div>
+
+<canvas class="my-4 w-100" id="myChart" width="900" height="380"></canvas>
+
+<table class="table table-striped  table-sm">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Order[0].Id)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Order[0].OrderDate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Order[0].TotalPrice)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Order[0].TotalItems)
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model.Order) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.OrderDate)
+            </td>
+            <td>
+                £@Html.DisplayFor(modelItem => item.TotalPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalItems)
+            </td>
+        </tr>
+    }
+    </tbody>
+    <tfoot>
+    <tr>
+        <th></th>
+        <th></th>
+        <th>Total Items Sold</th>
+        <th>@Model.TotalItemsSoldLast7Days</th>
+    </tr>
+    <tr>
+        <th></th>
+        <th></th>
+        <th>Total Sales</th>
+        <th>
+            £@Model.TotalSalesLast7Days
+        </th>
+    </tr>
+    </tfoot>
+</table>
+
+@section Scripts
+{
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        // Get the chart data from the backend.
+        var chartData = @Html.Raw(Json.Serialize(Model.DataList));
+        
+        // Create two new empty lists to store the data.
+        var labels = [];
+        var data = [];
+        
+        // Itterate over each item in the chart data json object, and push its value to the new lists.
+        $.each(chartData, function (index, value) {
+            labels.push(value.label);
+            data.push(value.data);
+        });
+    
+        const ctx = document.getElementById('myChart');
+    
+        // Use the chart js library and and create an new bar chart.
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: labels,
+              datasets: [{
+                label: 'Total Sales in GBP',
+                data: data,
+                borderWidth: 1,
+              }]
+            },
+            options: {
+              scales: {
+                y: {
+                  beginAtZero: true
+                }
+              }
+            }
+        });
+
+    
+    
+    </script>
+}
