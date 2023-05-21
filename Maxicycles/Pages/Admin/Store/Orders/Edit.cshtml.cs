@@ -33,7 +33,7 @@ public class EditModel : PageModel
         OrderEdit = new OrderEditModel
         {
             Id = order.Id,
-            RequiredDate = order.RequiredDate.ToLocalTime(),
+            RequiredDate = order.TargetDeliveryDate.ToLocalTime(),
             ShippedDate = order.ShippedDate?.ToLocalTime(),
             OrderStatus = order.OrderStatus
         };
@@ -56,7 +56,7 @@ public class EditModel : PageModel
 
         // Convert the local time from the input to UTC time for storage in the database.
         order.OrderStatus = OrderEdit.OrderStatus;
-        order.RequiredDate = OrderEdit.RequiredDate.ToUniversalTime();
+        order.TargetDeliveryDate = OrderEdit.RequiredDate.ToUniversalTime();
         order.ShippedDate = OrderEdit.ShippedDate?.ToUniversalTime();
 
         // Track changes.

@@ -34,7 +34,7 @@ public class IndexModel : PageModel
         foreach (var order in Order)
         {
             order.OrderDate = order.OrderDate.ToLocalTime();
-            order.RequiredDate = order.RequiredDate.ToLocalTime();
+            order.TargetDeliveryDate = order.TargetDeliveryDate.ToLocalTime();
             order.ShippedDate = order.ShippedDate?.ToLocalTime();
         }
     }

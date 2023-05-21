@@ -54,7 +54,7 @@ namespace Maxicycles.Pages.Checkout
                 return Unauthorized();
             }
 
-            RequiredDate = order.RequiredDate;
+            RequiredDate = order.TargetDeliveryDate;
             DeliveryMethodTitle = order.DeliveryMethod.Title;
             
             return Page();
@@ -94,7 +94,7 @@ namespace Maxicycles.Pages.Checkout
             }
 
             // Change the required date to the date specified by the user.
-            order.RequiredDate = RequiredDate.ToUniversalTime();
+            order.TargetDeliveryDate = RequiredDate.ToUniversalTime();
             
             // Update the data in the table.
             _context.Attach(order).State = EntityState.Modified;

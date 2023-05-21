@@ -41,7 +41,7 @@ public class DetailsModel : PageModel
 
         // Convert all of the utc times from the database to local time.
         Order.OrderDate = Order.OrderDate.ToLocalTime();
-        Order.RequiredDate = Order.RequiredDate.ToLocalTime();
+        Order.TargetDeliveryDate = Order.TargetDeliveryDate.ToLocalTime();
         Order.ShippedDate = Order.ShippedDate?.ToLocalTime();
 
         MaxicyclesUser = order.MaxicyclesUser;

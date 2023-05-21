@@ -15,7 +15,7 @@
             @Html.DisplayNameFor(model => model.Order[0].OrderDate)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Order[0].RequiredDate)
+            @Html.DisplayNameFor(model => model.Order[0].TargetDeliveryDate)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Order[0].ShippedDate)
@@ -40,7 +40,7 @@
                 @Html.DisplayFor(modelItem => item.OrderDate)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.RequiredDate)
+                @Html.DisplayFor(modelItem => item.TargetDeliveryDate)
             </td>
             <td>
                 @(item.ShippedDate == null ? "Not Shipped Yet" : item.ShippedDate)

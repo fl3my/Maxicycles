@@ -46,7 +46,7 @@ public class DetailsModel : PageModel
         // Convert the UTC from the database to Local time for display.
         Order.OrderDate = Order.OrderDate.ToLocalTime();
         Order.ShippedDate = Order.ShippedDate?.ToLocalTime();
-        Order.RequiredDate = Order.RequiredDate.ToLocalTime();
+        Order.TargetDeliveryDate = Order.TargetDeliveryDate.ToLocalTime();
 
         return Page();
     }

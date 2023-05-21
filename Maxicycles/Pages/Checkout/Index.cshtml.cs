@@ -348,7 +348,7 @@ public class IndexModel : PageModel
             if (estimatedDeliveryDate >= holiday.Start && estimatedDeliveryDate <= holiday.End)
                 estimatedDeliveryDate = holiday.End;
 
-        order.RequiredDate = estimatedDeliveryDate.ToUniversalTime();
+        order.TargetDeliveryDate = estimatedDeliveryDate.ToUniversalTime();
 
         // Calculate the total value of the order including deliveryCost.
         var totalPrice = basketItems.Sum(b => b.Quantity * b.Item!.Price) + deliveryMethod.Price;

@@ -30,7 +30,7 @@ public class IndexModel : PageModel
         {
             order.OrderDate = order.OrderDate.ToLocalTime();
             order.ShippedDate = order.ShippedDate?.ToLocalTime();
-            order.RequiredDate = order.RequiredDate.ToLocalTime();
+            order.TargetDeliveryDate = order.TargetDeliveryDate.ToLocalTime();
         }
     }
 }
