@@ -32,7 +32,7 @@ namespace Maxicycles.Pages.Admin.Store.Categories
             }
 
             // Get the category that matches the parameter id.
-            var category =  await _context.Category.FirstOrDefaultAsync(m => m.Id == id);
+            var category =  await _context.Categories.FirstOrDefaultAsync(m => m.Id == id);
             
             // If the category does not exist.
             if (category == null)
@@ -80,7 +80,7 @@ namespace Maxicycles.Pages.Admin.Store.Categories
         // Function that checks if the category exists in the database.
         private bool CategoryExists(int id)
         {
-          return (_context.Category?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.Categories?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

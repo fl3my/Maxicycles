@@ -39,7 +39,7 @@ public class DetailsModel : PageModel
             City = user.City,
             Postcode = user.Postcode,
             PhoneNumber = user.PhoneNumber,
-            Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault()
+            Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault(r => r != "Admin")
         };
 
         return Page();

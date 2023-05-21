@@ -24,13 +24,13 @@ public class EditModel : PageModel
         if (id == null) return NotFound();
 
         // Get the post that matches the id.
-        var post = await _context.Post.FindAsync(id);
+        var post = await _context.Posts.FindAsync(id);
 
         // Return not found is post does not exist.
         if (post == null) return NotFound("Post does not exist.");
 
         // Populate the image list with image names.
-        ViewData["ImageId"] = new SelectList(_context.Image, "Id", "Title");
+        ViewData["ImageId"] = new SelectList(_context.Images, "Id", "Title");
         
         // Populate the edit post model with details from the post.
         EditPost = new EditPostModel
@@ -53,7 +53,7 @@ public class EditModel : PageModel
         if (!ModelState.IsValid) return Page();
 
         // get he post from the database.
-        var post = await _context.Post.FindAsync(EditPost.Id);
+        var post = await _context.Posts.FindAsync(EditPost.Id);
 
         // If post does not exist return not found.
         if (post == null) return NotFound("Post does not exist.");
@@ -87,7 +87,7 @@ public class EditModel : PageModel
     // Function that checks if a post exists in the database.
     private bool PostExists(int id)
     {
-        return (_context.Post?.Any(e => e.Id == id)).GetValueOrDefault();
+        return (_context.Posts?.Any(e => e.Id == id)).GetValueOrDefault();
     }
 
     public class EditPostModel

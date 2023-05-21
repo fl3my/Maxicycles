@@ -27,7 +27,7 @@ public class DetailsModel : PageModel
 
         // Find the first item in the database that matches the slug parameter.
         var item = await _context
-            .Item
+            .Items
             .Include(m => m.Image)
             .Include(c => c.SubCategory)
             .FirstOrDefaultAsync(m => m.Slug == slug);

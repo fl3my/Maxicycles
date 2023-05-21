@@ -19,7 +19,7 @@ public class IndexModel : PageModel
     public async Task OnGetAsync()
     {
         // Populate the comment list with all comments from the database.
-        Comment = await _context.Comment
+        Comment = await _context.Comments
             .Include(c => c.MaxicyclesUser)
             .Include(c => c.Post).ToListAsync();
 

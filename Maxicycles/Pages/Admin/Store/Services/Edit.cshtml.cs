@@ -24,7 +24,7 @@ public class EditModel : PageModel
         if (id == null) return NotFound();
 
         // Get the product from the database that matches the parameter id.
-        var service = await _context.Service.FindAsync(id);
+        var service = await _context.Services.FindAsync(id);
 
         // If the service does not exist.
         if (service == null) return NotFound("Service does not exist");
@@ -33,10 +33,10 @@ public class EditModel : PageModel
         Service = service;
 
         // Pass a new select list with subcategory data.
-        ViewData["SubcategoryId"] = new SelectList(_context.SubCategory, "Id", "Title");
+        ViewData["SubcategoryId"] = new SelectList(_context.SubCategories, "Id", "Title");
 
         // Pass a new select list with image data.
-        ViewData["ImageId"] = new SelectList(_context.Image, "Id", "Title");
+        ViewData["ImageId"] = new SelectList(_context.Images, "Id", "Title");
 
         return Page();
     }
@@ -49,10 +49,10 @@ public class EditModel : PageModel
         if (!ModelState.IsValid)
         {
             // Pass a new select list with subcategory data.
-            ViewData["SubcategoryId"] = new SelectList(_context.SubCategory, "Id", "Title");
+            ViewData["SubcategoryId"] = new SelectList(_context.SubCategories, "Id", "Title");
 
             // Pass a new select list with image data.
-            ViewData["ImageId"] = new SelectList(_context.Image, "Id", "Title");
+            ViewData["ImageId"] = new SelectList(_context.Images, "Id", "Title");
             
             return Page();
         }
@@ -77,6 +77,6 @@ public class EditModel : PageModel
     // Function to check if the service exists in the database.
     private bool ServiceExists(int id)
     {
-        return (_context.Service?.Any(e => e.Id == id)).GetValueOrDefault();
+        return (_context.Services?.Any(e => e.Id == id)).GetValueOrDefault();
     }
 }

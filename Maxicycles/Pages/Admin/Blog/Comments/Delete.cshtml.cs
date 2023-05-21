@@ -23,7 +23,7 @@ public class DeleteModel : PageModel
         if (id == null) return NotFound();
 
         // Get the comment that matches the id.
-        var comment = await _context.Comment.Include(c => c.MaxicyclesUser).FirstOrDefaultAsync(m => m.Id == id);
+        var comment = await _context.Comments.Include(c => c.MaxicyclesUser).FirstOrDefaultAsync(m => m.Id == id);
 
         if (comment == null) return NotFound();
 
@@ -42,7 +42,7 @@ public class DeleteModel : PageModel
         if (id == null) return NotFound();
 
         // Get the comment that matches the id.
-        var comment = await _context.Comment.FindAsync(id);
+        var comment = await _context.Comments.FindAsync(id);
 
         // If the comment is null redirect to index.
         if (comment == null) return RedirectToPage("./Index");
@@ -50,7 +50,7 @@ public class DeleteModel : PageModel
         Comment = comment;
 
         // Remove the comment from the database.
-        _context.Comment.Remove(Comment);
+        _context.Comments.Remove(Comment);
         await _context.SaveChangesAsync();
 
         return RedirectToPage("./Index");

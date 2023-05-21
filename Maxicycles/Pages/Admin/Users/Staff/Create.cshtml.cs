@@ -79,6 +79,7 @@ public class CreateModel : PageModel
             // If succeeded, Add the user to the role selected from the dropdown.
             if (result.Succeeded)
             {
+                await _userManager.AddToRoleAsync(user, "Admin");
                 await _userManager.AddToRoleAsync(user, Input.Role);
                 return RedirectToPage("./Index");
             }

@@ -23,7 +23,7 @@ public class DeleteModel : PageModel
         if (id == null) return NotFound();
 
         // Get the basket item from the ID parameter.
-        var basketItem = await _context.BasketItem.Include(b => b.Item).FirstOrDefaultAsync(m => m.Id == id);
+        var basketItem = await _context.BasketItems.Include(b => b.Item).FirstOrDefaultAsync(m => m.Id == id);
 
         // Check if the basket item exists.
         if (basketItem == null) return NotFound("BasketItem does not exist.");
@@ -40,7 +40,7 @@ public class DeleteModel : PageModel
         if (id == null) return NotFound();
 
         // Get the basket item from the id parameter.
-        var basketItem = await _context.BasketItem.FindAsync(id);
+        var basketItem = await _context.BasketItems.FindAsync(id);
 
         // If the basket item does not exist redirect to index.
         if (basketItem == null) return RedirectToPage("./Index");
@@ -48,7 +48,7 @@ public class DeleteModel : PageModel
         BasketItem = basketItem;
 
         // Remove the basket item from the database.
-        _context.BasketItem.Remove(BasketItem);
+        _context.BasketItems.Remove(BasketItem);
 
         // Save changes to the database.
         await _context.SaveChangesAsync();

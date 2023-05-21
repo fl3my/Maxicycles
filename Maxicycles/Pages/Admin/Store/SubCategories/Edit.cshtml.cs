@@ -24,7 +24,7 @@ public class EditModel : PageModel
         if (id == null) return NotFound();
 
         // Get the subcategory that matches the id parameter.
-        var subcategory = await _context.SubCategory.FindAsync(id);
+        var subcategory = await _context.SubCategories.FindAsync(id);
 
         // Return not found if the subcategory does not exist.
         if (subcategory == null) return NotFound("Subcategory does not exist.");
@@ -33,7 +33,7 @@ public class EditModel : PageModel
         SubCategory = subcategory;
 
         // Add the category details toa new select list input.
-        ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Title");
+        ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Title");
 
         return Page();
     }
@@ -46,7 +46,7 @@ public class EditModel : PageModel
         if (!ModelState.IsValid)
         {
             // Add the category details toa new select list input.
-            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Title");
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Title");
             
             return Page();
         }
@@ -72,6 +72,6 @@ public class EditModel : PageModel
     // Function that checks if the subcategory exists in the database.
     private bool SubCategoryExists(int id)
     {
-        return (_context.SubCategory?.Any(e => e.Id == id)).GetValueOrDefault();
+        return (_context.SubCategories?.Any(e => e.Id == id)).GetValueOrDefault();
     }
 }

@@ -24,7 +24,7 @@ public class EditModel : PageModel
         if (id == null) return NotFound();
 
         // Get the comment that matches the id.
-        var comment = await _context.Comment.Include(c => c.MaxicyclesUser).FirstOrDefaultAsync(m => m.Id == id);
+        var comment = await _context.Comments.Include(c => c.MaxicyclesUser).FirstOrDefaultAsync(m => m.Id == id);
 
         // Return not found if the comment does not exist.
         if (comment == null) return NotFound("Comment does not exist.");
@@ -47,7 +47,7 @@ public class EditModel : PageModel
     public async Task<IActionResult> OnPostAsync()
     {
         // Get the comment by id.
-        var comment = await _context.Comment.FindAsync(EditComment.Id);
+        var comment = await _context.Comments.FindAsync(EditComment.Id);
 
         if (comment == null) return NotFound();
 
@@ -77,7 +77,7 @@ public class EditModel : PageModel
     // Check if the comment exists in the database.
     private bool CommentExists(int id)
     {
-        return (_context.Comment?.Any(e => e.Id == id)).GetValueOrDefault();
+        return (_context.Comments?.Any(e => e.Id == id)).GetValueOrDefault();
     }
 
     public class EditCommentModel

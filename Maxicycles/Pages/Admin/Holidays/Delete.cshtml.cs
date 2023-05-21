@@ -23,7 +23,7 @@ public class DeleteModel : PageModel
         if (id == null) return NotFound();
 
         // Get the holiday that matches the id.
-        var holiday = await _context.Holiday.FirstOrDefaultAsync(m => m.Id == id);
+        var holiday = await _context.Holidays.FirstOrDefaultAsync(m => m.Id == id);
 
         if (holiday == null) return NotFound();
 
@@ -39,7 +39,7 @@ public class DeleteModel : PageModel
         if (id == null) return NotFound("Holiday does not exist");
 
         // Find the holiday in the database.
-        var holiday = await _context.Holiday.FindAsync(id);
+        var holiday = await _context.Holidays.FindAsync(id);
 
         // Return to index if the holiday does not exist.
         if (holiday == null) return RedirectToPage("./Index");
@@ -47,7 +47,7 @@ public class DeleteModel : PageModel
         Holiday = holiday;
 
         // Remove the holiday from the database.
-        _context.Holiday.Remove(Holiday);
+        _context.Holidays.Remove(Holiday);
         await _context.SaveChangesAsync();
 
         return RedirectToPage("./Index");

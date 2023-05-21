@@ -35,6 +35,7 @@ public class EditModel : PageModel
         // Get a list of roles that are not customers.
         var roles = await _roleManager.Roles
             .Where(x => x.Name != "Customer")
+            .Where(x => x.Name != "Admin")
             .ToListAsync();
 
         // Put the roles returned into a select list item.
@@ -55,7 +56,7 @@ public class EditModel : PageModel
             City = user.City,
             Postcode = user.Postcode,
             PhoneNumber = user.PhoneNumber,
-            Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault(),
+            Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault(r => r != "Admin"),
             Roles = rolesList
         };
 
@@ -80,7 +81,8 @@ public class EditModel : PageModel
 
         await _userManager.UpdateAsync(user);
 
-        var oldRole = (await _userManager.GetRolesAsync(user)).FirstOrDefault();
+        // Get the role that is not admin.
+        var oldRole = (await _userManager.GetRolesAsync(user)).FirstOrDefault(r => r != "Admin");
 
         // Remove user from current role if user has role already.
         if (oldRole != null) await _userManager.RemoveFromRoleAsync(user, oldRole);

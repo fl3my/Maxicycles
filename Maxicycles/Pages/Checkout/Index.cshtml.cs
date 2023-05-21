@@ -32,7 +32,7 @@ public class IndexModel : PageModel
         var userId = _userManager.GetUserId(User);
 
         // Get all the basket items that belong to the user.
-        var basketItems = _context.BasketItem.Where(b => b.MaxicyclesUserId == userId);
+        var basketItems = _context.BasketItems.Where(b => b.MaxicyclesUserId == userId);
 
         // if there is not basketItems, Return unauthorized.
         if (!basketItems.Any()) return Unauthorized();
@@ -64,7 +64,7 @@ public class IndexModel : PageModel
         if (user == null) return Unauthorized();
 
         // Get the basket items for the current user.
-        var basketItems = await _context.BasketItem
+        var basketItems = await _context.BasketItems
             .Where(b => b.MaxicyclesUserId == user.Id)
             .Include(b => b.MaxicyclesUser)
             .Include(b => b.Item)
@@ -98,7 +98,7 @@ public class IndexModel : PageModel
         _context.Orders.Add(order);
 
         // Remove all the items in the users basket.
-        _context.BasketItem.RemoveRange(basketItems);
+        _context.BasketItems.RemoveRange(basketItems);
 
         // Save changes to the database.
         await _context.SaveChangesAsync();
@@ -222,7 +222,7 @@ public class IndexModel : PageModel
         if (user == null) return Unauthorized();
 
         // Get the basket items for the current user.
-        var basketItems = await _context.BasketItem
+        var basketItems = await _context.BasketItems
             .Where(b => b.MaxicyclesUserId == user.Id)
             .Include(b => b.Item)
             .Include(b => b.MaxicyclesUser)
@@ -251,7 +251,7 @@ public class IndexModel : PageModel
         _context.Orders.Add(order);
 
         // Remove all the items in the users basket.
-        _context.BasketItem.RemoveRange(basketItems);
+        _context.BasketItems.RemoveRange(basketItems);
 
         // Save changes to the database.
         await _context.SaveChangesAsync();
@@ -329,7 +329,7 @@ public class IndexModel : PageModel
             }
 
         // Prevent orders being made when the store is closed.
-        foreach (var holiday in _context.Holiday)
+        foreach (var holiday in _context.Holidays)
             // Check if date is in the holiday window.
             if (DateTime.Now >= holiday.Start && DateTime.Now <= holiday.End)
                 ModelState.AddModelError("",
@@ -343,7 +343,7 @@ public class IndexModel : PageModel
         var estimatedDeliveryDate = DateTime.Today.AddDays(deliveryMethod.MinDaysToDeliver);
 
         // If the estimated date is on a holiday move the date to the next available date.
-        foreach (var holiday in _context.Holiday)
+        foreach (var holiday in _context.Holidays)
             // Check if date is in the holiday window.
             if (estimatedDeliveryDate >= holiday.Start && estimatedDeliveryDate <= holiday.End)
                 estimatedDeliveryDate = holiday.End;
@@ -360,7 +360,7 @@ public class IndexModel : PageModel
     private async Task<BasketIndexModel> PopulateBasketModel(string? userId)
     {
         // Get the basket items for the current user.
-        var basketItems = await _context.BasketItem
+        var basketItems = await _context.BasketItems
             .Where(b => b.MaxicyclesUserId == userId)
             .Include(b => b.Item)
             .Include(b => b.MaxicyclesUser)

@@ -11,6 +11,7 @@ public static class ModelBuilderExtensions
         // Add the roles.
         var roles = new List<IdentityRole>()
         {
+            new() {Name = "Admin", NormalizedName = "ADMIN"},
             new() {Name = "Customer", NormalizedName = "CUSTOMER"},
             new() {Name = "StockControl", NormalizedName = "STOCKCONTROL"},
             new() {Name = "Technician", NormalizedName = "TECHNICIAN"},
@@ -33,7 +34,7 @@ public static class ModelBuilderExtensions
                 Email="customer@example.co.uk", 
                 NormalizedUserName = "CUSTOMER@EXAMPLE.CO.UK",
                 NormalizedEmail = "CUSTOMER@EXAMPLE.CO.UK",
-                PasswordHash = hasher.HashPassword(null!, "Manager123!"),
+                PasswordHash = hasher.HashPassword(null!, "Customer123!"),
                 EmailConfirmed = true,
                 LockoutEnabled = true,
                 PhoneNumberConfirmed = true,
@@ -108,7 +109,17 @@ public static class ModelBuilderExtensions
             new()
             {
                 UserId = users.First(q => q.UserName == "stockControl@maxicycles.co.uk").Id,
+                RoleId = roles.First(q => q.Name == "Admin").Id
+            },
+            new()
+            {
+                UserId = users.First(q => q.UserName == "stockControl@maxicycles.co.uk").Id,
                 RoleId = roles.First(q => q.Name == "StockControl").Id
+            },
+            new()
+            {
+                UserId = users.First(q => q.UserName == "technician@maxicycles.co.uk").Id,
+                RoleId = roles.First(q => q.Name == "Admin").Id
             },
             new()
             {
@@ -118,12 +129,27 @@ public static class ModelBuilderExtensions
             new()
             {
                 UserId = users.First(q => q.UserName == "accountsClerk@maxicycles.co.uk").Id,
+                RoleId = roles.First(q => q.Name == "Admin").Id
+            },
+            new()
+            {
+                UserId = users.First(q => q.UserName == "accountsClerk@maxicycles.co.uk").Id,
                 RoleId = roles.First(q => q.Name == "AccountsClerk").Id
             },
             new()
             {
                 UserId = users.First(q => q.UserName == "mediaManager@maxicycles.co.uk").Id,
+                RoleId = roles.First(q => q.Name == "Admin").Id
+            },
+            new()
+            {
+                UserId = users.First(q => q.UserName == "mediaManager@maxicycles.co.uk").Id,
                 RoleId = roles.First(q => q.Name == "MediaManager").Id
+            },
+            new()
+            {
+                UserId = users.First(q => q.UserName == "manager@maxicycles.co.uk").Id,
+                RoleId = roles.First(q => q.Name == "Admin").Id
             },
             new()
             {

@@ -24,7 +24,7 @@ public class DeleteModel : PageModel
 
         // Get the product detail that matches the id from the database.
         var product = await _context
-            .Product
+            .Products
             .Include(p => p.SubCategory)
             .Include(p => p.Image)
             .FirstOrDefaultAsync(m => m.Id == id);
@@ -44,7 +44,7 @@ public class DeleteModel : PageModel
         if (id == null) return NotFound();
 
         // Get the product from the database that matches the parameter id.
-        var product = await _context.Product.FindAsync(id);
+        var product = await _context.Products.FindAsync(id);
 
         // If the product does not exist, go to the index.
         if (product == null) return RedirectToPage("./Index");
@@ -52,7 +52,7 @@ public class DeleteModel : PageModel
         Product = product;
 
         // Remove the product from the database.
-        _context.Product.Remove(Product);
+        _context.Products.Remove(Product);
 
         await _context.SaveChangesAsync();
 

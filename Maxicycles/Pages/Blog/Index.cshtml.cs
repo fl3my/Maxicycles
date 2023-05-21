@@ -33,7 +33,7 @@ namespace Maxicycles.Pages.Blog
         }
         public async Task OnGetAsync()
         {
-            var posts = await _context.Post
+            var posts = await _context.Posts
                 .Include(p => p.Image)
                 .Include(p => p.MaxicyclesUser)
                 .ToListAsync();

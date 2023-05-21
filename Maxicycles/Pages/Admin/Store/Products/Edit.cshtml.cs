@@ -24,7 +24,7 @@ public class EditModel : PageModel
         if (id == null) return NotFound();
 
         // Get the product from the database that matches the parameter id.
-        var product = await _context.Product.FindAsync(id);
+        var product = await _context.Products.FindAsync(id);
 
         // If the product does not exist.
         if (product == null) return NotFound("Product does not exist.");
@@ -33,10 +33,10 @@ public class EditModel : PageModel
         Product = product;
 
         // Pass a new select list with subcategory data.
-        ViewData["SubcategoryId"] = new SelectList(_context.SubCategory, "Id", "Title");
+        ViewData["SubcategoryId"] = new SelectList(_context.SubCategories, "Id", "Title");
 
         // Pass a new select list with image data.
-        ViewData["ImageId"] = new SelectList(_context.Image, "Id", "Title");
+        ViewData["ImageId"] = new SelectList(_context.Images, "Id", "Title");
 
         return Page();
     }
@@ -49,10 +49,10 @@ public class EditModel : PageModel
         if (!ModelState.IsValid)
         {
             // Pass a new select list with subcategory data.
-            ViewData["SubcategoryId"] = new SelectList(_context.SubCategory, "Id", "Title");
+            ViewData["SubcategoryId"] = new SelectList(_context.SubCategories, "Id", "Title");
 
             // Pass a new select list with image data.
-            ViewData["ImageId"] = new SelectList(_context.Image, "Id", "Title");
+            ViewData["ImageId"] = new SelectList(_context.Images, "Id", "Title");
             
             return Page();
         }
@@ -77,6 +77,6 @@ public class EditModel : PageModel
     // Function to check if the product exists in the database.
     private bool ProductExists(int id)
     {
-        return (_context.Product?.Any(e => e.Id == id)).GetValueOrDefault();
+        return (_context.Products?.Any(e => e.Id == id)).GetValueOrDefault();
     }
 }

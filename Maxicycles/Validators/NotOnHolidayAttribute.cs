@@ -14,7 +14,7 @@ public class NotOnHolidayAttribute : ValidationAttribute
         var date = (DateTime)value!;
 
         // Loop over each holiday in context.
-        foreach (var holiday in context.Holiday)
+        foreach (var holiday in context.Holidays)
         {
             // Check if date is in the holiday window.
             if (date >= holiday.Start && date < holiday.End)

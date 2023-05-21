@@ -25,7 +25,7 @@ public class AddProductModel : PageModel
         if (id == null) return NotFound();
 
         // Get the product from the id parameter.
-        var product = _context.Product.FirstOrDefault(i => i.Id == id);
+        var product = _context.Products.FirstOrDefault(i => i.Id == id);
 
         // If the product does not exist.
         if (product == null) return NotFound("Product does not exist.");
@@ -46,7 +46,7 @@ public class AddProductModel : PageModel
         if (id == null) return NotFound();
 
         // Get the product from the id parameter.
-        var product = _context.Product.FirstOrDefault(i => i.Id == id);
+        var product = _context.Products.FirstOrDefault(i => i.Id == id);
 
         // Return not found if the product does not exist.
         if (product == null) return NotFound("Product does not exist.");
@@ -58,7 +58,7 @@ public class AddProductModel : PageModel
         if (userId == null) return Unauthorized();
 
         // Check if the user already has the current product in their basket.
-        var alreadyInBasket = _context.BasketItem
+        var alreadyInBasket = _context.BasketItems
             .Where(b => b.MaxicyclesUserId == userId)
             .Any(b => b.ItemId == product.Id);
 
@@ -77,7 +77,7 @@ public class AddProductModel : PageModel
         if (!ModelState.IsValid) return Page();
 
         // Add the product to the basketItem Table.
-        _context.BasketProduct.Add(BasketProduct);
+        _context.BasketProducts.Add(BasketProduct);
 
         // Save changes to the database.
         await _context.SaveChangesAsync();

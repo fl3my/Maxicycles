@@ -24,7 +24,7 @@ public class DetailsModel : PageModel
 
         // Get the service that matches the parameter id from the database.
         var service = await _context
-            .Service
+            .Services
             .Include(p => p.SubCategory)
             .Include(p => p.Image)
             .FirstOrDefaultAsync(m => m.Id == id);

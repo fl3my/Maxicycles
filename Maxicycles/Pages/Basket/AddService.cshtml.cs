@@ -25,7 +25,7 @@ public class AddServiceModel : PageModel
         if (id == null) return NotFound();
 
         // Get the service from the id parameter.
-        var service = _context.Service.FirstOrDefault(i => i.Id == id);
+        var service = _context.Services.FirstOrDefault(i => i.Id == id);
 
         // If the service does not exist.
         if (service == null) return NotFound("Service does not exist.");
@@ -48,7 +48,7 @@ public class AddServiceModel : PageModel
         if (id == null) return NotFound();
 
         // Get the service from the id parameter.
-        var service = _context.Service.FirstOrDefault(i => i.Id == id);
+        var service = _context.Services.FirstOrDefault(i => i.Id == id);
 
         // Return not found if the service does not exist.
         if (service == null) return NotFound("Service does not exist.");
@@ -60,7 +60,7 @@ public class AddServiceModel : PageModel
         if (userId == null) return Unauthorized();
 
         // Check if the user already has the current product in their basket.
-        var alreadyInBasket = _context.BasketItem
+        var alreadyInBasket = _context.BasketItems
             .Where(b => b.MaxicyclesUserId == userId)
             .Any(b => b.ItemId == service.Id);
 
@@ -87,7 +87,7 @@ public class AddServiceModel : PageModel
         BasketService.ServiceDate = BasketService.ServiceDate.ToUniversalTime();
 
         // Add the basketService to the basketItem table.
-        _context.BasketService.Add(BasketService);
+        _context.BasketServices.Add(BasketService);
 
         // Save changes to the database.
         await _context.SaveChangesAsync();

@@ -23,12 +23,17 @@ builder.Services.AddDefaultIdentity<MaxicyclesUser>(options => options.SignIn.Re
 
 builder.Services.AddAuthorization(options =>
 {
-    // Create policies.
-    options.AddPolicy("RequireAdmin", policy => policy.RequireRole("AccountsClerk", "Manager", "StockControl", "Technician", "MediaManager"));
+    // Create Group policies.
+    options.AddPolicy("RequireAdmin", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("RequireImagePrivileges", policy => policy.RequireRole("StockControl, MediaManager"));
+    options.AddPolicy("RequireStoreEditPrivileges", policy => policy.RequireRole("StockControl, Admin"));
     
+    // Create basic role polices.
     options.AddPolicy("RequireAccountsClerk", policy => policy.RequireRole("AccountsClerk"));
     options.AddPolicy("RequireManager", policy => policy.RequireRole("Manager"));
     options.AddPolicy("RequireStockControl", policy => policy.RequireRole("StockControl"));
+    options.AddPolicy("RequireMediaManager", policy => policy.RequireRole("MediaManager"));
+    options.AddPolicy("RequireTechnician", policy => policy.RequireRole("Technician"));
 });
     
 builder.Services.AddRazorPages(options =>
@@ -40,7 +45,14 @@ builder.Services.AddRazorPages(options =>
     options.Conventions.AuthorizeFolder("/Admin/Users/Customers", "RequireAccountsClerk");
     options.Conventions.AuthorizeFolder("/Admin/Users/Staff", "RequireManager");
     options.Conventions.AuthorizeFolder("/Admin/Holidays", "RequireManager");
-    options.Conventions.AuthorizeFolder("/Admin/Store", "RequireStockControl");
+    options.Conventions.AuthorizeFolder("/Admin/Blog", "RequireMediaManager");
+    options.Conventions.AuthorizeFolder("/Admin/Services", "RequireTechnician");
+    
+    // Require image privileges to add or delete images.
+    options.Conventions.AuthorizeFolder("/Admin/Images", "RequireImagePrivileges");
+    
+    // Require store edit privileges to add or delete images.
+    options.Conventions.AuthorizeFolder("/Admin/Store", "RequireStoreEditPrivileges");
 });
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();

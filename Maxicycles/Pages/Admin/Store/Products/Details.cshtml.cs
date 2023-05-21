@@ -24,7 +24,7 @@ public class DetailsModel : PageModel
 
         // Get the product that matches the parameter id from the database.
         var product = await _context
-            .Product
+            .Products
             .Include(p => p.SubCategory)
             .Include(p => p.Image)
             .FirstOrDefaultAsync(m => m.Id == id);

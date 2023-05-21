@@ -37,6 +37,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <Folder Include="Areas\Identity\Pages\Account\Manage\" />
       <Folder Include="Pages\Admin\Blog\Comments\" />
       <Folder Include="Pages\Admin\Blog\Posts\" />
       <Folder Include="Pages\Admin\Holidays\" />

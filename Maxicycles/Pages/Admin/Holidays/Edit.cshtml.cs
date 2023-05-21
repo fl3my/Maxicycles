@@ -23,7 +23,7 @@ public class EditModel : PageModel
         if (id == null) return NotFound();
 
         // Get the holiday from the database that matches the id.
-        var holiday = await _context.Holiday.FirstOrDefaultAsync(m => m.Id == id);
+        var holiday = await _context.Holidays.FirstOrDefaultAsync(m => m.Id == id);
 
         // Return not found if the holiday does not exist.
         if (holiday == null) return NotFound("Holiday does not exist.");
@@ -74,6 +74,6 @@ public class EditModel : PageModel
     // Function to check if holiday exists in teh database.
     private bool HolidayExists(int id)
     {
-        return (_context.Holiday?.Any(e => e.Id == id)).GetValueOrDefault();
+        return (_context.Holidays?.Any(e => e.Id == id)).GetValueOrDefault();
     }
 }

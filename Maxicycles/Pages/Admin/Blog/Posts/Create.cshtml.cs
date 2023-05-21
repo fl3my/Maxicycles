@@ -24,7 +24,7 @@ public class CreateModel : PageModel
     public IActionResult OnGet()
     {
         // Populate the image list with image names.
-        ViewData["ImageId"] = new SelectList(_context.Image, "Id", "Title");
+        ViewData["ImageId"] = new SelectList(_context.Images, "Id", "Title");
         return Page();
     }
 
@@ -54,7 +54,7 @@ public class CreateModel : PageModel
             MaxicyclesUserId = userId
         };
 
-        _context.Post.Add(post);
+        _context.Posts.Add(post);
 
         // Add the post to the database.
         await _context.SaveChangesAsync();

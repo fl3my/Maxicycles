@@ -23,7 +23,7 @@ public class DetailsModel : PageModel
         if (id == null) return NotFound();
 
         // Get the post with matching Id.
-        var post = await _context.Post.Include(p => p.MaxicyclesUser).FirstOrDefaultAsync(m => m.Id == id);
+        var post = await _context.Posts.Include(p => p.MaxicyclesUser).FirstOrDefaultAsync(m => m.Id == id);
 
         // Check if post is not null.
         if (post == null) return NotFound();

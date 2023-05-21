@@ -22,10 +22,10 @@ public class IndexModel : PageModel
     
     public async Task OnGetAsync()
     {
-        ViewData["ParentCategoryId"] = new SelectList(_context.Category, "Id", "Title");
+        ViewData["ParentCategoryId"] = new SelectList(_context.Categories, "Id", "Title");
         
         // Populate the subcategory list model with subcategories from the database.
-        SubCategory = await _context.SubCategory
+        SubCategory = await _context.SubCategories
             .Include(s => s.Category).ToListAsync();
 
         if (ParentCategoryId != null)

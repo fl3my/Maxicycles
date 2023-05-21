@@ -66,7 +66,7 @@ namespace Maxicycles.Pages.Blog
                 return NotFound();
             }
 
-            var post = await _context.Post
+            var post = await _context.Posts
                 .Include(p => p.Image)
                 .Include(p => p.MaxicyclesUser)
                 .Include(c => c.Comments)
@@ -96,7 +96,7 @@ namespace Maxicycles.Pages.Blog
 
             if (!ModelState.IsValid)
             {
-                var post = await _context.Post
+                var post = await _context.Posts
                     .Include(p => p.Image)
                     .Include(p => p.MaxicyclesUser)
                     .Include(c => c.Comments)
@@ -122,7 +122,7 @@ namespace Maxicycles.Pages.Blog
                 MaxicyclesUserId = userId
             };
 
-            _context.Comment.Add(comment);
+            _context.Comments.Add(comment);
 
             await _context.SaveChangesAsync();
 

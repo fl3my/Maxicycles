@@ -38,7 +38,7 @@ namespace Maxicycles.Pages.Admin.Store.Categories
             }
             
             // Add the category to the database.
-            _context.Category.Add(Category);
+            _context.Categories.Add(Category);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

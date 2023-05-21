@@ -25,7 +25,7 @@ public class DeleteModel : PageModel
         if (id == null) return NotFound();
 
         // Get the image that matches the id from the database.
-        var image = await _context.Image.FirstOrDefaultAsync(m => m.Id == id);
+        var image = await _context.Images.FirstOrDefaultAsync(m => m.Id == id);
 
         // Return not found if the image does not exist.
         if (image == null) return NotFound("Image does not exist.");
@@ -42,7 +42,7 @@ public class DeleteModel : PageModel
         if (id == null) return NotFound();
 
         // Get the image that matches the id from the database.
-        var image = await _context.Image.FindAsync(id);
+        var image = await _context.Images.FindAsync(id);
 
         // If image does not exist redirect to index.
         if (image == null) return RedirectToPage("./Index");
@@ -60,7 +60,7 @@ public class DeleteModel : PageModel
         }
 
         // Remove image from the database.
-        _context.Image.Remove(Image);
+        _context.Images.Remove(Image);
 
         await _context.SaveChangesAsync();
 

@@ -24,7 +24,7 @@ public class DeleteModel : PageModel
 
         // Get the service detail that matches the id from the database.
         var service = await _context
-            .Service
+            .Services
             .Include(p => p.SubCategory)
             .Include(p => p.Image)
             .FirstOrDefaultAsync(m => m.Id == id);
@@ -44,7 +44,7 @@ public class DeleteModel : PageModel
         if (id == null) return NotFound();
 
         // Get the service from the database that matches the parameter id.
-        var service = await _context.Service.FindAsync(id);
+        var service = await _context.Services.FindAsync(id);
 
         // If the service does not exist, go to the index.
         if (service == null) return RedirectToPage("./Index");
@@ -52,7 +52,7 @@ public class DeleteModel : PageModel
         Service = service;
 
         // Remove the service from the database.
-        _context.Service.Remove(Service);
+        _context.Services.Remove(Service);
 
         await _context.SaveChangesAsync();
 

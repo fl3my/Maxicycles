@@ -31,7 +31,7 @@ namespace Maxicycles.Pages.Admin.Store.Categories
             }
 
             // Get the category from the database.
-            var category = await _context.Category.FirstOrDefaultAsync(m => m.Id == id);
+            var category = await _context.Categories.FirstOrDefaultAsync(m => m.Id == id);
 
             // If the category is not null.
             if (category == null)
@@ -54,7 +54,7 @@ namespace Maxicycles.Pages.Admin.Store.Categories
             }
             
             // Get the category that matches the id from the parameter.
-            var category = await _context.Category.FindAsync(id);
+            var category = await _context.Categories.FindAsync(id);
 
             // Redirect to index if the category is null.
             if (category == null) return RedirectToPage("./Index");
@@ -62,7 +62,7 @@ namespace Maxicycles.Pages.Admin.Store.Categories
             Category = category;
             
             // Remove the Category from the database.
-            _context.Category.Remove(Category);
+            _context.Categories.Remove(Category);
             await _context.SaveChangesAsync();
 
             return RedirectToPage("./Index");

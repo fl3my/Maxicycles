@@ -23,7 +23,7 @@ public class DetailsModel : PageModel
         if (id == null) return NotFound();
 
         // get the image that matches the id from the database.
-        var image = await _context.Image.FirstOrDefaultAsync(m => m.Id == id);
+        var image = await _context.Images.FirstOrDefaultAsync(m => m.Id == id);
 
         // Return not found if the image does not exist.
         if (image == null) return NotFound("Image does not exist.");

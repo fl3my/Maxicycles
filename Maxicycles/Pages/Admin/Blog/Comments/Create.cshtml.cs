@@ -24,7 +24,7 @@ public class CreateModel : PageModel
     public IActionResult OnGet()
     {
         // Populate a list of all post ids.
-        ViewData["PostId"] = new SelectList(_context.Post, "Id", "Id");
+        ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Id");
         return Page();
     }
 
@@ -50,7 +50,7 @@ public class CreateModel : PageModel
         };
 
         // Save the comment to the database.
-        _context.Comment.Add(comment);
+        _context.Comments.Add(comment);
 
         await _context.SaveChangesAsync();
 

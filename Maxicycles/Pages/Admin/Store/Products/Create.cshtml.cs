@@ -21,10 +21,10 @@ public class CreateModel : PageModel
     {
 
         // Pass a new select list with subcategory data.
-        ViewData["SubcategoryId"] = new SelectList(_context.SubCategory, "Id", "Title");
+        ViewData["SubcategoryId"] = new SelectList(_context.SubCategories, "Id", "Title");
 
         // Pass a new select list with image data.
-        ViewData["ImageId"] = new SelectList(_context.Image, "Id", "Title");
+        ViewData["ImageId"] = new SelectList(_context.Images, "Id", "Title");
         return Page();
     }
 
@@ -35,16 +35,16 @@ public class CreateModel : PageModel
         if (!ModelState.IsValid)
         {
             // Pass a new select list with subcategory data.
-            ViewData["SubcategoryId"] = new SelectList(_context.SubCategory, "Id", "Title");
+            ViewData["SubcategoryId"] = new SelectList(_context.SubCategories, "Id", "Title");
 
             // Pass a new select list with image data.
-            ViewData["ImageId"] = new SelectList(_context.Image, "Id", "Title");
+            ViewData["ImageId"] = new SelectList(_context.Images, "Id", "Title");
             
             return Page();
         }
         
         // Add the product to the database.
-        _context.Product.Add(Product);
+        _context.Products.Add(Product);
 
         await _context.SaveChangesAsync();
 

@@ -30,7 +30,7 @@ namespace Maxicycles.Pages.Admin.Store.Categories
             }
 
             // Get the category from the database that matches the id from the parameter.
-            var category = await _context.Category.FirstOrDefaultAsync(m => m.Id == id);
+            var category = await _context.Categories.FirstOrDefaultAsync(m => m.Id == id);
             
             // If the category does not exist.
             if (category == null)

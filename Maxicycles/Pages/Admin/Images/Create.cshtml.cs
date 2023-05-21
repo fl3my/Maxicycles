@@ -57,7 +57,7 @@ public class CreateModel : PageModel
         Image.UploadedAt = DateTime.UtcNow;
 
         // Add the image to the database.
-        _context.Image.Add(Image);
+        _context.Images.Add(Image);
 
         await _context.SaveChangesAsync();
 

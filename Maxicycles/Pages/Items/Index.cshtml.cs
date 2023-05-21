@@ -26,7 +26,7 @@ public class IndexModel : PageModel
     public async Task OnGetAsync()
     {
         // Select all products.
-        var products = from p in _context.Item select p;
+        var products = from p in _context.Items select p;
 
         // If there is a valid search string, search.
         if (!string.IsNullOrEmpty(SearchString)) products = products.Where(s => s.Title!.Contains(SearchString));

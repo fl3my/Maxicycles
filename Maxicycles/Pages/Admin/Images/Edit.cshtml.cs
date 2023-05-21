@@ -31,7 +31,7 @@ public class EditModel : PageModel
         if (id == null) return NotFound();
 
         // Get the image from the database that matches the parameter id.
-        var image = await _context.Image.FirstOrDefaultAsync(m => m.Id == id);
+        var image = await _context.Images.FirstOrDefaultAsync(m => m.Id == id);
 
         // Check if the image is not null.
         if (image == null) return NotFound("Image does not exist.");
@@ -98,6 +98,6 @@ public class EditModel : PageModel
     // Function that checks if an image exists in the database.
     private bool ImageExists(int id)
     {
-        return (_context.Image?.Any(e => e.Id == id)).GetValueOrDefault();
+        return (_context.Images?.Any(e => e.Id == id)).GetValueOrDefault();
     }
 }

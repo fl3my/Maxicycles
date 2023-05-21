@@ -19,7 +19,7 @@ public class IndexModel : PageModel
     public async Task OnGetAsync()
     {
         // Put all products into the list from the database.
-        Product = await _context.Product
+        Product = await _context.Products
             .Include(p => p.SubCategory)
             .Include(p => p.Image)
             .ToListAsync();

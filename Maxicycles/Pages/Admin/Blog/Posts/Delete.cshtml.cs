@@ -23,7 +23,7 @@ public class DeleteModel : PageModel
         if (id == null) return NotFound();
 
         // Get the post that matches the Id from the parameter.
-        var post = await _context.Post.Include(p => p.MaxicyclesUser).FirstOrDefaultAsync(m => m.Id == id);
+        var post = await _context.Posts.Include(p => p.MaxicyclesUser).FirstOrDefaultAsync(m => m.Id == id);
 
         // If the post does not exist return not found.
         if (post == null) return NotFound("Post does not exist.");
@@ -43,7 +43,7 @@ public class DeleteModel : PageModel
         if (id == null) return NotFound();
 
         // Get the post with matching id from the database.
-        var post = await _context.Post.FindAsync(id);
+        var post = await _context.Posts.FindAsync(id);
 
         // Return Not found if post does not exist.
         if (post == null) return NotFound("Post does not exist.");
@@ -51,7 +51,7 @@ public class DeleteModel : PageModel
         Post = post;
 
         // Remove the post from the database.
-        _context.Post.Remove(Post);
+        _context.Posts.Remove(Post);
 
         await _context.SaveChangesAsync();
 

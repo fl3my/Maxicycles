@@ -19,6 +19,6 @@ public class IndexModel : PageModel
     public async Task OnGetAsync()
     {
         // Get all holidays from the database and populate a list.
-        Holiday = await _context.Holiday.ToListAsync();
+        Holiday = await _context.Holidays.ToListAsync();
     }
 }

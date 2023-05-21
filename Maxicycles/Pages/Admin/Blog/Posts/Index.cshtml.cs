@@ -19,7 +19,7 @@ public class IndexModel : PageModel
     public async Task OnGetAsync()
     {
         // Get a list of all posts from the database.
-        Post = await _context.Post
+        Post = await _context.Posts
             .Include(p => p.MaxicyclesUser).ToListAsync();
 
         // For each post convert the uploaded at time to local time for display.

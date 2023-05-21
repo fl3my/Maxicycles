@@ -27,8 +27,8 @@ public class IndexModel : PageModel
         // Populate list view model with all users.
         foreach (var user in users)
         {
-            // If user is a customer do not add to the list.
-            if (await _userManager.IsInRoleAsync(user, "Customer")) continue;
+            // If user is not in the admin role.
+            if (!await _userManager.IsInRoleAsync(user, "Admin")) continue;
 
             // If user is a manager do not add to the list.
             if (await _userManager.IsInRoleAsync(user, "Manager")) continue;
@@ -40,7 +40,7 @@ public class IndexModel : PageModel
                 Username = user.UserName,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
-                Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault()
+                Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault(r => r != "Admin")
             };
 
             // Add to the list.

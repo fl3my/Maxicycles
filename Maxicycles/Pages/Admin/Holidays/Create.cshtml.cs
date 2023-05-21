@@ -37,7 +37,7 @@ public class CreateModel : PageModel
         Holiday.End = Holiday.End.ToUniversalTime();
 
         // Add the holiday to the database.
-        _context.Holiday.Add(Holiday);
+        _context.Holidays.Add(Holiday);
 
         await _context.SaveChangesAsync();
 

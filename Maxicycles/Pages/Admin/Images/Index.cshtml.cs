@@ -19,6 +19,6 @@ public class IndexModel : PageModel
     public async Task OnGetAsync()
     {
         // Populate the image List with images from the database.
-        Image = await _context.Image.ToListAsync();
+        Image = await _context.Images.ToListAsync();
     }
 }

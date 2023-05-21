@@ -23,7 +23,7 @@ public class DetailsModel : PageModel
         if (id == null) return NotFound();
 
         // Get the comment that matches the id.
-        var comment = await _context.Comment.Include(c => c.MaxicyclesUser).FirstOrDefaultAsync(m => m.Id == id);
+        var comment = await _context.Comments.Include(c => c.MaxicyclesUser).FirstOrDefaultAsync(m => m.Id == id);
 
         // Return not found if the comment is not found.
         if (comment == null) return NotFound("Comment does not exist.");

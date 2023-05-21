@@ -19,7 +19,7 @@ public class IndexModel : PageModel
     public async Task OnGetAsync()
     {
         // Put all services into the list from the database.
-        Service = await _context.Service
+        Service = await _context.Services
             .Include(p => p.SubCategory)
             .Include(p => p.Image)
             .ToListAsync();

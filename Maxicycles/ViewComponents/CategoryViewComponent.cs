@@ -16,7 +16,7 @@ public class CategoryViewComponent : ViewComponent
 
     public async Task<IViewComponentResult> InvokeAsync()
     {
-        var categories = await _context.Category.Include(c => c.SubCategories).ToListAsync();
+        var categories = await _context.Categories.Include(c => c.SubCategories).ToListAsync();
         return View(categories);
     }
 }

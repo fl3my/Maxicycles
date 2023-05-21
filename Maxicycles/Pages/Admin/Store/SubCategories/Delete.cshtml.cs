@@ -23,7 +23,7 @@ public class DeleteModel : PageModel
         if (id == null) return NotFound();
 
         // Get the subcategory that matches the parameter id.
-        var subcategory = await _context.SubCategory.Include(s => s.Category).FirstOrDefaultAsync(s => s.Id == id);
+        var subcategory = await _context.SubCategories.Include(s => s.Category).FirstOrDefaultAsync(s => s.Id == id);
 
         // If the subcategory does not exist.
         if (subcategory == null) return NotFound("Subcategory does not exist.");
@@ -40,7 +40,7 @@ public class DeleteModel : PageModel
         if (id == null) return NotFound();
 
         // Get the subcategory from the database that matches the parameter id.
-        var subcategory = await _context.SubCategory.FindAsync(id);
+        var subcategory = await _context.SubCategories.FindAsync(id);
 
         // Redirect to index if subcategory is null.
         if (subcategory == null) return RedirectToPage("./Index");
@@ -48,7 +48,7 @@ public class DeleteModel : PageModel
         SubCategory = subcategory;
 
         // Remove the subcategory from the database.
-        _context.SubCategory.Remove(SubCategory);
+        _context.SubCategories.Remove(SubCategory);
 
         await _context.SaveChangesAsync();
 

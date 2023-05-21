@@ -20,7 +20,7 @@ public class CreateModel : PageModel
     public IActionResult OnGet()
     {
         // Populate the category dropdown with master categories.
-        ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Title");
+        ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Title");
         
         return Page();
     }
@@ -33,13 +33,13 @@ public class CreateModel : PageModel
         if (!ModelState.IsValid)
         {
             // Populate the category dropdown with master categories.
-            ViewData["CategoryId"] = new SelectList(_context.Category, "Id", "Title");
+            ViewData["CategoryId"] = new SelectList(_context.Categories, "Id", "Title");
 
             return Page();
         }
 
         // Add the subcategory to the database.
-        _context.SubCategory.Add(SubCategory);
+        _context.SubCategories.Add(SubCategory);
 
         await _context.SaveChangesAsync();
 

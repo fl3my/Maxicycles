@@ -27,7 +27,7 @@ public class IndexModel : PageModel
         var userId = _userManager.GetUserId(User);
 
         // Get the basket items for the current user.
-        var basketItems = await _context.BasketItem
+        var basketItems = await _context.BasketItems
             .Where(b => b.MaxicyclesUserId == userId)
             .Include(b => b.MaxicyclesUser)
             .Include(b => b.Item)

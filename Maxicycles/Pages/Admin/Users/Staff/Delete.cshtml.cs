@@ -34,7 +34,7 @@ public class DeleteModel : PageModel
             Username = user.UserName,
             FirstName = user.FirstName,
             LastName = user.LastName,
-            Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault()
+            Role = (await _userManager.GetRolesAsync(user)).FirstOrDefault(r => r != "Admin")
         };
 
         return Page();

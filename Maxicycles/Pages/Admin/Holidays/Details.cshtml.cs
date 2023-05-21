@@ -23,7 +23,7 @@ public class DetailsModel : PageModel
         if (id == null) return NotFound();
 
         // Get the holiday matching the id from the database.
-        var holiday = await _context.Holiday.FirstOrDefaultAsync(m => m.Id == id);
+        var holiday = await _context.Holidays.FirstOrDefaultAsync(m => m.Id == id);
 
         // Check if holiday is not null.
         if (holiday == null) return NotFound();
