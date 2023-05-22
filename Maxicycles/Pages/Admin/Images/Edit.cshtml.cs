@@ -22,7 +22,7 @@ public class EditModel : PageModel
 
     [BindProperty]
     [MaxFileSize(2 * 1024 * 1024)]
-    [AllowedExtensions(new[] {"jpeg", "png", "jpg"})]
+    [AllowedExtensions(new[] {".jpeg", ".png", ".jpg"})]
     public IFormFile? ImageFile { get; set; }
 
     public async Task<IActionResult> OnGetAsync(int? id)

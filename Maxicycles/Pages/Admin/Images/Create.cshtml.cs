@@ -20,7 +20,7 @@ public class CreateModel : PageModel
     [BindProperty] public Image Image { get; set; } = default!;
 
     [BindProperty]
-    [AllowedExtensions(new[] {"jpeg", "png", "jpg"})]
+    [AllowedExtensions(new[] {".jpeg", ".png", ".jpg"})]
     [MaxFileSize(2 * 1024 * 1024)]
     public IFormFile? ImageFile { get; set; }
 

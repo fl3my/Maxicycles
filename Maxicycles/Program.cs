@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using Maxicycles.Data;
+using Maxicycles.Data.Migrations;
 using Maxicycles.Models;
 using Maxicycles.Services;
 using Microsoft.AspNetCore.Identity;
@@ -26,6 +27,10 @@ builder.Services.AddAuthorization(options =>
     // Create Group policies.
     options.AddPolicy("RequireAdmin", policy => policy.RequireRole("Admin"));
     
+    // Create combined policies.
+    options.AddPolicy("RequireImagePrivileges", policy => policy.RequireRole("StockControl", "MediaManager"));
+    options.AddPolicy("RequireEditStorePrivileges", policy => policy.RequireRole("Manager", "StockControl"));
+    
     // Create basic role polices.
     options.AddPolicy("RequireCustomer", policy => policy.RequireRole("Customer"));
     options.AddPolicy("RequireAccountsClerk", policy => policy.RequireRole("AccountsClerk"));
@@ -39,16 +44,21 @@ builder.Services.AddRazorPages(options =>
 {
     // Require staff member policy to access admin folder.
     options.Conventions.AuthorizeFolder("/Admin", "RequireAdmin");
+
+    // Create a combined policy for image editing.
+    options.Conventions.AuthorizeFolder("/Admin/Images", "RequireImagePrivileges");
     
+    // Create a combined policy for edit products.
+    options.Conventions.AuthorizeFolder("/Admin/Store", "RequireEditStorePrivileges");
+
     // Require role on specific folder/pages.
     options.Conventions.AuthorizeFolder("/Admin/Users/Customers", "RequireAccountsClerk");
     options.Conventions.AuthorizeFolder("/Admin/Users/Staff", "RequireManager");
     options.Conventions.AuthorizeFolder("/Admin/Holidays", "RequireManager");
     options.Conventions.AuthorizeFolder("/Admin/Blog", "RequireMediaManager");
     options.Conventions.AuthorizeFolder("/Admin/Services", "RequireTechnician");
-    options.Conventions.AuthorizeFolder("/Admin/Images", "RequireMediaManager");
-    options.Conventions.AuthorizeFolder("/Admin/Store", "RequireStockControl");
     
+    //  Require customer role for customer actions.
     options.Conventions.AuthorizeFolder("/Basket", "RequireCustomer");
     options.Conventions.AuthorizeFolder("/Checkout", "RequireCustomer");
     options.Conventions.AuthorizeFolder("/MyOrders", "RequireCustomer");
