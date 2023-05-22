@@ -1,4 +1,6 @@
-﻿using Microsoft.Build.Framework;
+﻿
+
+using System.ComponentModel.DataAnnotations;
 
 namespace Maxicycles.Models;
 
@@ -6,5 +8,7 @@ namespace Maxicycles.Models;
 public class Product : Item
 {
     // Get and set the product quantity in stock.
-    [Required] public int Quantity { get; set; }
+    [Required]
+    [Range(0, 500)]
+    public int Quantity { get; set; }
 }

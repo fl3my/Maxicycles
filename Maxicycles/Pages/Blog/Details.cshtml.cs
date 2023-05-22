@@ -106,6 +106,7 @@ namespace Maxicycles.Pages.Blog
                     .Include(p => p.Image)
                     .Include(p => p.MaxicyclesUser)
                     .Include(c => c.Comments)
+                    .ThenInclude(c => c.MaxicyclesUser)
                     .FirstOrDefaultAsync(m => m.Id == Post.Id);
 
                 if (post == null)

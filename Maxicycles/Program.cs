@@ -18,6 +18,7 @@ builder.Services.AddDbContext<MaxicyclesDbContext>(options =>
     options.UseNpgsql(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
+// Add identity framework.
 builder.Services.AddDefaultIdentity<MaxicyclesUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddRoles<IdentityRole>()
     .AddEntityFrameworkStores<MaxicyclesDbContext>();
@@ -28,7 +29,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("RequireAdmin", policy => policy.RequireRole("Admin"));
     
     // Create combined policies.
-    options.AddPolicy("RequireImagePrivileges", policy => policy.RequireRole("StockControl", "MediaManager"));
+    options.AddPolicy("RequireImagePrivileges", policy => policy.RequireRole("StockControl", "MediaManager", "Manager"));
     options.AddPolicy("RequireEditStorePrivileges", policy => policy.RequireRole("Manager", "StockControl"));
     
     // Create basic role polices.
@@ -67,6 +68,8 @@ builder.Services.AddRazorPages(options =>
 
 // Allow the email sender to be injected into the project through dependancy injection.
 builder.Services.AddTransient<IEmailSender, EmailSender>();
+
+// Configure the secret key.
 builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
 
 var app = builder.Build();

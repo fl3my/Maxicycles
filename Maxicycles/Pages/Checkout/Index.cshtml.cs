@@ -179,7 +179,7 @@ public class IndexModel : PageModel
                         Type = "fixed_amount",
                         FixedAmount = new SessionShippingOptionShippingRateDataFixedAmountOptions
                         {
-                            Amount = (int)deliveryMethod.Price * 100,
+                            Amount = (int)(deliveryMethod.Price * 100),
                             Currency = "gbp"
                         },
                         DisplayName = deliveryMethod.Title,
@@ -263,9 +263,24 @@ public class IndexModel : PageModel
         // Check if form validation is true.
         if (!ModelState.IsValid)
         {
-            // Add formatted delivery methods to the form.
-            ViewData["DeliveryMethodId"] = GetFormattedDeliveryMethods();
-
+            // Check if any of the basket items are a product.
+            if (basketItems.Any(b => b is BasketProduct))
+            {
+                // Add formatted delivery methods to the form.
+                ViewData["DeliveryMethodId"] = GetFormattedDeliveryMethods();
+            }
+            else
+            {
+                // Only show the free delivery options
+                var freeDeliveryMethods = _context.DeliveryMethods.Where(d => d.Price == 0M).Select(x => new
+                {
+                    id = x.Id,
+                    name = x.Title + " " + x.Price.ToString("(+£0.00)")
+                });
+                
+                ViewData["DeliveryMethodId"] = new SelectList(freeDeliveryMethods, "id", "name");
+            }
+            
             // Populate the basketModel.
             BasketModel = await PopulateBasketModel(user.Id);
 
@@ -459,10 +474,14 @@ public class IndexModel : PageModel
     public class OrderInputModel
     {
         [Required]
+        [MinLength(3)]
+        [MaxLength(25)]
         [Display(Name = "First name")]
         public string? FirstName { get; set; }
 
         [Required]
+        [MinLength(3)]
+        [MaxLength(25)]
         [Display(Name = "Last name")]
 
         public string? LastName { get; set; }
@@ -473,7 +492,10 @@ public class IndexModel : PageModel
 
         [Display(Name = "Address 2")] public string? AddressLine2 { get; set; }
 
-        [Required] public string? City { get; set; }
+        [Required] 
+        [MinLength(3)]
+        [MaxLength(50)]
+        public string? City { get; set; }
         [Required] public string? Country { get; set; }
 
         [Required]

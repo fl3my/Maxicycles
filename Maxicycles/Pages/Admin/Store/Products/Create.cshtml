@@ -46,6 +46,7 @@
                 <label asp-for="Product.ImageId" class="control-label">Image Name</label>
                 <select asp-for="Product.ImageId" class="form-control" asp-items="ViewBag.ImageId"></select>
             </div>
+            Upload an image <a asp-page="/Admin/Images/Create">here</a>.
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary"/>
             </div>
