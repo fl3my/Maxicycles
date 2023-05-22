@@ -11,7 +11,8 @@
                 Your Account
             </a>
             <ul class="dropdown-menu dropdown-menu-dark">
-                
+                <li class="dropdown-item">@UserManager.GetUserAsync(User).Result.Email</li>
+                <li><hr class="dropdown-divider"></li>
                 @if (User.IsInRole("Admin"))
                 {
                     <li><a class="dropdown-item text-info" asp-page="/Admin/Index">Admin Portal</a></li>
@@ -21,7 +22,7 @@
                     <li><a class="dropdown-item" asp-page="/MyOrders/Index">View My Orders</a></li>
                     <li><a class="dropdown-item" asp-page="/MyServices/Index">View My Service Bookings</a></li>
                 }
-                
+                <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Manage</a></li>
                 <li class="nav-item">
                     <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">

@@ -10,11 +10,12 @@
                 @category.Title
             </a>
             <ul class="dropdown-menu dropdown-menu-dark">
+                <li><a class="dropdown-item" asp-page="/Items/Index" asp-route-category="@category.Slug" asp-route-subCategory=@null>View all</a></li>
+                <li><hr class="dropdown-divider"></li>
                 @foreach (var subCategory in category.SubCategories)
                 {
                     <li><a class="dropdown-item" asp-page="/Items/Index" asp-route-category="@category.Slug" asp-route-subCategory="@subCategory.Slug">@subCategory.Title</a></li>
                 }
-                <li><a class="dropdown-item" asp-page="/Items/Index" asp-route-category="@category.Slug" asp-route-subCategory=@null>View all</a></li>
             </ul>
         </li>
     }

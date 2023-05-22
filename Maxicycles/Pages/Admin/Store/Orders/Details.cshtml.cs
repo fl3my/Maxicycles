@@ -16,7 +16,7 @@ public class DetailsModel : PageModel
     }
 
     public Order Order { get; set; } = default!;
-    public Card Card { get; set; } = default!;
+    public Payment Payment { get; set; } = default!;
     public IList<OrderItemDetailsModel> OrderItemDetails { get; set; } = default!;
     public MaxicyclesUser MaxicyclesUser { get; set; } = default!;
     
@@ -50,7 +50,11 @@ public class DetailsModel : PageModel
         if (Order.Payment is Card card)
         {
             // Add card details from the database to the model.
-            Card = card;
+            Payment = card;
+        } else if (Order.Payment is ExternalPayment external)
+        {
+            // Add external card details.
+            Payment = external;
         }
 
         // Populate the list model with a list of item details.

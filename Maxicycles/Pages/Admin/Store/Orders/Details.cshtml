@@ -1,4 +1,5 @@
 @page
+@using Maxicycles.Models
 @model DetailsModel
 
 @{
@@ -101,33 +102,46 @@
 
 <h4>Payment Details</h4>
 <hr/>
-<dl class="row">
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.Card.LongNumber)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.Card.LongNumber)
-    </dd>
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.Card.ExpiryMonth)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.Card.ExpiryMonth)
-    </dd>
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.Card.ExpiryYear)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.Card.ExpiryYear)
-    </dd>
-    <dt class="col-sm-2">
-        @Html.DisplayNameFor(model => model.Card.Name)
-    </dt>
-    <dd class="col-sm-10">
-        @Html.DisplayFor(model => model.Card.Name)
-    </dd>
-</dl>
 
+@if (Model.Payment is Card card)
+{
+    <dl class="row">
+        <dt class="col-sm-2">
+            Long Number
+        </dt>
+        <dd class="col-sm-10">
+            @card.LongNumber
+        </dd>
+        <dt class="col-sm-2">
+            Expiry Month
+        </dt>
+        <dd class="col-sm-10">
+            @card.ExpiryMonth
+        </dd>
+        <dt class="col-sm-2">
+            Expiry Year
+        </dt>
+        <dd class="col-sm-10">
+            @card.ExpiryYear
+        </dd>
+        <dt class="col-sm-2">
+            Card Full Name
+        </dt>
+        <dd class="col-sm-10">
+            @card.Name
+        </dd>
+    </dl>
+} else if (Model.Payment is ExternalPayment external)
+{
+    <dl class="row">
+        <dt class="col-sm-2">
+            External Payment name
+        </dt>
+        <dd class="col-sm-10">
+            @external.Title
+        </dd>
+    </dl>
+}
 
 <h4>Order Items</h4>
 <hr/>
