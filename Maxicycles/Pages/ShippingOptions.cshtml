@@ -1,0 +1,45 @@
+@page
+@model Maxicycles.Pages.ShippingOptionsModel
+
+@{
+    ViewData["Title"] = "ShippingOptions";
+}
+
+<h1>Maxicycles Shipping Options</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DeliveryMethod[0].Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeliveryMethod[0].Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeliveryMethod[0].MinDaysToDeliver)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DeliveryMethod[0].IsDaySelectable)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.DeliveryMethod) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.MinDaysToDeliver)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsDaySelectable)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
