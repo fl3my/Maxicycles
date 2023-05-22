@@ -23,7 +23,7 @@ public class Holiday
 
     // Get and set the end date of the holiday.
     [Required]
-    [Display(Name = "Inclusive End Date")]
+    [Display(Name = "Date of return")]
     [NotOnHoliday]
     [DataType(DataType.Date)]
     public DateTime End { get; set; }

@@ -6,6 +6,8 @@ namespace Maxicycles.Models;
 public class Card : Payment
 {
     // Get add set the payment cards Full Name.
+    [MaxLength(50)]
+    [MinLength(3)]
     [Required] public string? Name { get; set; }
 
     // Get add set the Long card Number.

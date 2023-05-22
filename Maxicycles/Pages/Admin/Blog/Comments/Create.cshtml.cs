@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using Maxicycles.Data;
 using Maxicycles.Models;
+using Maxicycles.Validators;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;

@@ -74,10 +74,14 @@ namespace Maxicycles.Areas.Identity.Pages.Account
         {
             // Custom user properties.
             [Required]
+            [MaxLength(50)]
+            [MinLength(5)]
             [Display(Name = "First Name")]
             public string FirstName { get; set; }
             
             [Required]
+            [MaxLength(50)]
+            [MinLength(5)]
             [Display(Name = "Last Name")]
             public string LastName { get; set; }
             
@@ -85,15 +89,26 @@ namespace Maxicycles.Areas.Identity.Pages.Account
             public bool AcceptTerms { get; set; }
 
             [Required]
+            [MaxLength(50)]
+            [MinLength(5)]
             public string AddressLine1 { get; set; }
             
+            [MaxLength(50)]
+            [MinLength(5)]
             public string AddressLine2 { get; set; }
 
             [Required]
             public string City { get; set; }
             
             [Required]
+            [RegularExpression(
+                @"([Gg][Ii][Rr] 0[Aa]{2})|((([A-Za-z][0-9]{1,2})|(([A-Za-z][A-Ha-hJ-Yj-y][0-9]{1,2})|(([A-Za-z][0-9][A-Za-z])|([A-Za-z][A-Ha-hJ-Yj-y][0-9][A-Za-z]?))))\s?[0-9][A-Za-z]{2})",
+                ErrorMessage = "Must be a valid UK Postcode")]
             public string Postcode { get; set; }
+            
+            [Required]
+            [Phone]
+            public string PhoneNumber { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -147,6 +162,7 @@ namespace Maxicycles.Areas.Identity.Pages.Account
                 user.AddressLine2 = Input.AddressLine2;
                 user.City = Input.City;
                 user.Postcode = Input.Postcode;
+                user.PhoneNumber = Input.PhoneNumber;
                 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);

@@ -33,6 +33,7 @@ namespace Maxicycles.Pages.Blog
         public class CommentCreateModel
         {
             [Required]
+            [NoProfanity]
             [MinLength(5)]
             [MaxLength(1024)]
             public string? Content { get; set; }
