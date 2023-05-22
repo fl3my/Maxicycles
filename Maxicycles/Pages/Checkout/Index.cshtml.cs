@@ -39,9 +39,24 @@ public class IndexModel : PageModel
 
         // Populate The Model.
         BasketModel = await PopulateBasketModel(userId);
-
-        // Add formatted delivery methods to the form.
-        ViewData["DeliveryMethodId"] = GetFormattedDeliveryMethods();
+        
+        // Check if any of the basket items are a product.
+        if (basketItems.Any(b => b is BasketProduct))
+        {
+            // Add formatted delivery methods to the form.
+            ViewData["DeliveryMethodId"] = GetFormattedDeliveryMethods();
+        }
+        else
+        {
+            // Only show the free delivery options
+            var freeDeliveryMethods = _context.DeliveryMethods.Where(d => d.Price == 0M).Select(x => new
+            {
+                id = x.Id,
+                name = x.Title + " " + x.Price.ToString("(+£0.00)")
+            });
+                
+            ViewData["DeliveryMethodId"] = new SelectList(freeDeliveryMethods, "id", "name");
+        }
 
         return Page();
     }
@@ -54,8 +69,6 @@ public class IndexModel : PageModel
         ModelState.Remove("OrderInput.Card.Name");
         ModelState.Remove("OrderInput.Card.ExpiryMonth");
         ModelState.Remove("OrderInput.Card.ExpiryYear");
-
-        // TODO VALIDATION
 
         // Get the current userId for the logged in user.
         var user = await _userManager.GetUserAsync(User);
@@ -79,9 +92,24 @@ public class IndexModel : PageModel
         // Check if form validation is true.
         if (!ModelState.IsValid)
         {
-            // Add formatted delivery methods to the form.
-            ViewData["DeliveryMethodId"] = GetFormattedDeliveryMethods();
-
+            // Check if any of the basket items are a product.
+            if (basketItems.Any(b => b is BasketProduct))
+            {
+                // Add formatted delivery methods to the form.
+                ViewData["DeliveryMethodId"] = GetFormattedDeliveryMethods();
+            }
+            else
+            {
+                // Only show the free delivery options
+                var freeDeliveryMethods = _context.DeliveryMethods.Where(d => d.Price == 0M).Select(x => new
+                {
+                    id = x.Id,
+                    name = x.Title + " " + x.Price.ToString("(+£0.00)")
+                });
+                
+                ViewData["DeliveryMethodId"] = new SelectList(freeDeliveryMethods, "id", "name");
+            }
+            
             // Populate the basketModel.
             BasketModel = await PopulateBasketModel(user.Id);
 

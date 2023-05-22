@@ -28,8 +28,8 @@ public class IndexModel : PageModel
         // Select all products.
         var products = from p in _context.Items select p;
 
-        // If there is a valid search string, search.
-        if (!string.IsNullOrEmpty(SearchString)) products = products.Where(s => s.Title!.Contains(SearchString));
+        // If there is a valid search string, search the titles in lowercase.
+        if (!string.IsNullOrEmpty(SearchString)) products = products.Where(s => s.Title!.ToLower().Contains(SearchString.ToLower()));
 
         // If there is a category.
         if (!string.IsNullOrEmpty(Category))

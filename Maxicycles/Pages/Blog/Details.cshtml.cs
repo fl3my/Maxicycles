@@ -35,7 +35,6 @@ namespace Maxicycles.Pages.Blog
             [Required]
             [MinLength(5)]
             [MaxLength(1024)]
-            [NoProfanity]
             public string? Content { get; set; }
         }
 
@@ -57,6 +56,8 @@ namespace Maxicycles.Pages.Blog
             public string? Content { get; set; }
             public string? AuthorFullName { get; set; }
             public string? UploadedAt { get; set; }
+            public bool BelongsToUser { get; set; }
+
         }
 
         public async Task<IActionResult> OnGetAsync(int? id)
@@ -66,20 +67,24 @@ namespace Maxicycles.Pages.Blog
                 return NotFound();
             }
 
+            // Get the current user Id.
+            var userId = _userManager.GetUserId(User);
+
+            // Get all posts.
             var post = await _context.Posts
                 .Include(p => p.Image)
                 .Include(p => p.MaxicyclesUser)
                 .Include(c => c.Comments)
+                .ThenInclude(c => c.MaxicyclesUser)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
+            // If posts are empty.
             if (post == null)
             {
                 return NotFound();
             }
-            else
-            {
-                Post = PopulatePostDetailsModel(post);
-            }
+            // Populate the model.
+            Post = PopulatePostDetailsModel(post, userId);
 
             return Page();
         }
@@ -108,7 +113,7 @@ namespace Maxicycles.Pages.Blog
                 }
                 else
                 {
-                    Post = PopulatePostDetailsModel(post);
+                    Post = PopulatePostDetailsModel(post, userId);
                 }
                 
                 return Page();
@@ -130,7 +135,7 @@ namespace Maxicycles.Pages.Blog
             return RedirectToPage("./Details", new { id = Post.Id });
         }
 
-        private PostDetailsModel PopulatePostDetailsModel(Post post)
+        private PostDetailsModel PopulatePostDetailsModel(Post post, string userId)
         {
             // Fill the post model.
             var postDetailsModel = new PostDetailsModel
@@ -148,12 +153,16 @@ namespace Maxicycles.Pages.Blog
             // Fill the comment model.
             foreach (var comment in post.Comments)
             {
+                // Only allow the author of a comment to delete their comment.
+                var belongsToUser = userId == comment.MaxicyclesUserId;
+                    
                 postDetailsModel.Comments.Add(new CommentModel
                 {
                     Id = comment.Id,
                     Content = comment.Content,
                     AuthorFullName = comment.MaxicyclesUser?.FirstName + " " + comment.MaxicyclesUser?.LastName,
-                    UploadedAt = post.UploadedAt.ToLocalTime().ToShortDateString()
+                    UploadedAt = post.UploadedAt.ToLocalTime().ToShortDateString(),
+                    BelongsToUser = belongsToUser
                 });
             }
 

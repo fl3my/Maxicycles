@@ -27,6 +27,7 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("RequireAdmin", policy => policy.RequireRole("Admin"));
     
     // Create basic role polices.
+    options.AddPolicy("RequireCustomer", policy => policy.RequireRole("Customer"));
     options.AddPolicy("RequireAccountsClerk", policy => policy.RequireRole("AccountsClerk"));
     options.AddPolicy("RequireManager", policy => policy.RequireRole("Manager"));
     options.AddPolicy("RequireStockControl", policy => policy.RequireRole("StockControl"));
@@ -47,13 +48,14 @@ builder.Services.AddRazorPages(options =>
     options.Conventions.AuthorizeFolder("/Admin/Services", "RequireTechnician");
     options.Conventions.AuthorizeFolder("/Admin/Images", "RequireMediaManager");
     options.Conventions.AuthorizeFolder("/Admin/Store", "RequireStockControl");
-
-    options.Conventions.AuthorizeFolder("/Basket");
-    options.Conventions.AuthorizeFolder("/Checkout");
-    options.Conventions.AuthorizeFolder("/MyOrders");
-    options.Conventions.AuthorizeFolder("/MyServices");
+    
+    options.Conventions.AuthorizeFolder("/Basket", "RequireCustomer");
+    options.Conventions.AuthorizeFolder("/Checkout", "RequireCustomer");
+    options.Conventions.AuthorizeFolder("/MyOrders", "RequireCustomer");
+    options.Conventions.AuthorizeFolder("/MyServices", "RequireCustomer");
 });
 
+// Allow the email sender to be injected into the project through dependancy injection.
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.Configure<AuthMessageSenderOptions>(builder.Configuration);
 

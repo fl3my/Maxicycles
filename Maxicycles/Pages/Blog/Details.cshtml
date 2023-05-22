@@ -15,20 +15,30 @@
 <img decoding="async" class="card-img-top" alt="@Model.Post.AltText" src="@("/uploads/"+ Model.Post.ImageName)" />
 
 <h1>@Html.DisplayFor(model => model.Post.Title)</h1>
-<h3><b>By @Html.DisplayFor(model => model.Post.AuthorFullName)</b> @Html.DisplayFor(model => model.Post.UploadedAt)</h3>
+<h4><b>By @Html.DisplayFor(model => model.Post.AuthorFullName)</b> at  @Html.DisplayFor(model => model.Post.UploadedAt)</h4>
 <hr />
 
-<p>@Html.Raw(Markdig.Markdown.ToHtml(Model.Post.Content!))</p>
+<p class="mb-4">@Html.Raw(Markdig.Markdown.ToHtml(Model.Post.Content!))</p>
 
+<hr/>
 <h3>Comments</h3>
 
 @if (Model.Post.Comments is {Count: > 0 })
 {
     foreach (var comment in Model.Post.Comments)
     {
-        <p>@comment.Content</p>
-        <p>@comment.AuthorFullName</p>
-        <p>@comment.UploadedAt</p>
+        <div class="row mb-4">
+            <div class="col-md-10">
+                <p class="mb-1">@comment.Content</p>
+                <small >By @comment.AuthorFullName at @comment.UploadedAt</small>
+            </div>
+            <div class="col-md-2">
+             @if (comment.BelongsToUser)
+              {
+                  <a asp-page="./Delete" asp-route-id="@comment.Id">Delete</a>
+              }
+            </div>
+        </div>
     }
 }
 else
@@ -51,7 +61,7 @@ else
 }
 else
 {
-    <p>Please sign in to comment.</p>
+    <p>Please <a asp-area="Identity" asp-page="/Account/Logout">Sign in</a> to comment.</p>
 }
 
 
