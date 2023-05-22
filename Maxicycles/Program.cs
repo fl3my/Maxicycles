@@ -25,8 +25,6 @@ builder.Services.AddAuthorization(options =>
 {
     // Create Group policies.
     options.AddPolicy("RequireAdmin", policy => policy.RequireRole("Admin"));
-    options.AddPolicy("RequireImagePrivileges", policy => policy.RequireRole("StockControl, MediaManager"));
-    options.AddPolicy("RequireStoreEditPrivileges", policy => policy.RequireRole("StockControl, Admin"));
     
     // Create basic role polices.
     options.AddPolicy("RequireAccountsClerk", policy => policy.RequireRole("AccountsClerk"));
@@ -47,12 +45,13 @@ builder.Services.AddRazorPages(options =>
     options.Conventions.AuthorizeFolder("/Admin/Holidays", "RequireManager");
     options.Conventions.AuthorizeFolder("/Admin/Blog", "RequireMediaManager");
     options.Conventions.AuthorizeFolder("/Admin/Services", "RequireTechnician");
-    
-    // Require image privileges to add or delete images.
-    options.Conventions.AuthorizeFolder("/Admin/Images", "RequireImagePrivileges");
-    
-    // Require store edit privileges to add or delete images.
-    options.Conventions.AuthorizeFolder("/Admin/Store", "RequireStoreEditPrivileges");
+    options.Conventions.AuthorizeFolder("/Admin/Images", "RequireMediaManager");
+    options.Conventions.AuthorizeFolder("/Admin/Store", "RequireStockControl");
+
+    options.Conventions.AuthorizeFolder("/Basket");
+    options.Conventions.AuthorizeFolder("/Checkout");
+    options.Conventions.AuthorizeFolder("/MyOrders");
+    options.Conventions.AuthorizeFolder("/MyServices");
 });
 
 builder.Services.AddTransient<IEmailSender, EmailSender>();

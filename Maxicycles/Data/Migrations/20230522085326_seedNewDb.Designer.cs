@@ -3,6 +3,7 @@ using System;
 using Maxicycles.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Maxicycles.Data.Migrations
 {
     [DbContext(typeof(MaxicyclesDbContext))]
-    partial class MaxicyclesDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230522085326_seedNewDb")]
+    partial class seedNewDb
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -244,7 +247,7 @@ namespace Maxicycles.Data.Migrations
                             AltText = "Continental GP5000 Folding Tyres",
                             ImageName = "gp5000.jpg",
                             Title = "Continental GP500 Product Photo",
-                            UploadedAt = new DateTime(2023, 5, 22, 9, 54, 6, 812, DateTimeKind.Utc).AddTicks(192)
+                            UploadedAt = new DateTime(2023, 5, 22, 8, 53, 26, 505, DateTimeKind.Utc).AddTicks(7353)
                         },
                         new
                         {
@@ -252,7 +255,7 @@ namespace Maxicycles.Data.Migrations
                             AltText = "Vittoria Rubino Pro G2.0 Folding Road Tyres",
                             ImageName = "vittoria.jpg",
                             Title = "Vittoria Rubino Pro Main",
-                            UploadedAt = new DateTime(2023, 5, 22, 9, 54, 6, 812, DateTimeKind.Utc).AddTicks(202)
+                            UploadedAt = new DateTime(2023, 5, 22, 8, 53, 26, 505, DateTimeKind.Utc).AddTicks(7362)
                         },
                         new
                         {
@@ -260,7 +263,7 @@ namespace Maxicycles.Data.Migrations
                             AltText = "Schwalbe Marathon Plus SmartGuard Wired MTB Tyre - 26",
                             ImageName = "schwalbe.jpg",
                             Title = "Schwalbe Marathon Plus Main",
-                            UploadedAt = new DateTime(2023, 5, 22, 9, 54, 6, 812, DateTimeKind.Utc).AddTicks(204)
+                            UploadedAt = new DateTime(2023, 5, 22, 8, 53, 26, 505, DateTimeKind.Utc).AddTicks(7364)
                         },
                         new
                         {
@@ -268,7 +271,7 @@ namespace Maxicycles.Data.Migrations
                             AltText = "Colnago V3 Disc Ultegra Carbon Road Bike",
                             ImageName = "colnago.jpg",
                             Title = "Colnago v3 Main",
-                            UploadedAt = new DateTime(2023, 5, 22, 9, 54, 6, 812, DateTimeKind.Utc).AddTicks(206)
+                            UploadedAt = new DateTime(2023, 5, 22, 8, 53, 26, 505, DateTimeKind.Utc).AddTicks(7366)
                         },
                         new
                         {
@@ -276,7 +279,7 @@ namespace Maxicycles.Data.Migrations
                             AltText = "Ridley Noah Disc 105 Carbon Road Bike - 2023",
                             ImageName = "ridley_noah.jpg",
                             Title = "Ridley Noah Disc 105 Main",
-                            UploadedAt = new DateTime(2023, 5, 22, 9, 54, 6, 812, DateTimeKind.Utc).AddTicks(210)
+                            UploadedAt = new DateTime(2023, 5, 22, 8, 53, 26, 505, DateTimeKind.Utc).AddTicks(7368)
                         },
                         new
                         {
@@ -284,7 +287,7 @@ namespace Maxicycles.Data.Migrations
                             AltText = "Wizard Lighting 3.3 Disc Sora Road Bike",
                             ImageName = "wizaard.jpg",
                             Title = "wizaard lighting 3.3 main",
-                            UploadedAt = new DateTime(2023, 5, 22, 9, 54, 6, 812, DateTimeKind.Utc).AddTicks(212)
+                            UploadedAt = new DateTime(2023, 5, 22, 8, 53, 26, 505, DateTimeKind.Utc).AddTicks(7370)
                         },
                         new
                         {
@@ -292,7 +295,7 @@ namespace Maxicycles.Data.Migrations
                             AltText = "Blind Skateboards Reaper Wallpaper FP Youth Complete Skateboard - 7.0'' x 29''",
                             ImageName = "blind-skateboards-reaper.jpg",
                             Title = "Blind Skateboards Reaper wallpaper",
-                            UploadedAt = new DateTime(2023, 5, 22, 9, 54, 6, 812, DateTimeKind.Utc).AddTicks(213)
+                            UploadedAt = new DateTime(2023, 5, 22, 8, 53, 26, 505, DateTimeKind.Utc).AddTicks(7371)
                         },
                         new
                         {
@@ -300,15 +303,15 @@ namespace Maxicycles.Data.Migrations
                             AltText = "Element Skateboards Naturalist Complete Skateboard - 7.375'' x 31''",
                             ImageName = "element-skateboards-naturalist-complete.jpg",
                             Title = "Element Skateboards Naturalist main",
-                            UploadedAt = new DateTime(2023, 5, 22, 9, 54, 6, 812, DateTimeKind.Utc).AddTicks(214)
+                            UploadedAt = new DateTime(2023, 5, 22, 8, 53, 26, 505, DateTimeKind.Utc).AddTicks(7373)
                         },
                         new
                         {
                             Id = 9,
                             AltText = "Santa Cruz Skateboards Iridescent Dot Complete Skateboard - 8.0'' x 31.25''",
-                            ImageName = "santa-cruz.jpg",
+                            ImageName = "santa-cruz",
                             Title = "Santa cruz iridesent dot main",
-                            UploadedAt = new DateTime(2023, 5, 22, 9, 54, 6, 812, DateTimeKind.Utc).AddTicks(216)
+                            UploadedAt = new DateTime(2023, 5, 22, 8, 53, 26, 505, DateTimeKind.Utc).AddTicks(7374)
                         },
                         new
                         {
@@ -316,7 +319,7 @@ namespace Maxicycles.Data.Migrations
                             AltText = "A bicycle with a flat tyre",
                             ImageName = "flat-tyre-repair.jpg",
                             Title = "Flat Tyre Repair main",
-                            UploadedAt = new DateTime(2023, 5, 22, 9, 54, 6, 812, DateTimeKind.Utc).AddTicks(217)
+                            UploadedAt = new DateTime(2023, 5, 22, 8, 53, 26, 505, DateTimeKind.Utc).AddTicks(7376)
                         },
                         new
                         {
@@ -324,7 +327,7 @@ namespace Maxicycles.Data.Migrations
                             AltText = "Gear adjusting a bicycle",
                             ImageName = "gear-shifting.jpg",
                             Title = "Gear Shifting Adjustment main",
-                            UploadedAt = new DateTime(2023, 5, 22, 9, 54, 6, 812, DateTimeKind.Utc).AddTicks(218)
+                            UploadedAt = new DateTime(2023, 5, 22, 8, 53, 26, 505, DateTimeKind.Utc).AddTicks(7377)
                         },
                         new
                         {
@@ -332,79 +335,7 @@ namespace Maxicycles.Data.Migrations
                             AltText = "Bleeding a disc bike brakes",
                             ImageName = "brake-bleed.jpg",
                             Title = "Brake system main",
-                            UploadedAt = new DateTime(2023, 5, 22, 9, 54, 6, 812, DateTimeKind.Utc).AddTicks(220)
-                        },
-                        new
-                        {
-                            Id = 13,
-                            AltText = "Native OG Logo (Blue Stain) Skateboard Deck 8.38",
-                            ImageName = "native-og-logo.jpg",
-                            Title = "Native OG Logo (Blue Stain) Skateboard Deck",
-                            UploadedAt = new DateTime(2023, 5, 22, 9, 54, 6, 812, DateTimeKind.Utc).AddTicks(221)
-                        },
-                        new
-                        {
-                            Id = 14,
-                            AltText = "Picture Show No Place Like Home Skateboard Deck ",
-                            ImageName = "picture-show-no-place.jpg",
-                            Title = "Picture Show No Place Like Home Skateboard Deck ",
-                            UploadedAt = new DateTime(2023, 5, 22, 9, 54, 6, 812, DateTimeKind.Utc).AddTicks(222)
-                        },
-                        new
-                        {
-                            Id = 15,
-                            AltText = "Toy Machine Skateboards Axel Mind Control Skateboard Deck 8.25",
-                            ImageName = "toy-machine-skateboards.jpg",
-                            Title = "Toy Machine Skateboards Axel Mind Control Skateboard Deck 8.25",
-                            UploadedAt = new DateTime(2023, 5, 22, 9, 54, 6, 812, DateTimeKind.Utc).AddTicks(223)
-                        },
-                        new
-                        {
-                            Id = 16,
-                            AltText = "Pro-Tec Street Elbow Pads - Black/White Checker",
-                            ImageName = "pro-tec-street-elbow-pads.jpg",
-                            Title = "Pro-Tec Street Elbow Pads - Black/White Checker",
-                            UploadedAt = new DateTime(2023, 5, 22, 9, 54, 6, 812, DateTimeKind.Utc).AddTicks(224)
-                        },
-                        new
-                        {
-                            Id = 17,
-                            AltText = "187 Killer Pads Fly Skate Knee Pads - Black",
-                            ImageName = "187-killer-pads.jpg",
-                            Title = "187 Killer Pads Fly Skate Knee Pads - Black",
-                            UploadedAt = new DateTime(2023, 5, 22, 9, 54, 6, 812, DateTimeKind.Utc).AddTicks(226)
-                        },
-                        new
-                        {
-                            Id = 18,
-                            AltText = "REKD Protection Pro Ramp Knee Pads - Black",
-                            ImageName = "rekd-protection-pro-ramp.jpg",
-                            Title = "REKD Protection Pro Ramp Knee Pads - Black",
-                            UploadedAt = new DateTime(2023, 5, 22, 9, 54, 6, 812, DateTimeKind.Utc).AddTicks(227)
-                        },
-                        new
-                        {
-                            Id = 19,
-                            AltText = "MET Trenta 3K Carbon MIPS Road Bike Helmet",
-                            ImageName = "trenta_3k_carbonjpg.jpg",
-                            Title = "MET Trenta 3K Carbon MIPS Road Bike Helmet",
-                            UploadedAt = new DateTime(2023, 5, 22, 9, 54, 6, 812, DateTimeKind.Utc).AddTicks(229)
-                        },
-                        new
-                        {
-                            Id = 20,
-                            AltText = "Kask Protone WG11 Road Cycling Helmet - 2022",
-                            ImageName = "kask_protone_wg11.jpg",
-                            Title = "Kask Protone WG11 Road Cycling Helmet - 2022",
-                            UploadedAt = new DateTime(2023, 5, 22, 9, 54, 6, 812, DateTimeKind.Utc).AddTicks(230)
-                        },
-                        new
-                        {
-                            Id = 21,
-                            AltText = "MET Allroad Road Helmet",
-                            ImageName = "met_allroad.jpg",
-                            Title = "MET Allroad Road Helmet",
-                            UploadedAt = new DateTime(2023, 5, 22, 9, 54, 6, 812, DateTimeKind.Utc).AddTicks(231)
+                            UploadedAt = new DateTime(2023, 5, 22, 8, 53, 26, 505, DateTimeKind.Utc).AddTicks(7379)
                         });
                 });
 
@@ -650,7 +581,7 @@ namespace Maxicycles.Data.Migrations
                         new
                         {
                             Id = 1,
-                            CategoryId = 1,
+                            CategoryId = 3,
                             Slug = "tyres",
                             Title = "Tyres"
                         },
@@ -658,15 +589,15 @@ namespace Maxicycles.Data.Migrations
                         {
                             Id = 2,
                             CategoryId = 2,
-                            Slug = "complete-skateboards",
-                            Title = "Complete Skateboards"
+                            Slug = "complete-decks",
+                            Title = "Complete Decks"
                         },
                         new
                         {
                             Id = 3,
                             CategoryId = 1,
-                            Slug = "complete-bikes",
-                            Title = "Complete Bikes"
+                            Slug = "road-bikes",
+                            Title = "Road Bikes"
                         },
                         new
                         {
@@ -674,27 +605,6 @@ namespace Maxicycles.Data.Migrations
                             CategoryId = 4,
                             Slug = "repairs",
                             Title = "Repairs"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CategoryId = 2,
-                            Slug = "decks",
-                            Title = "Decks"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            CategoryId = 3,
-                            Slug = "helmets",
-                            Title = "Helmets"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            CategoryId = 3,
-                            Slug = "Pads",
-                            Title = "Pads"
                         });
                 });
 
@@ -726,43 +636,43 @@ namespace Maxicycles.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "19d64e3b-b3cb-4ca3-8ff2-6778dca0f8cb",
+                            Id = "7646f9f0-4ff4-4331-bca6-fb6a9ff64bcd",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "3a5ced06-aaa2-44bb-b2d1-37c1f1272dc1",
+                            Id = "bba6b48d-453f-49f8-a3e3-adc09a0c154a",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         },
                         new
                         {
-                            Id = "2fd42342-3bc0-427b-808b-bff1c85f6b01",
+                            Id = "7d8b6011-6b85-4c0b-8501-4aa072818b04",
                             Name = "StockControl",
                             NormalizedName = "STOCKCONTROL"
                         },
                         new
                         {
-                            Id = "650781a9-1cf1-415e-b8b3-e76b46436d2d",
+                            Id = "89847f87-65e8-4c51-bf88-6ff23baa2d01",
                             Name = "Technician",
                             NormalizedName = "TECHNICIAN"
                         },
                         new
                         {
-                            Id = "55130939-a612-47a2-9928-b34912ebc1ff",
+                            Id = "0192cfde-5e83-437c-b940-bf583589d311",
                             Name = "AccountsClerk",
                             NormalizedName = "ACCOUNTSCLERK"
                         },
                         new
                         {
-                            Id = "c8a78099-8947-4083-88d2-8c7f18b48584",
+                            Id = "b5e3427c-022c-4c34-92eb-bfd62e6b04f3",
                             Name = "MediaManager",
                             NormalizedName = "MEDIAMANAGER"
                         },
                         new
                         {
-                            Id = "4b18d5eb-2a4b-4461-9d00-a447372770b4",
+                            Id = "14f456a4-59c9-4f35-bedd-5c70b11f1c68",
                             Name = "Manager",
                             NormalizedName = "MANAGER"
                         });
@@ -931,58 +841,58 @@ namespace Maxicycles.Data.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "e41c8d5e-52c9-414b-8685-8179709bb9fd",
-                            RoleId = "3a5ced06-aaa2-44bb-b2d1-37c1f1272dc1"
+                            UserId = "5f9446d6-75d6-4f8f-9380-3f574206e72c",
+                            RoleId = "bba6b48d-453f-49f8-a3e3-adc09a0c154a"
                         },
                         new
                         {
-                            UserId = "4ca69a22-d439-4a79-a16f-4d7e4e06823d",
-                            RoleId = "19d64e3b-b3cb-4ca3-8ff2-6778dca0f8cb"
+                            UserId = "e7f5ef5e-5f18-456e-bdcb-607a542fb5b9",
+                            RoleId = "7646f9f0-4ff4-4331-bca6-fb6a9ff64bcd"
                         },
                         new
                         {
-                            UserId = "4ca69a22-d439-4a79-a16f-4d7e4e06823d",
-                            RoleId = "2fd42342-3bc0-427b-808b-bff1c85f6b01"
+                            UserId = "e7f5ef5e-5f18-456e-bdcb-607a542fb5b9",
+                            RoleId = "7d8b6011-6b85-4c0b-8501-4aa072818b04"
                         },
                         new
                         {
-                            UserId = "2792d348-49f9-4dc1-b792-ead1c921f302",
-                            RoleId = "19d64e3b-b3cb-4ca3-8ff2-6778dca0f8cb"
+                            UserId = "da23a1fe-255e-442f-8181-2589cb10d3ad",
+                            RoleId = "7646f9f0-4ff4-4331-bca6-fb6a9ff64bcd"
                         },
                         new
                         {
-                            UserId = "2792d348-49f9-4dc1-b792-ead1c921f302",
-                            RoleId = "650781a9-1cf1-415e-b8b3-e76b46436d2d"
+                            UserId = "da23a1fe-255e-442f-8181-2589cb10d3ad",
+                            RoleId = "89847f87-65e8-4c51-bf88-6ff23baa2d01"
                         },
                         new
                         {
-                            UserId = "79c2dce1-81e1-4b9b-8d0a-8f29692b9f4e",
-                            RoleId = "19d64e3b-b3cb-4ca3-8ff2-6778dca0f8cb"
+                            UserId = "04f7e273-57a9-4942-bd27-4e54d11d0022",
+                            RoleId = "7646f9f0-4ff4-4331-bca6-fb6a9ff64bcd"
                         },
                         new
                         {
-                            UserId = "79c2dce1-81e1-4b9b-8d0a-8f29692b9f4e",
-                            RoleId = "55130939-a612-47a2-9928-b34912ebc1ff"
+                            UserId = "04f7e273-57a9-4942-bd27-4e54d11d0022",
+                            RoleId = "0192cfde-5e83-437c-b940-bf583589d311"
                         },
                         new
                         {
-                            UserId = "94a7cbeb-2b5b-4694-9312-daaba129903e",
-                            RoleId = "19d64e3b-b3cb-4ca3-8ff2-6778dca0f8cb"
+                            UserId = "30dd0454-3769-4170-9f71-28204a44d84d",
+                            RoleId = "7646f9f0-4ff4-4331-bca6-fb6a9ff64bcd"
                         },
                         new
                         {
-                            UserId = "94a7cbeb-2b5b-4694-9312-daaba129903e",
-                            RoleId = "c8a78099-8947-4083-88d2-8c7f18b48584"
+                            UserId = "30dd0454-3769-4170-9f71-28204a44d84d",
+                            RoleId = "b5e3427c-022c-4c34-92eb-bfd62e6b04f3"
                         },
                         new
                         {
-                            UserId = "bd987cf1-fd7d-4e11-bbf1-1218f20aa872",
-                            RoleId = "19d64e3b-b3cb-4ca3-8ff2-6778dca0f8cb"
+                            UserId = "00243fc5-17a2-47aa-8ad0-3925abfd0cdf",
+                            RoleId = "7646f9f0-4ff4-4331-bca6-fb6a9ff64bcd"
                         },
                         new
                         {
-                            UserId = "bd987cf1-fd7d-4e11-bbf1-1218f20aa872",
-                            RoleId = "4b18d5eb-2a4b-4461-9d00-a447372770b4"
+                            UserId = "00243fc5-17a2-47aa-8ad0-3925abfd0cdf",
+                            RoleId = "14f456a4-59c9-4f35-bedd-5c70b11f1c68"
                         });
                 });
 
@@ -1115,7 +1025,7 @@ namespace Maxicycles.Data.Migrations
                         {
                             Id = 8,
                             Description = "The Naturalist Complete by Darkstar is available in 7.375'' x 31''. It features Element trucks, 52mm wheels, and is finished with griptape, bearings and bolts. This complete comes fully assembled and ready to skate straight out of the box!",
-                            ImageId = 8,
+                            ImageId = 7,
                             Price = 79.99m,
                             Slug = "element-skateboards-naturalist-complete",
                             SubCategoryId = 2,
@@ -1132,105 +1042,6 @@ namespace Maxicycles.Data.Migrations
                             SubCategoryId = 2,
                             Title = "Santa Cruz Skateboards Iridescent Dot Complete Skateboard - 8.0'' x 31.25''",
                             Quantity = 3
-                        },
-                        new
-                        {
-                            Id = 13,
-                            Description = "OG Logo Deck 8.38'', Wide 14.25'', WB 7 Ply Canadian Maple, Colour - Yellow Stain",
-                            ImageId = 13,
-                            Price = 30.39m,
-                            Slug = "native-og-logo-deck",
-                            SubCategoryId = 5,
-                            Title = "Native OG Logo (Blue Stain) Skateboard Deck 8.38''",
-                            Quantity = 4
-                        },
-                        new
-                        {
-                            Id = 14,
-                            Description = "No Place Like Home Deck, 8.5'' Wide, 14.5'' WB, 7-Ply Canadian Maple, Team Model",
-                            ImageId = 14,
-                            Price = 69.99m,
-                            Slug = "picture-show-deck",
-                            SubCategoryId = 5,
-                            Title = "Picture Show No Place Like Home Skateboard Deck 8.5'' ",
-                            Quantity = 2
-                        },
-                        new
-                        {
-                            Id = 15,
-                            Description = "Mind Control Deck, 8.25'' x 31.98'', 14.25'' WB, 7-Ply Canadian Maple, Axel Pro Model, Mind Control Graphic Series",
-                            ImageId = 15,
-                            Price = 64.99m,
-                            Slug = "mind-control-deck",
-                            SubCategoryId = 5,
-                            Title = "Toy Machine Skateboards Axel Mind Control Skateboard Deck 8.25''",
-                            Quantity = 2
-                        },
-                        new
-                        {
-                            Id = 16,
-                            Description = "he Street Elbow Pads by Pro-Tec are a great value pad designed to reduce impact when skating. The Street Elbow pads feature a locked in EVA foam that is designed to lock your elbow in for maximum protection, ballsitic nylon construction that resists tears and protects from skids and scrapes, a curved hard cap that allows better protection, perforated neoprene for better ventilation and adjustable velcor straps. A great value pad, it is available in Black/White checker colourway",
-                            ImageId = 16,
-                            Price = 19.99m,
-                            Slug = "pro-tec-elbow-pads",
-                            SubCategoryId = 7,
-                            Title = "Pro-Tec Street Elbow Pads - Black/White Checker",
-                            Quantity = 30
-                        },
-                        new
-                        {
-                            Id = 17,
-                            Description = "The Fly Knee Pads from 187 Killer Pads, is available in a black colourway, and is their slimmest and most versatile knee pad. Although its primarily designed for skateboarding, you can use these with other sports too. ",
-                            ImageId = 17,
-                            Price = 31.99m,
-                            Slug = "fly-knee-pads",
-                            SubCategoryId = 7,
-                            Title = "187 Killer Pads Fly Skate Knee Pads - Black",
-                            Quantity = 10
-                        },
-                        new
-                        {
-                            Id = 18,
-                            Description = "REKD Protections Pro Ramp Knee pads are designed for riders who want extra protection as well as extra comfort. Perfect for all abilities the Pro Ramp Knee pad features high density impact ramp caps, ergonomic knee recesses, dual neoprene butterfly closure and layered heavy duty EVA memory foam. These pads are available in black.",
-                            ImageId = 18,
-                            Price = 23.96m,
-                            Slug = "rekd-pro-ramp-knees",
-                            SubCategoryId = 7,
-                            Title = "REKD Protection Pro Ramp Knee Pads - Black",
-                            Quantity = 30
-                        },
-                        new
-                        {
-                            Id = 19,
-                            Description = "The MET Trenta 3K Carbon Mips® is a high performance road helmet designed with elite cyclists and worn to victory a Le Tour de France and the monuments of Liège-Bastogne-Liège and Il Lombardia. Engineered to keep your head fresh and save you energy with every pedal stroke, the MET Trenta 3K Carbon Mips® is the most advanced road cycling helmet we have ever made, now upgraded with the addition of Mips AIR®, the lightest and most advanced rotational management system.",
-                            ImageId = 19,
-                            Price = 180m,
-                            Slug = "met-trenta-3k-carbon",
-                            SubCategoryId = 6,
-                            Title = "MET Trenta 3K Carbon MIPS Road Bike Helmet ",
-                            Quantity = 5
-                        },
-                        new
-                        {
-                            Id = 20,
-                            Description = "With just 215g of weight, the Kask Protone has the lowest drag and the fastest heat dissipation coefficients compared to any other ventilated helmet. Thanks to several ventilation holes and a thick padding material, heat and moisture are dissipated very fast, improving comfort and performance without giving up on safety: the top area is reinforced with an internal plastic sub-structure that increases crash protection.",
-                            ImageId = 20,
-                            Price = 120m,
-                            Slug = "kask-protone",
-                            SubCategoryId = 6,
-                            Title = "Kask Protone WG11 Road Cycling Helmet - 2022",
-                            Quantity = 4
-                        },
-                        new
-                        {
-                            Id = 21,
-                            Description = "The MET Allroad is made for those who enjoy spending time on the saddle, whether on the tarmac or on gravel routes. Sporty on one side, comfy on the other. It’s exceptionally lightweight and secure thanks to MET’s distinghuishing design.",
-                            ImageId = 21,
-                            Price = 48.99m,
-                            Slug = "met-allroad",
-                            SubCategoryId = 6,
-                            Title = "MET Allroad Road Helmet",
-                            Quantity = 2
                         });
                 });
 
@@ -1359,17 +1170,17 @@ namespace Maxicycles.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e41c8d5e-52c9-414b-8685-8179709bb9fd",
+                            Id = "5f9446d6-75d6-4f8f-9380-3f574206e72c",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "81d57139-c10b-45c8-bf2f-0395b7b13ed2",
+                            ConcurrencyStamp = "f9869296-87e8-4eb9-927b-32ba77741f04",
                             Email = "customer@example.co.uk",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "CUSTOMER@EXAMPLE.CO.UK",
                             NormalizedUserName = "CUSTOMER@EXAMPLE.CO.UK",
-                            PasswordHash = "AQAAAAIAAYagAAAAEI464UE+swo3C4RUlw+dZ3Y1LR1ZcWQxJU0V/1HY4C95mgHGtAyYg0/LyMyNPjz70g==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDHE5dcm+QriJxQFQFVfPqbqmnZuBuj8blL5L3uxl3yF8v/ac0rr2zP4HNFdi7VleA==",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "d8bab622-46fb-4df9-b8fe-5b48d754bdc3",
+                            SecurityStamp = "a6d21610-d3d4-4f97-95d0-2702e88bf576",
                             TwoFactorEnabled = false,
                             UserName = "customer@example.co.uk",
                             AddressLine1 = "Customer street",
@@ -1380,17 +1191,17 @@ namespace Maxicycles.Data.Migrations
                         },
                         new
                         {
-                            Id = "4ca69a22-d439-4a79-a16f-4d7e4e06823d",
+                            Id = "e7f5ef5e-5f18-456e-bdcb-607a542fb5b9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "00758389-7911-44e3-a287-cea71d4405ec",
+                            ConcurrencyStamp = "45a01b4f-1712-4b52-b040-b20794895e0e",
                             Email = "stockControl@maxicycles.co.uk",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "STOCKCONTROL@MAXICYCLES.CO.UK",
                             NormalizedUserName = "STOCKCONTROL@MAXICYCLES.CO.UK",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMpzwuhGWoeXKWoGCRgzsZi55v/cNjHhPnImriujbO/NGSwzoUJU8e/5ZVSCS3oKXA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIUP0p4nY4yPemLtYmgr179nhhf0iTCSyTt2GBw8OQ6XdDsIVeNxpq2lk68D1oTHrw==",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "45f07d0d-afc5-4642-80b5-f949eee31b03",
+                            SecurityStamp = "da2d0847-b13c-41a9-8268-7c2a67577e23",
                             TwoFactorEnabled = false,
                             UserName = "stockControl@maxicycles.co.uk",
                             AddressLine1 = "Stock control street",
@@ -1401,17 +1212,17 @@ namespace Maxicycles.Data.Migrations
                         },
                         new
                         {
-                            Id = "2792d348-49f9-4dc1-b792-ead1c921f302",
+                            Id = "da23a1fe-255e-442f-8181-2589cb10d3ad",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "bdcc5704-9206-4b48-b9e1-cab56b4b6634",
+                            ConcurrencyStamp = "6fce9584-a78e-46a2-94d4-9eee1cba40ab",
                             Email = "technician@maxicycles.co.uk",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "TECHNICIAN@MAXICYCLES.CO.UK",
                             NormalizedUserName = "TECHNICIAN@MAXICYCLES.CO.UK",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFFXuaCAw/klzYWXdwdXh+lZNdFEcnODHIXmZC5P3ZY1FKikg6vxwzomMUD5MwsHcw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIU3guhgn97NQ5xJzepM6i0khDb5VCpT5oPYFIu/k3f7OAoHIvbUpadmTcI3NUFRyg==",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "0434f16d-81e5-4551-af6f-8e88fad29d1a",
+                            SecurityStamp = "7e0581c0-5ab4-4351-a59f-9eaa5b398a28",
                             TwoFactorEnabled = false,
                             UserName = "technician@maxicycles.co.uk",
                             AddressLine1 = "Technician street",
@@ -1422,17 +1233,17 @@ namespace Maxicycles.Data.Migrations
                         },
                         new
                         {
-                            Id = "79c2dce1-81e1-4b9b-8d0a-8f29692b9f4e",
+                            Id = "04f7e273-57a9-4942-bd27-4e54d11d0022",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c5cd2386-ccd4-4430-8102-ec6f37bc9442",
+                            ConcurrencyStamp = "b98c4e10-2b38-4d45-afbd-210f6e3cfd47",
                             Email = "accountsClerk@maxicycles.co.uk",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "ACCOUNTSCLERK@MAXICYCLES.CO.UK",
                             NormalizedUserName = "ACCOUNTSCLERK@MAXICYCLES.CO.UK",
-                            PasswordHash = "AQAAAAIAAYagAAAAEPrpW5eRBv/0trsmhiGvyYvv/puW9VUP7KWnS7CHpVPK+lb9V7+24kq7gl9XIYXsyw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEH0yJ2D3XuKseWxF1ZrVmbXKnaUIzGU8OlnLW4pxNMI0ZzZNzsenDP5bt21N5VRISA==",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "71c532a3-fd6e-410d-95c2-3c5cbfef79b8",
+                            SecurityStamp = "a9ccf708-234a-492f-8c76-00c5b7ebd54a",
                             TwoFactorEnabled = false,
                             UserName = "accountsClerk@maxicycles.co.uk",
                             AddressLine1 = "Accounts Street",
@@ -1443,17 +1254,17 @@ namespace Maxicycles.Data.Migrations
                         },
                         new
                         {
-                            Id = "94a7cbeb-2b5b-4694-9312-daaba129903e",
+                            Id = "30dd0454-3769-4170-9f71-28204a44d84d",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f1ccd298-5ce0-4e73-bc48-4fc40eef0b4b",
+                            ConcurrencyStamp = "abb65b35-5ad2-43a2-91e2-482b03ca25d4",
                             Email = "mediaManager@maxicycles.co.uk",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "MEDIAMANAGER@MAXICYCLES.CO.UK",
                             NormalizedUserName = "MEDIAMANAGER@MAXICYCLES.CO.UK",
-                            PasswordHash = "AQAAAAIAAYagAAAAECxlQigslxZ8E1DOvi5qrv64eTLw+zooXomHOGze55ijXC31BOtqjpONM5RmxIol3Q==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIFSi471x07BedmZojAD9hD2mz/7vraGNM2n46Fp5V4+zec5P8WA1lVOMGZSpp1H7Q==",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "204d6208-b1bd-40f6-a10a-35e24b9de52e",
+                            SecurityStamp = "194da0e9-5f7f-47bc-8f26-f8cf6de3c2f3",
                             TwoFactorEnabled = false,
                             UserName = "mediaManager@maxicycles.co.uk",
                             AddressLine1 = "Media Street",
@@ -1464,17 +1275,17 @@ namespace Maxicycles.Data.Migrations
                         },
                         new
                         {
-                            Id = "bd987cf1-fd7d-4e11-bbf1-1218f20aa872",
+                            Id = "00243fc5-17a2-47aa-8ad0-3925abfd0cdf",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "67b96d98-70d8-4dcd-8d2e-d7a506af9ebb",
+                            ConcurrencyStamp = "d50714da-16c8-4bc7-b745-4f64ff3f3d1d",
                             Email = "manager@maxicycles.co.uk",
                             EmailConfirmed = true,
                             LockoutEnabled = true,
                             NormalizedEmail = "MANAGER@MAXICYCLES.CO.UK",
                             NormalizedUserName = "MANAGER@MAXICYCLES.CO.UK",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBTuDSRwBuRzVQFG3TS8alTUa6kWdzsiXSNyrobO3XRSTvdk086UlTB/DolqMcRLnw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECVDZwck6GQxT3LuPvZmQsbBtdhPQF+DRHvTEVmVRpQ81fxcNVVkGT/Vwsb4DKldOw==",
                             PhoneNumberConfirmed = true,
-                            SecurityStamp = "61c17695-67d5-4573-ba57-cdd383c7b5c1",
+                            SecurityStamp = "852a842b-95d1-4273-ac29-af9e14993db9",
                             TwoFactorEnabled = false,
                             UserName = "manager@maxicycles.co.uk",
                             AddressLine1 = "Manager Street",

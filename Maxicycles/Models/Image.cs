@@ -10,13 +10,13 @@ public class Image
     // Get and set a descriptive name for the image.
     [Required]
     [MinLength(2)]
-    [MaxLength(50)]
+    [MaxLength(100)]
     public string? Title { get; set; }
 
     // Get and set the alternative text for the image.
     [Required]
     [MinLength(2)]
-    [MaxLength(50)]
+    [MaxLength(100)]
     [Display(Name = "Alternative Text")]
     public string? AltText { get; set; }
 

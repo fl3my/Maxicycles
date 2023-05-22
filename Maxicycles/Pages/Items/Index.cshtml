@@ -17,9 +17,9 @@
     <div class="row">
         @foreach (var item in Model.Items)
         {
-            <div class="col-sm-4">
+            <div class="col-sm-4 mb-4">
                 <div class="card">
-                    <img decoding="async" alt="@item.Image!.AltText" src="@("/uploads/" + item.Image.ImageName)" class="card-img-top mt-5"/>
+                    <img decoding="async" alt="@item.Image!.AltText" src="@("/uploads/" + item.Image.ImageName)" class="card-img-top p-2"/>
                     <div class="card-body">
                         <h5 class="card-title">@Html.DisplayFor(modelItem => item.Title)</h5>
                         <h6 class="card-subtitle mb-2 text-muted">£@Html.DisplayFor(modelItem => item.Price)</h6>
